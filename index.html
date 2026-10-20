@@ -1,0 +1,523 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>body{margin:0}</style></head><body><title>حديقة الحافظ</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;700;800&family=Amiri+Quran&display=swap">
+<style>
+/* Layout: one-column app, sticky top bar + bottom tab bar; garden of 37 plots is the home. Single bright "daytime garden" world. */
+:root{
+  --bg:#FFF7EA; --bg2:#FFEFD6; --card:#FFFFFF; --ink:#22304A; --muted:#6B7590;
+  --mint:#17B897; --mint-d:#0E8F75; --sun:#FFC23D; --sun-d:#E59E00; --coral:#FF6B5E; --coral-d:#D94A3F;
+  --grape:#7A5CFA; --grape-d:#5A3ED6; --sky:#4FB3FF; --sky-d:#2A8FDB; --soil:#B9824F; --leaf:#4CAF50; --line:#F0E2C8;
+  --ui:"Alexandria",system-ui,"Segoe UI",Tahoma,sans-serif; --quran:"Amiri Quran","Amiri","Traditional Arabic",serif;
+  --r:22px; color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:16px;direction:rtl;
+  background-image:radial-gradient(circle at 15% 10%,#FFE6B3 0 120px,transparent 121px),radial-gradient(circle at 90% 30%,#E3F6EE 0 160px,transparent 161px);background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button{font-family:var(--ui);cursor:pointer;color:inherit}
+button:focus-visible,select:focus-visible{outline:3px solid var(--grape);outline-offset:3px}
+.wrap{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px 120px}
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:2px solid var(--line)}
+.top .in{max-width:980px;margin:0 auto;padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));display:flex;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:19px;margin-inline-end:auto;white-space:nowrap}
+.brand svg{width:34px;height:34px}
+.chip{display:flex;align-items:center;gap:6px;background:var(--card);border:2px solid var(--line);border-radius:999px;padding:5px 12px;font-weight:700;font-variant-numeric:tabular-nums;font-size:15px}
+.chip svg{width:20px;height:20px}
+.chip.lvl{background:var(--grape);color:#fff;border-color:var(--grape-d)}
+@media (max-width:520px){.brand span{display:none}.chip{padding:4px 9px;font-size:14px}}
+/* bottom tabs */
+.tabs{position:fixed;bottom:0;left:0;right:0;z-index:6;background:var(--card);border-top:2px solid var(--line);padding:8px max(10px,env(safe-area-inset-right,0px)) calc(8px + env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px))}
+.tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.tab{border:0;background:none;border-radius:16px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:13px;font-weight:700;color:var(--muted)}
+.tab svg{width:28px;height:28px}
+.tab[aria-current="true"]{background:#FFF1D2;color:var(--ink)}
+/* generic */
+h1,h2,h3{margin:0;text-wrap:balance}
+h2{font-size:24px;font-weight:800}
+.sub{color:var(--muted);font-size:14px;margin-top:4px}
+.btn{border:0;border-radius:18px;padding:13px 20px;font-weight:800;font-size:17px;color:#fff;background:var(--mint);box-shadow:0 5px 0 var(--mint-d);transition:transform .08s,box-shadow .08s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--mint-d)}
+.btn.sun{background:var(--sun);color:#3a2a00;box-shadow:0 5px 0 var(--sun-d)} .btn.sun:active{box-shadow:0 1px 0 var(--sun-d)}
+.btn.coral{background:var(--coral);box-shadow:0 5px 0 var(--coral-d)} .btn.coral:active{box-shadow:0 1px 0 var(--coral-d)}
+.btn.grape{background:var(--grape);box-shadow:0 5px 0 var(--grape-d)} .btn.grape:active{box-shadow:0 1px 0 var(--grape-d)}
+.btn.sky{background:var(--sky);box-shadow:0 5px 0 var(--sky-d)} .btn.sky:active{box-shadow:0 1px 0 var(--sky-d)}
+.btn.ghost{background:var(--card);color:var(--ink);box-shadow:0 5px 0 var(--line);border:2px solid var(--line)}
+.btn.sm{padding:9px 14px;font-size:15px;border-radius:14px}
+.btn[disabled]{opacity:.45;pointer-events:none}
+.card{background:var(--card);border:2px solid var(--line);border-radius:var(--r)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.stack{display:flex;flex-direction:column;gap:16px}
+.view{display:flex;flex-direction:column;gap:18px;animation:in .35s ease}
+@keyframes in{from{opacity:.4;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* mascot */
+.hero{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;padding:16px;background:linear-gradient(135deg,#FFE9B8,#FFF7E6);border:2px solid #F6D99A;border-radius:28px}
+.nour{width:120px;height:150px;flex:none}
+.nour .body{transform-origin:60px 140px;animation:bob 2.6s ease-in-out infinite}
+.nour .eyes{transform-origin:60px 78px;animation:blink 4.2s infinite}
+.nour.happy .body{animation:jump .6s ease 2}
+.nour.sad .body{animation:tilt 1s ease}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@keyframes jump{0%,100%{transform:translateY(0) scale(1)}40%{transform:translateY(-22px) scale(1.05,.95)}}
+@keyframes tilt{0%,100%{transform:rotate(0)}30%{transform:rotate(-8deg)}70%{transform:rotate(6deg)}}
+.bubble{position:relative;background:var(--card);border:2px solid var(--line);border-radius:20px;padding:12px 16px;font-weight:700;font-size:17px;line-height:1.6}
+.bubble::after{content:"";position:absolute;right:-10px;top:24px;border:10px solid transparent;border-left-color:var(--card);border-right:0}
+.bubble small{display:block;font-weight:500;color:var(--muted);font-size:14px;margin-top:2px}
+@media (max-width:520px){.nour{width:90px;height:112px}.hero{padding:12px;gap:10px}.bubble{font-size:15px}}
+/* level progress */
+.lvlbar{display:flex;align-items:center;gap:12px;padding:14px 16px}
+.lvlbar .meter{flex:1;height:16px;background:#F3E8D2;border-radius:99px;overflow:hidden}
+.lvlbar .meter i{display:block;height:100%;background:linear-gradient(90deg,var(--mint),#7BE0B5);border-radius:99px;transition:width .6s}
+.lvlbar b{font-size:15px;white-space:nowrap}
+/* garden */
+.garden{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px}
+.plot{border:2px solid var(--line);background:var(--card);border-radius:20px;padding:8px 6px 10px;display:flex;flex-direction:column;align-items:center;gap:2px;transition:transform .12s}
+.plot:hover{transform:translateY(-3px)}
+.plot svg{width:70px;height:70px}
+.plot .nm{font-weight:700;font-size:15px}
+.plot .st{font-size:11px;color:var(--muted)}
+.plot.s3{background:#EFFBF3;border-color:#BFE8CC}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:4px}
+.legend i{width:12px;height:12px;border-radius:4px;display:inline-block}
+/* section cards on home */
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:640px){.feat{grid-template-columns:1fr}}
+.fcard{border:0;border-radius:24px;padding:18px;text-align:right;color:#fff;display:flex;gap:12px;align-items:center;box-shadow:0 6px 0 rgba(0,0,0,.12)}
+.fcard svg{width:46px;height:46px;flex:none}
+.fcard b{display:block;font-size:20px} .fcard small{font-size:13px;opacity:.92}
+/* surah picker */
+.picker{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.pk{flex:none;border:2px solid var(--line);background:var(--card);border-radius:14px;padding:8px 14px;font-weight:700;font-size:15px}
+.pk[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+/* listen */
+.player{display:grid;grid-template-columns:minmax(0,340px) 1fr;gap:18px;align-items:start}
+@media (max-width:760px){.player{grid-template-columns:1fr}}
+.vid{width:100%;max-width:100%;aspect-ratio:9/16;background:#161518;border-radius:24px;display:block;box-shadow:0 8px 0 rgba(0,0,0,.08)}
+.vbox{max-width:340px;width:100%;margin-inline:auto}
+.info{padding:18px;display:flex;flex-direction:column;gap:12px}
+.info h3{font-size:30px;font-family:var(--quran);font-weight:400}
+.ayahlist{font-family:var(--quran);font-size:24px;line-height:2.2;max-height:300px;overflow:auto;padding:4px 2px}
+.num{font-family:var(--quran);color:var(--sun-d);font-size:.9em}
+/* recite */
+.mushaf{padding:22px 18px;font-family:var(--quran);font-size:30px;line-height:2.4;text-align:center;min-height:200px}
+@media (max-width:520px){.mushaf{font-size:25px;padding:16px 10px}}
+.w{display:inline-block;border-radius:10px;padding:0 3px;transition:color .25s,background .25s}
+.w.hid{color:transparent;background:#F3E8D2;min-width:2.2em}
+.w.ok{color:var(--ink);animation:pop .35s}
+.w.cur{background:#FFE08A;color:transparent;box-shadow:0 0 0 3px var(--sun);animation:glow 1.2s ease-in-out infinite}
+@keyframes glow{50%{box-shadow:0 0 0 6px rgba(255,194,61,.35)}}
+@keyframes pop{0%{transform:scale(.6)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+.ay{display:inline} .ay.done .num{color:var(--mint)}
+.recbar{display:flex;flex-direction:column;align-items:center;gap:12px;padding:6px 0}
+.mic{width:96px;height:96px;border-radius:50%;border:0;background:var(--coral);box-shadow:0 7px 0 var(--coral-d);display:grid;place-items:center}
+.mic svg{width:44px;height:44px}
+.mic.on{animation:pulse 1.2s infinite}
+@keyframes pulse{0%{box-shadow:0 7px 0 var(--coral-d),0 0 0 0 rgba(255,107,94,.5)}100%{box-shadow:0 7px 0 var(--coral-d),0 0 0 26px rgba(255,107,94,0)}}
+.status{font-weight:700;font-size:15px;color:var(--muted);text-align:center}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:#F3E8D2;border-radius:18px;padding:4px;max-width:460px;width:100%;margin-inline:auto}
+.seg button{border:0;background:none;border-radius:14px;padding:10px 6px;font-weight:800;font-size:15px;color:var(--muted)}
+.seg button[aria-selected="true"]{background:var(--card);color:var(--ink);box-shadow:0 3px 0 var(--line)}
+.choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;width:100%;max-width:560px}
+.choices .opt{font-size:28px;padding:12px 6px}
+.prog{height:8px;background:#F3E8D2;border-radius:0 0 20px 20px;overflow:hidden}.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--mint),#7BE0B5);transition:width .4s}
+.btn.big{width:100%;padding:16px 20px;font-size:20px;border-radius:22px}
+.btn.big svg{width:30px;height:30px}
+.btn.ready{animation:ready 1.2s ease-in-out infinite}
+@keyframes ready{50%{transform:scale(1.04)}}
+.lst{align-items:center;text-align:center}
+.vprog{height:10px;background:#F3E8D2;border-radius:99px;margin-top:10px;overflow:hidden}.vprog i{display:block;height:100%;width:0;background:var(--sky);border-radius:99px}
+.vid{cursor:pointer}
+.growbox{position:relative;width:150px;height:150px}
+.growbox>div{position:absolute;inset:0;display:grid;place-items:center}
+.g-old{animation:gout .6s .4s forwards}.g-new{animation:gin 1s .8s both}
+@keyframes gout{to{opacity:0;transform:scale(.6)}}
+@keyframes gin{from{opacity:0;transform:scale(.2) translateY(30px)}60%{opacity:1;transform:scale(1.12)}to{opacity:1;transform:scale(1)}}
+.center{display:flex;flex-direction:column;align-items:center;gap:8px}
+.bigplay{width:110px;height:110px;border-radius:50%;border:0;background:var(--sun);color:#3a2a00;box-shadow:0 7px 0 var(--sun-d);display:grid;place-items:center}
+.bigplay svg{width:56px;height:56px}
+.bigplay.playing,.acard.playing .aplay{animation:pulse2 1s infinite}
+@keyframes pulse2{0%{box-shadow:0 7px 0 rgba(0,0,0,.15),0 0 0 0 rgba(255,194,61,.6)}100%{box-shadow:0 7px 0 rgba(0,0,0,.15),0 0 0 22px rgba(255,194,61,0)}}
+.picopts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.picopt{border:3px solid var(--line);background:var(--card);border-radius:18px;padding:6px;display:flex;flex-direction:column;gap:4px;align-items:center;box-shadow:0 4px 0 var(--line)}
+.picopt b{font-size:15px}
+.scene{display:block;width:100%;aspect-ratio:240/213;border-radius:12px;background-repeat:no-repeat}
+.picopt.right,.acard.right{border-color:var(--mint);background:#DDF6E8}.picopt.wrong,.acard.wrong{border-color:var(--coral);background:#FFE3DF;animation:shake .35s}
+.aopts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.acard{border:3px solid var(--line);background:var(--card);border-radius:22px;padding:10px;display:flex;flex-direction:column;gap:8px;align-items:center}
+.acard.used{opacity:.35;pointer-events:none}
+.aplay{width:100%;aspect-ratio:1;max-width:120px;border:0;border-radius:50%;background:var(--c);display:grid;place-items:center;position:relative;color:#fff;box-shadow:0 6px 0 rgba(0,0,0,.15)}
+.aplay>svg{width:55%;height:55%}
+.aplay .wave{position:absolute;bottom:-4px;left:-4px;width:36px;height:36px;border-radius:50%;background:var(--card);color:var(--ink);display:grid;place-items:center;box-shadow:0 2px 0 var(--line)}
+.aplay .wave svg{width:22px;height:22px}
+.apick{border:0;border-radius:14px;background:var(--ink);color:#fff;font-weight:800;font-size:16px;padding:8px 18px;width:100%}
+.slots{display:flex;gap:12px;justify-content:center}
+.slot{width:60px;height:60px;border-radius:50%;border:3px dashed #E6D3AE;display:grid;place-items:center;font-weight:800;font-size:22px;color:var(--muted)}
+.slot.fill{border-style:solid;border-color:transparent}.slot.fill svg{width:60%;height:60%}
+.judge{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.score{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.pill{background:#F3E8D2;border-radius:99px;padding:6px 12px;font-weight:700;font-size:14px}
+.pill.g{background:#DDF6E8;color:#0B7A5E}.pill.r{background:#FFE3DF;color:#B53A30}
+/* games */
+.games{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media (max-width:560px){.games{grid-template-columns:1fr}}
+.gcard{border:2px solid var(--line);background:var(--card);border-radius:24px;padding:16px;text-align:right;display:flex;gap:14px;align-items:center}
+.gcard .ic{width:62px;height:62px;border-radius:18px;display:grid;place-items:center;flex:none}
+.gcard .ic svg{width:38px;height:38px}
+.gcard b{font-size:18px;display:block}.gcard small{color:var(--muted);font-size:13px}
+.qbox{padding:20px 16px;display:flex;flex-direction:column;gap:16px}
+.qtext{font-family:var(--quran);font-size:30px;line-height:2.2;text-align:center}
+.blank{display:inline-block;min-width:3.4em;border-bottom:4px dashed var(--grape);color:var(--grape);margin:0 4px}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.opt{border:2px solid var(--line);background:var(--card);border-radius:18px;padding:14px 10px;font-family:var(--quran);font-size:26px;box-shadow:0 4px 0 var(--line)}
+.opt.ui{font-family:var(--ui);font-size:18px;font-weight:700}
+.opt.right{background:#DDF6E8;border-color:var(--mint)} .opt.wrong{background:#FFE3DF;border-color:var(--coral);animation:shake .35s}
+@keyframes shake{25%{transform:translateX(6px)}75%{transform:translateX(-6px)}}
+.tiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.tile{border:2px solid var(--line);background:var(--card);border-radius:14px;padding:6px 14px;font-family:var(--quran);font-size:26px;box-shadow:0 4px 0 var(--line)}
+.tile.used{visibility:hidden}
+.tile.ayahT{font-size:22px;width:100%;line-height:2}
+.answer{min-height:72px;border:2px dashed #E6D3AE;border-radius:18px;padding:10px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;font-family:var(--quran);font-size:26px;line-height:2}
+.answer .a{background:#EFFBF3;border-radius:10px;padding:0 8px}
+.answer.col{flex-direction:column;align-items:stretch}
+.answer.col .a{font-size:22px;padding:2px 10px}
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.dots{display:flex;gap:6px}.dots i{width:12px;height:12px;border-radius:50%;background:#EADBBE}.dots i.ok{background:var(--mint)}.dots i.no{background:var(--coral)}
+select{font-family:var(--ui);font-size:15px;font-weight:700;border:2px solid var(--line);border-radius:14px;padding:8px 10px;background:var(--card);color:var(--ink)}
+/* modal & toast */
+.modal{position:fixed;inset:0;z-index:20;background:rgba(34,48,74,.45);display:grid;place-items:center;padding:16px}
+.modal .card{max-width:420px;width:100%;padding:22px;text-align:center;display:flex;flex-direction:column;gap:12px;align-items:center;animation:in .3s}
+.modal h3{font-size:24px}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;background:var(--ink);color:#fff;padding:10px 18px;border-radius:99px;font-weight:700;display:flex;gap:8px;align-items:center;box-shadow:0 6px 20px rgba(0,0,0,.2)}
+.toast svg{width:20px;height:20px}
+canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:25;width:100%;height:100%}
+.badges{display:flex;gap:10px;flex-wrap:wrap}
+.badge{display:flex;flex-direction:column;align-items:center;gap:4px;width:84px;text-align:center;font-size:12px;font-weight:700}
+.badge svg{width:56px;height:56px}
+.badge.off{opacity:.3;filter:grayscale(1)}
+.note{font-size:13px;color:var(--muted);line-height:1.7}
+</style>
+
+<header class="top"><div class="in">
+  <div class="brand"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 q4 4 0 7 q-4 -3 0 -7z" fill="#FFC23D"/><rect x="10" y="10" width="20" height="5" rx="2" fill="#E59E00"/><path d="M11 15 h18 q3 10 0 18 h-18 q-3 -8 0 -18z" fill="#FFC23D"/><rect x="10" y="33" width="20" height="4" rx="2" fill="#E59E00"/><circle cx="16.5" cy="23" r="1.8" fill="#22304A"/><circle cx="23.5" cy="23" r="1.8" fill="#22304A"/><path d="M16 27 q4 3 8 0" stroke="#22304A" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg><span>حديقة الحافظ</span></div>
+  <div class="chip" title="النجوم"><svg viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7L12 17.6 5.7 21.1l1.5-7L2 9.3l7-.8z" fill="#FFC23D" stroke="#E59E00" stroke-width="1.2"/></svg><span id="starsN">0</span></div>
+  <div class="chip" title="أيام متتالية"><svg viewBox="0 0 24 24"><path d="M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-5 3-6 0 2 1 3 2 3 0-4-1-6 1-9z" fill="#FF6B5E"/><path d="M12 12c1 2 3 3 3 5a3 3 0 0 1-6 0c0-1.5 1-2.5 3-5z" fill="#FFC23D"/></svg><span id="streakN">0</span></div>
+  <div class="chip lvl" id="lvlChip">بذرة</div>
+</div></header>
+
+<main class="wrap" id="app"></main>
+
+<nav class="tabs" aria-label="الأقسام"><div class="in">
+  <button class="tab" data-go="home"><svg viewBox="0 0 32 32"><path d="M16 26v-9" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><path d="M16 18c-6 0-9-4-9-9 6 0 9 3 9 9zM16 15c0-5 3-8 9-8 0 5-3 8-9 8z" fill="#4CAF50"/><path d="M6 27h20" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>حديقتي</button>
+  <button class="tab" data-go="listen"><svg viewBox="0 0 32 32"><rect x="5" y="5" width="22" height="22" rx="7" fill="#4FB3FF"/><path d="M13 11l8 5-8 5z" fill="#fff"/></svg>استمع</button>
+  <button class="tab" data-go="recite"><svg viewBox="0 0 32 32"><rect x="11" y="4" width="10" height="16" rx="5" fill="#FF6B5E"/><path d="M7 15a9 9 0 0 0 18 0M16 24v4" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg>سمّع</button>
+  <button class="tab" data-go="games"><svg viewBox="0 0 32 32"><rect x="3" y="9" width="26" height="15" rx="7" fill="#7A5CFA"/><path d="M10 13v7M6.5 16.5h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/><circle cx="21" cy="15" r="1.8" fill="#FFC23D"/><circle cx="24" cy="18.5" r="1.8" fill="#fff"/></svg>العب</button>
+</div></nav>
+<canvas id="fx"></canvas>
+<div id="layer"></div>
+
+<script>
+const QURAN = [{"n":78,"name":"النبأ","a":["عَمَّ يَتَسَاءَلُونَ","عَنِ النَّبَإِ الْعَظِيمِ","الَّذِي هُمْ فِيهِ مُخْتَلِفُونَ","كَلَّا سَيَعْلَمُونَ","ثُمَّ كَلَّا سَيَعْلَمُونَ","أَلَمْ نَجْعَلِ الْأَرْضَ مِهَادًا","وَالْجِبَالَ أَوْتَادًا","وَخَلَقْنَاكُمْ أَزْوَاجًا","وَجَعَلْنَا نَوْمَكُمْ سُبَاتًا","وَجَعَلْنَا اللَّيْلَ لِبَاسًا","وَجَعَلْنَا النَّهَارَ مَعَاشًا","وَبَنَيْنَا فَوْقَكُمْ سَبْعًا شِدَادًا","وَجَعَلْنَا سِرَاجًا وَهَّاجًا","وَأَنزَلْنَا مِنَ الْمُعْصِرَاتِ مَاءً ثَجَّاجًا","لِّنُخْرِجَ بِهِ حَبًّا وَنَبَاتًا","وَجَنَّاتٍ أَلْفَافًا","إِنَّ يَوْمَ الْفَصْلِ كَانَ مِيقَاتًا","يَوْمَ يُنفَخُ فِي الصُّورِ فَتَأْتُونَ أَفْوَاجًا","وَفُتِحَتِ السَّمَاءُ فَكَانَتْ أَبْوَابًا","وَسُيِّرَتِ الْجِبَالُ فَكَانَتْ سَرَابًا","إِنَّ جَهَنَّمَ كَانَتْ مِرْصَادًا","لِّلطَّاغِينَ مَآبًا","لَّابِثِينَ فِيهَا أَحْقَابًا","لَّا يَذُوقُونَ فِيهَا بَرْدًا وَلَا شَرَابًا","إِلَّا حَمِيمًا وَغَسَّاقًا","جَزَاءً وِفَاقًا","إِنَّهُمْ كَانُوا لَا يَرْجُونَ حِسَابًا","وَكَذَّبُوا بِآيَاتِنَا كِذَّابًا","وَكُلَّ شَيْءٍ أَحْصَيْنَاهُ كِتَابًا","فَذُوقُوا فَلَن نَّزِيدَكُمْ إِلَّا عَذَابًا","إِنَّ لِلْمُتَّقِينَ مَفَازًا","حَدَائِقَ وَأَعْنَابًا","وَكَوَاعِبَ أَتْرَابًا","وَكَأْسًا دِهَاقًا","لَّا يَسْمَعُونَ فِيهَا لَغْوًا وَلَا كِذَّابًا","جَزَاءً مِّن رَّبِّكَ عَطَاءً حِسَابًا","رَّبِّ السَّمَاوَاتِ وَالْأَرْضِ وَمَا بَيْنَهُمَا الرَّحْمَٰنِ لَا يَمْلِكُونَ مِنْهُ خِطَابًا","يَوْمَ يَقُومُ الرُّوحُ وَالْمَلَائِكَةُ صَفًّا لَّا يَتَكَلَّمُونَ إِلَّا مَنْ أَذِنَ لَهُ الرَّحْمَٰنُ وَقَالَ صَوَابًا","ذَٰلِكَ الْيَوْمُ الْحَقُّ فَمَن شَاءَ اتَّخَذَ إِلَىٰ رَبِّهِ مَآبًا","إِنَّا أَنذَرْنَاكُمْ عَذَابًا قَرِيبًا يَوْمَ يَنظُرُ الْمَرْءُ مَا قَدَّمَتْ يَدَاهُ وَيَقُولُ الْكَافِرُ يَا لَيْتَنِي كُنتُ تُرَابًا"]},{"n":79,"name":"النازعات","a":["وَالنَّازِعَاتِ غَرْقًا","وَالنَّاشِطَاتِ نَشْطًا","وَالسَّابِحَاتِ سَبْحًا","فَالسَّابِقَاتِ سَبْقًا","فَالْمُدَبِّرَاتِ أَمْرًا","يَوْمَ تَرْجُفُ الرَّاجِفَةُ","تَتْبَعُهَا الرَّادِفَةُ","قُلُوبٌ يَوْمَئِذٍ وَاجِفَةٌ","أَبْصَارُهَا خَاشِعَةٌ","يَقُولُونَ أَإِنَّا لَمَرْدُودُونَ فِي الْحَافِرَةِ","أَإِذَا كُنَّا عِظَامًا نَّخِرَةً","قَالُوا تِلْكَ إِذًا كَرَّةٌ خَاسِرَةٌ","فَإِنَّمَا هِيَ زَجْرَةٌ وَاحِدَةٌ","فَإِذَا هُم بِالسَّاهِرَةِ","هَلْ أَتَاكَ حَدِيثُ مُوسَىٰ","إِذْ نَادَاهُ رَبُّهُ بِالْوَادِ الْمُقَدَّسِ طُوًى","اذْهَبْ إِلَىٰ فِرْعَوْنَ إِنَّهُ طَغَىٰ","فَقُلْ هَل لَّكَ إِلَىٰ أَن تَزَكَّىٰ","وَأَهْدِيَكَ إِلَىٰ رَبِّكَ فَتَخْشَىٰ","فَأَرَاهُ الْآيَةَ الْكُبْرَىٰ","فَكَذَّبَ وَعَصَىٰ","ثُمَّ أَدْبَرَ يَسْعَىٰ","فَحَشَرَ فَنَادَىٰ","فَقَالَ أَنَا رَبُّكُمُ الْأَعْلَىٰ","فَأَخَذَهُ اللَّهُ نَكَالَ الْآخِرَةِ وَالْأُولَىٰ","إِنَّ فِي ذَٰلِكَ لَعِبْرَةً لِّمَن يَخْشَىٰ","أَأَنتُمْ أَشَدُّ خَلْقًا أَمِ السَّمَاءُ بَنَاهَا","رَفَعَ سَمْكَهَا فَسَوَّاهَا","وَأَغْطَشَ لَيْلَهَا وَأَخْرَجَ ضُحَاهَا","وَالْأَرْضَ بَعْدَ ذَٰلِكَ دَحَاهَا","أَخْرَجَ مِنْهَا مَاءَهَا وَمَرْعَاهَا","وَالْجِبَالَ أَرْسَاهَا","مَتَاعًا لَّكُمْ وَلِأَنْعَامِكُمْ","فَإِذَا جَاءَتِ الطَّامَّةُ الْكُبْرَىٰ","يَوْمَ يَتَذَكَّرُ الْإِنسَانُ مَا سَعَىٰ","وَبُرِّزَتِ الْجَحِيمُ لِمَن يَرَىٰ","فَأَمَّا مَن طَغَىٰ","وَآثَرَ الْحَيَاةَ الدُّنْيَا","فَإِنَّ الْجَحِيمَ هِيَ الْمَأْوَىٰ","وَأَمَّا مَنْ خَافَ مَقَامَ رَبِّهِ وَنَهَى النَّفْسَ عَنِ الْهَوَىٰ","فَإِنَّ الْجَنَّةَ هِيَ الْمَأْوَىٰ","يَسْأَلُونَكَ عَنِ السَّاعَةِ أَيَّانَ مُرْسَاهَا","فِيمَ أَنتَ مِن ذِكْرَاهَا","إِلَىٰ رَبِّكَ مُنتَهَاهَا","إِنَّمَا أَنتَ مُنذِرُ مَن يَخْشَاهَا","كَأَنَّهُمْ يَوْمَ يَرَوْنَهَا لَمْ يَلْبَثُوا إِلَّا عَشِيَّةً أَوْ ضُحَاهَا"]},{"n":80,"name":"عبس","a":["عَبَسَ وَتَوَلَّىٰ","أَن جَاءَهُ الْأَعْمَىٰ","وَمَا يُدْرِيكَ لَعَلَّهُ يَزَّكَّىٰ","أَوْ يَذَّكَّرُ فَتَنفَعَهُ الذِّكْرَىٰ","أَمَّا مَنِ اسْتَغْنَىٰ","فَأَنتَ لَهُ تَصَدَّىٰ","وَمَا عَلَيْكَ أَلَّا يَزَّكَّىٰ","وَأَمَّا مَن جَاءَكَ يَسْعَىٰ","وَهُوَ يَخْشَىٰ","فَأَنتَ عَنْهُ تَلَهَّىٰ","كَلَّا إِنَّهَا تَذْكِرَةٌ","فَمَن شَاءَ ذَكَرَهُ","فِي صُحُفٍ مُّكَرَّمَةٍ","مَّرْفُوعَةٍ مُّطَهَّرَةٍ","بِأَيْدِي سَفَرَةٍ","كِرَامٍ بَرَرَةٍ","قُتِلَ الْإِنسَانُ مَا أَكْفَرَهُ","مِنْ أَيِّ شَيْءٍ خَلَقَهُ","مِن نُّطْفَةٍ خَلَقَهُ فَقَدَّرَهُ","ثُمَّ السَّبِيلَ يَسَّرَهُ","ثُمَّ أَمَاتَهُ فَأَقْبَرَهُ","ثُمَّ إِذَا شَاءَ أَنشَرَهُ","كَلَّا لَمَّا يَقْضِ مَا أَمَرَهُ","فَلْيَنظُرِ الْإِنسَانُ إِلَىٰ طَعَامِهِ","أَنَّا صَبَبْنَا الْمَاءَ صَبًّا","ثُمَّ شَقَقْنَا الْأَرْضَ شَقًّا","فَأَنبَتْنَا فِيهَا حَبًّا","وَعِنَبًا وَقَضْبًا","وَزَيْتُونًا وَنَخْلًا","وَحَدَائِقَ غُلْبًا","وَفَاكِهَةً وَأَبًّا","مَّتَاعًا لَّكُمْ وَلِأَنْعَامِكُمْ","فَإِذَا جَاءَتِ الصَّاخَّةُ","يَوْمَ يَفِرُّ الْمَرْءُ مِنْ أَخِيهِ","وَأُمِّهِ وَأَبِيهِ","وَصَاحِبَتِهِ وَبَنِيهِ","لِكُلِّ امْرِئٍ مِّنْهُمْ يَوْمَئِذٍ شَأْنٌ يُغْنِيهِ","وُجُوهٌ يَوْمَئِذٍ مُّسْفِرَةٌ","ضَاحِكَةٌ مُّسْتَبْشِرَةٌ","وَوُجُوهٌ يَوْمَئِذٍ عَلَيْهَا غَبَرَةٌ","تَرْهَقُهَا قَتَرَةٌ","أُولَٰئِكَ هُمُ الْكَفَرَةُ الْفَجَرَةُ"]},{"n":81,"name":"التكوير","a":["إِذَا الشَّمْسُ كُوِّرَتْ","وَإِذَا النُّجُومُ انكَدَرَتْ","وَإِذَا الْجِبَالُ سُيِّرَتْ","وَإِذَا الْعِشَارُ عُطِّلَتْ","وَإِذَا الْوُحُوشُ حُشِرَتْ","وَإِذَا الْبِحَارُ سُجِّرَتْ","وَإِذَا النُّفُوسُ زُوِّجَتْ","وَإِذَا الْمَوْءُودَةُ سُئِلَتْ","بِأَيِّ ذَنبٍ قُتِلَتْ","وَإِذَا الصُّحُفُ نُشِرَتْ","وَإِذَا السَّمَاءُ كُشِطَتْ","وَإِذَا الْجَحِيمُ سُعِّرَتْ","وَإِذَا الْجَنَّةُ أُزْلِفَتْ","عَلِمَتْ نَفْسٌ مَّا أَحْضَرَتْ","فَلَا أُقْسِمُ بِالْخُنَّسِ","الْجَوَارِ الْكُنَّسِ","وَاللَّيْلِ إِذَا عَسْعَسَ","وَالصُّبْحِ إِذَا تَنَفَّسَ","إِنَّهُ لَقَوْلُ رَسُولٍ كَرِيمٍ","ذِي قُوَّةٍ عِندَ ذِي الْعَرْشِ مَكِينٍ","مُّطَاعٍ ثَمَّ أَمِينٍ","وَمَا صَاحِبُكُم بِمَجْنُونٍ","وَلَقَدْ رَآهُ بِالْأُفُقِ الْمُبِينِ","وَمَا هُوَ عَلَى الْغَيْبِ بِضَنِينٍ","وَمَا هُوَ بِقَوْلِ شَيْطَانٍ رَّجِيمٍ","فَأَيْنَ تَذْهَبُونَ","إِنْ هُوَ إِلَّا ذِكْرٌ لِّلْعَالَمِينَ","لِمَن شَاءَ مِنكُمْ أَن يَسْتَقِيمَ","وَمَا تَشَاءُونَ إِلَّا أَن يَشَاءَ اللَّهُ رَبُّ الْعَالَمِينَ"]},{"n":82,"name":"الانفطار","a":["إِذَا السَّمَاءُ انفَطَرَتْ","وَإِذَا الْكَوَاكِبُ انتَثَرَتْ","وَإِذَا الْبِحَارُ فُجِّرَتْ","وَإِذَا الْقُبُورُ بُعْثِرَتْ","عَلِمَتْ نَفْسٌ مَّا قَدَّمَتْ وَأَخَّرَتْ","يَا أَيُّهَا الْإِنسَانُ مَا غَرَّكَ بِرَبِّكَ الْكَرِيمِ","الَّذِي خَلَقَكَ فَسَوَّاكَ فَعَدَلَكَ","فِي أَيِّ صُورَةٍ مَّا شَاءَ رَكَّبَكَ","كَلَّا بَلْ تُكَذِّبُونَ بِالدِّينِ","وَإِنَّ عَلَيْكُمْ لَحَافِظِينَ","كِرَامًا كَاتِبِينَ","يَعْلَمُونَ مَا تَفْعَلُونَ","إِنَّ الْأَبْرَارَ لَفِي نَعِيمٍ","وَإِنَّ الْفُجَّارَ لَفِي جَحِيمٍ","يَصْلَوْنَهَا يَوْمَ الدِّينِ","وَمَا هُمْ عَنْهَا بِغَائِبِينَ","وَمَا أَدْرَاكَ مَا يَوْمُ الدِّينِ","ثُمَّ مَا أَدْرَاكَ مَا يَوْمُ الدِّينِ","يَوْمَ لَا تَمْلِكُ نَفْسٌ لِّنَفْسٍ شَيْئًا وَالْأَمْرُ يَوْمَئِذٍ لِّلَّهِ"]},{"n":83,"name":"المطففين","a":["وَيْلٌ لِّلْمُطَفِّفِينَ","الَّذِينَ إِذَا اكْتَالُوا عَلَى النَّاسِ يَسْتَوْفُونَ","وَإِذَا كَالُوهُمْ أَو وَّزَنُوهُمْ يُخْسِرُونَ","أَلَا يَظُنُّ أُولَٰئِكَ أَنَّهُم مَّبْعُوثُونَ","لِيَوْمٍ عَظِيمٍ","يَوْمَ يَقُومُ النَّاسُ لِرَبِّ الْعَالَمِينَ","كَلَّا إِنَّ كِتَابَ الْفُجَّارِ لَفِي سِجِّينٍ","وَمَا أَدْرَاكَ مَا سِجِّينٌ","كِتَابٌ مَّرْقُومٌ","وَيْلٌ يَوْمَئِذٍ لِّلْمُكَذِّبِينَ","الَّذِينَ يُكَذِّبُونَ بِيَوْمِ الدِّينِ","وَمَا يُكَذِّبُ بِهِ إِلَّا كُلُّ مُعْتَدٍ أَثِيمٍ","إِذَا تُتْلَىٰ عَلَيْهِ آيَاتُنَا قَالَ أَسَاطِيرُ الْأَوَّلِينَ","كَلَّا بَلْ رَانَ عَلَىٰ قُلُوبِهِم مَّا كَانُوا يَكْسِبُونَ","كَلَّا إِنَّهُمْ عَن رَّبِّهِمْ يَوْمَئِذٍ لَّمَحْجُوبُونَ","ثُمَّ إِنَّهُمْ لَصَالُو الْجَحِيمِ","ثُمَّ يُقَالُ هَٰذَا الَّذِي كُنتُم بِهِ تُكَذِّبُونَ","كَلَّا إِنَّ كِتَابَ الْأَبْرَارِ لَفِي عِلِّيِّينَ","وَمَا أَدْرَاكَ مَا عِلِّيُّونَ","كِتَابٌ مَّرْقُومٌ","يَشْهَدُهُ الْمُقَرَّبُونَ","إِنَّ الْأَبْرَارَ لَفِي نَعِيمٍ","عَلَى الْأَرَائِكِ يَنظُرُونَ","تَعْرِفُ فِي وُجُوهِهِمْ نَضْرَةَ النَّعِيمِ","يُسْقَوْنَ مِن رَّحِيقٍ مَّخْتُومٍ","خِتَامُهُ مِسْكٌ وَفِي ذَٰلِكَ فَلْيَتَنَافَسِ الْمُتَنَافِسُونَ","وَمِزَاجُهُ مِن تَسْنِيمٍ","عَيْنًا يَشْرَبُ بِهَا الْمُقَرَّبُونَ","إِنَّ الَّذِينَ أَجْرَمُوا كَانُوا مِنَ الَّذِينَ آمَنُوا يَضْحَكُونَ","وَإِذَا مَرُّوا بِهِمْ يَتَغَامَزُونَ","وَإِذَا انقَلَبُوا إِلَىٰ أَهْلِهِمُ انقَلَبُوا فَكِهِينَ","وَإِذَا رَأَوْهُمْ قَالُوا إِنَّ هَٰؤُلَاءِ لَضَالُّونَ","وَمَا أُرْسِلُوا عَلَيْهِمْ حَافِظِينَ","فَالْيَوْمَ الَّذِينَ آمَنُوا مِنَ الْكُفَّارِ يَضْحَكُونَ","عَلَى الْأَرَائِكِ يَنظُرُونَ","هَلْ ثُوِّبَ الْكُفَّارُ مَا كَانُوا يَفْعَلُونَ"]},{"n":84,"name":"الانشقاق","a":["إِذَا السَّمَاءُ انشَقَّتْ","وَأَذِنَتْ لِرَبِّهَا وَحُقَّتْ","وَإِذَا الْأَرْضُ مُدَّتْ","وَأَلْقَتْ مَا فِيهَا وَتَخَلَّتْ","وَأَذِنَتْ لِرَبِّهَا وَحُقَّتْ","يَا أَيُّهَا الْإِنسَانُ إِنَّكَ كَادِحٌ إِلَىٰ رَبِّكَ كَدْحًا فَمُلَاقِيهِ","فَأَمَّا مَنْ أُوتِيَ كِتَابَهُ بِيَمِينِهِ","فَسَوْفَ يُحَاسَبُ حِسَابًا يَسِيرًا","وَيَنقَلِبُ إِلَىٰ أَهْلِهِ مَسْرُورًا","وَأَمَّا مَنْ أُوتِيَ كِتَابَهُ وَرَاءَ ظَهْرِهِ","فَسَوْفَ يَدْعُو ثُبُورًا","وَيَصْلَىٰ سَعِيرًا","إِنَّهُ كَانَ فِي أَهْلِهِ مَسْرُورًا","إِنَّهُ ظَنَّ أَن لَّن يَحُورَ","بَلَىٰ إِنَّ رَبَّهُ كَانَ بِهِ بَصِيرًا","فَلَا أُقْسِمُ بِالشَّفَقِ","وَاللَّيْلِ وَمَا وَسَقَ","وَالْقَمَرِ إِذَا اتَّسَقَ","لَتَرْكَبُنَّ طَبَقًا عَن طَبَقٍ","فَمَا لَهُمْ لَا يُؤْمِنُونَ","وَإِذَا قُرِئَ عَلَيْهِمُ الْقُرْآنُ لَا يَسْجُدُونَ","بَلِ الَّذِينَ كَفَرُوا يُكَذِّبُونَ","وَاللَّهُ أَعْلَمُ بِمَا يُوعُونَ","فَبَشِّرْهُم بِعَذَابٍ أَلِيمٍ","إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ لَهُمْ أَجْرٌ غَيْرُ مَمْنُونٍ"]},{"n":85,"name":"البروج","a":["وَالسَّمَاءِ ذَاتِ الْبُرُوجِ","وَالْيَوْمِ الْمَوْعُودِ","وَشَاهِدٍ وَمَشْهُودٍ","قُتِلَ أَصْحَابُ الْأُخْدُودِ","النَّارِ ذَاتِ الْوَقُودِ","إِذْ هُمْ عَلَيْهَا قُعُودٌ","وَهُمْ عَلَىٰ مَا يَفْعَلُونَ بِالْمُؤْمِنِينَ شُهُودٌ","وَمَا نَقَمُوا مِنْهُمْ إِلَّا أَن يُؤْمِنُوا بِاللَّهِ الْعَزِيزِ الْحَمِيدِ","الَّذِي لَهُ مُلْكُ السَّمَاوَاتِ وَالْأَرْضِ وَاللَّهُ عَلَىٰ كُلِّ شَيْءٍ شَهِيدٌ","إِنَّ الَّذِينَ فَتَنُوا الْمُؤْمِنِينَ وَالْمُؤْمِنَاتِ ثُمَّ لَمْ يَتُوبُوا فَلَهُمْ عَذَابُ جَهَنَّمَ وَلَهُمْ عَذَابُ الْحَرِيقِ","إِنَّ الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ لَهُمْ جَنَّاتٌ تَجْرِي مِن تَحْتِهَا الْأَنْهَارُ ذَٰلِكَ الْفَوْزُ الْكَبِيرُ","إِنَّ بَطْشَ رَبِّكَ لَشَدِيدٌ","إِنَّهُ هُوَ يُبْدِئُ وَيُعِيدُ","وَهُوَ الْغَفُورُ الْوَدُودُ","ذُو الْعَرْشِ الْمَجِيدُ","فَعَّالٌ لِّمَا يُرِيدُ","هَلْ أَتَاكَ حَدِيثُ الْجُنُودِ","فِرْعَوْنَ وَثَمُودَ","بَلِ الَّذِينَ كَفَرُوا فِي تَكْذِيبٍ","وَاللَّهُ مِن وَرَائِهِم مُّحِيطٌ","بَلْ هُوَ قُرْآنٌ مَّجِيدٌ","فِي لَوْحٍ مَّحْفُوظٍ"]},{"n":86,"name":"الطارق","a":["وَالسَّمَاءِ وَالطَّارِقِ","وَمَا أَدْرَاكَ مَا الطَّارِقُ","النَّجْمُ الثَّاقِبُ","إِن كُلُّ نَفْسٍ لَّمَّا عَلَيْهَا حَافِظٌ","فَلْيَنظُرِ الْإِنسَانُ مِمَّ خُلِقَ","خُلِقَ مِن مَّاءٍ دَافِقٍ","يَخْرُجُ مِن بَيْنِ الصُّلْبِ وَالتَّرَائِبِ","إِنَّهُ عَلَىٰ رَجْعِهِ لَقَادِرٌ","يَوْمَ تُبْلَى السَّرَائِرُ","فَمَا لَهُ مِن قُوَّةٍ وَلَا نَاصِرٍ","وَالسَّمَاءِ ذَاتِ الرَّجْعِ","وَالْأَرْضِ ذَاتِ الصَّدْعِ","إِنَّهُ لَقَوْلٌ فَصْلٌ","وَمَا هُوَ بِالْهَزْلِ","إِنَّهُمْ يَكِيدُونَ كَيْدًا","وَأَكِيدُ كَيْدًا","فَمَهِّلِ الْكَافِرِينَ أَمْهِلْهُمْ رُوَيْدًا"]},{"n":87,"name":"الأعلى","a":["سَبِّحِ اسْمَ رَبِّكَ الْأَعْلَى","الَّذِي خَلَقَ فَسَوَّىٰ","وَالَّذِي قَدَّرَ فَهَدَىٰ","وَالَّذِي أَخْرَجَ الْمَرْعَىٰ","فَجَعَلَهُ غُثَاءً أَحْوَىٰ","سَنُقْرِئُكَ فَلَا تَنسَىٰ","إِلَّا مَا شَاءَ اللَّهُ إِنَّهُ يَعْلَمُ الْجَهْرَ وَمَا يَخْفَىٰ","وَنُيَسِّرُكَ لِلْيُسْرَىٰ","فَذَكِّرْ إِن نَّفَعَتِ الذِّكْرَىٰ","سَيَذَّكَّرُ مَن يَخْشَىٰ","وَيَتَجَنَّبُهَا الْأَشْقَى","الَّذِي يَصْلَى النَّارَ الْكُبْرَىٰ","ثُمَّ لَا يَمُوتُ فِيهَا وَلَا يَحْيَىٰ","قَدْ أَفْلَحَ مَن تَزَكَّىٰ","وَذَكَرَ اسْمَ رَبِّهِ فَصَلَّىٰ","بَلْ تُؤْثِرُونَ الْحَيَاةَ الدُّنْيَا","وَالْآخِرَةُ خَيْرٌ وَأَبْقَىٰ","إِنَّ هَٰذَا لَفِي الصُّحُفِ الْأُولَىٰ","صُحُفِ إِبْرَاهِيمَ وَمُوسَىٰ"]},{"n":88,"name":"الغاشية","a":["هَلْ أَتَاكَ حَدِيثُ الْغَاشِيَةِ","وُجُوهٌ يَوْمَئِذٍ خَاشِعَةٌ","عَامِلَةٌ نَّاصِبَةٌ","تَصْلَىٰ نَارًا حَامِيَةً","تُسْقَىٰ مِنْ عَيْنٍ آنِيَةٍ","لَّيْسَ لَهُمْ طَعَامٌ إِلَّا مِن ضَرِيعٍ","لَّا يُسْمِنُ وَلَا يُغْنِي مِن جُوعٍ","وُجُوهٌ يَوْمَئِذٍ نَّاعِمَةٌ","لِّسَعْيِهَا رَاضِيَةٌ","فِي جَنَّةٍ عَالِيَةٍ","لَّا تَسْمَعُ فِيهَا لَاغِيَةً","فِيهَا عَيْنٌ جَارِيَةٌ","فِيهَا سُرُرٌ مَّرْفُوعَةٌ","وَأَكْوَابٌ مَّوْضُوعَةٌ","وَنَمَارِقُ مَصْفُوفَةٌ","وَزَرَابِيُّ مَبْثُوثَةٌ","أَفَلَا يَنظُرُونَ إِلَى الْإِبِلِ كَيْفَ خُلِقَتْ","وَإِلَى السَّمَاءِ كَيْفَ رُفِعَتْ","وَإِلَى الْجِبَالِ كَيْفَ نُصِبَتْ","وَإِلَى الْأَرْضِ كَيْفَ سُطِحَتْ","فَذَكِّرْ إِنَّمَا أَنتَ مُذَكِّرٌ","لَّسْتَ عَلَيْهِم بِمُصَيْطِرٍ","إِلَّا مَن تَوَلَّىٰ وَكَفَرَ","فَيُعَذِّبُهُ اللَّهُ الْعَذَابَ الْأَكْبَرَ","إِنَّ إِلَيْنَا إِيَابَهُمْ","ثُمَّ إِنَّ عَلَيْنَا حِسَابَهُم"]},{"n":89,"name":"الفجر","a":["وَالْفَجْرِ","وَلَيَالٍ عَشْرٍ","وَالشَّفْعِ وَالْوَتْرِ","وَاللَّيْلِ إِذَا يَسْرِ","هَلْ فِي ذَٰلِكَ قَسَمٌ لِّذِي حِجْرٍ","أَلَمْ تَرَ كَيْفَ فَعَلَ رَبُّكَ بِعَادٍ","إِرَمَ ذَاتِ الْعِمَادِ","الَّتِي لَمْ يُخْلَقْ مِثْلُهَا فِي الْبِلَادِ","وَثَمُودَ الَّذِينَ جَابُوا الصَّخْرَ بِالْوَادِ","وَفِرْعَوْنَ ذِي الْأَوْتَادِ","الَّذِينَ طَغَوْا فِي الْبِلَادِ","فَأَكْثَرُوا فِيهَا الْفَسَادَ","فَصَبَّ عَلَيْهِمْ رَبُّكَ سَوْطَ عَذَابٍ","إِنَّ رَبَّكَ لَبِالْمِرْصَادِ","فَأَمَّا الْإِنسَانُ إِذَا مَا ابْتَلَاهُ رَبُّهُ فَأَكْرَمَهُ وَنَعَّمَهُ فَيَقُولُ رَبِّي أَكْرَمَنِ","وَأَمَّا إِذَا مَا ابْتَلَاهُ فَقَدَرَ عَلَيْهِ رِزْقَهُ فَيَقُولُ رَبِّي أَهَانَنِ","كَلَّا بَل لَّا تُكْرِمُونَ الْيَتِيمَ","وَلَا تَحَاضُّونَ عَلَىٰ طَعَامِ الْمِسْكِينِ","وَتَأْكُلُونَ التُّرَاثَ أَكْلًا لَّمًّا","وَتُحِبُّونَ الْمَالَ حُبًّا جَمًّا","كَلَّا إِذَا دُكَّتِ الْأَرْضُ دَكًّا دَكًّا","وَجَاءَ رَبُّكَ وَالْمَلَكُ صَفًّا صَفًّا","وَجِيءَ يَوْمَئِذٍ بِجَهَنَّمَ يَوْمَئِذٍ يَتَذَكَّرُ الْإِنسَانُ وَأَنَّىٰ لَهُ الذِّكْرَىٰ","يَقُولُ يَا لَيْتَنِي قَدَّمْتُ لِحَيَاتِي","فَيَوْمَئِذٍ لَّا يُعَذِّبُ عَذَابَهُ أَحَدٌ","وَلَا يُوثِقُ وَثَاقَهُ أَحَدٌ","يَا أَيَّتُهَا النَّفْسُ الْمُطْمَئِنَّةُ","ارْجِعِي إِلَىٰ رَبِّكِ رَاضِيَةً مَّرْضِيَّةً","فَادْخُلِي فِي عِبَادِي","وَادْخُلِي جَنَّتِي"]},{"n":90,"name":"البلد","a":["لَا أُقْسِمُ بِهَٰذَا الْبَلَدِ","وَأَنتَ حِلٌّ بِهَٰذَا الْبَلَدِ","وَوَالِدٍ وَمَا وَلَدَ","لَقَدْ خَلَقْنَا الْإِنسَانَ فِي كَبَدٍ","أَيَحْسَبُ أَن لَّن يَقْدِرَ عَلَيْهِ أَحَدٌ","يَقُولُ أَهْلَكْتُ مَالًا لُّبَدًا","أَيَحْسَبُ أَن لَّمْ يَرَهُ أَحَدٌ","أَلَمْ نَجْعَل لَّهُ عَيْنَيْنِ","وَلِسَانًا وَشَفَتَيْنِ","وَهَدَيْنَاهُ النَّجْدَيْنِ","فَلَا اقْتَحَمَ الْعَقَبَةَ","وَمَا أَدْرَاكَ مَا الْعَقَبَةُ","فَكُّ رَقَبَةٍ","أَوْ إِطْعَامٌ فِي يَوْمٍ ذِي مَسْغَبَةٍ","يَتِيمًا ذَا مَقْرَبَةٍ","أَوْ مِسْكِينًا ذَا مَتْرَبَةٍ","ثُمَّ كَانَ مِنَ الَّذِينَ آمَنُوا وَتَوَاصَوْا بِالصَّبْرِ وَتَوَاصَوْا بِالْمَرْحَمَةِ","أُولَٰئِكَ أَصْحَابُ الْمَيْمَنَةِ","وَالَّذِينَ كَفَرُوا بِآيَاتِنَا هُمْ أَصْحَابُ الْمَشْأَمَةِ","عَلَيْهِمْ نَارٌ مُّؤْصَدَةٌ"]},{"n":91,"name":"الشمس","a":["وَالشَّمْسِ وَضُحَاهَا","وَالْقَمَرِ إِذَا تَلَاهَا","وَالنَّهَارِ إِذَا جَلَّاهَا","وَاللَّيْلِ إِذَا يَغْشَاهَا","وَالسَّمَاءِ وَمَا بَنَاهَا","وَالْأَرْضِ وَمَا طَحَاهَا","وَنَفْسٍ وَمَا سَوَّاهَا","فَأَلْهَمَهَا فُجُورَهَا وَتَقْوَاهَا","قَدْ أَفْلَحَ مَن زَكَّاهَا","وَقَدْ خَابَ مَن دَسَّاهَا","كَذَّبَتْ ثَمُودُ بِطَغْوَاهَا","إِذِ انبَعَثَ أَشْقَاهَا","فَقَالَ لَهُمْ رَسُولُ اللَّهِ نَاقَةَ اللَّهِ وَسُقْيَاهَا","فَكَذَّبُوهُ فَعَقَرُوهَا فَدَمْدَمَ عَلَيْهِمْ رَبُّهُم بِذَنبِهِمْ فَسَوَّاهَا","وَلَا يَخَافُ عُقْبَاهَا"]},{"n":92,"name":"الليل","a":["وَاللَّيْلِ إِذَا يَغْشَىٰ","وَالنَّهَارِ إِذَا تَجَلَّىٰ","وَمَا خَلَقَ الذَّكَرَ وَالْأُنثَىٰ","إِنَّ سَعْيَكُمْ لَشَتَّىٰ","فَأَمَّا مَنْ أَعْطَىٰ وَاتَّقَىٰ","وَصَدَّقَ بِالْحُسْنَىٰ","فَسَنُيَسِّرُهُ لِلْيُسْرَىٰ","وَأَمَّا مَن بَخِلَ وَاسْتَغْنَىٰ","وَكَذَّبَ بِالْحُسْنَىٰ","فَسَنُيَسِّرُهُ لِلْعُسْرَىٰ","وَمَا يُغْنِي عَنْهُ مَالُهُ إِذَا تَرَدَّىٰ","إِنَّ عَلَيْنَا لَلْهُدَىٰ","وَإِنَّ لَنَا لَلْآخِرَةَ وَالْأُولَىٰ","فَأَنذَرْتُكُمْ نَارًا تَلَظَّىٰ","لَا يَصْلَاهَا إِلَّا الْأَشْقَى","الَّذِي كَذَّبَ وَتَوَلَّىٰ","وَسَيُجَنَّبُهَا الْأَتْقَى","الَّذِي يُؤْتِي مَالَهُ يَتَزَكَّىٰ","وَمَا لِأَحَدٍ عِندَهُ مِن نِّعْمَةٍ تُجْزَىٰ","إِلَّا ابْتِغَاءَ وَجْهِ رَبِّهِ الْأَعْلَىٰ","وَلَسَوْفَ يَرْضَىٰ"]},{"n":93,"name":"الضحى","a":["وَالضُّحَىٰ","وَاللَّيْلِ إِذَا سَجَىٰ","مَا وَدَّعَكَ رَبُّكَ وَمَا قَلَىٰ","وَلَلْآخِرَةُ خَيْرٌ لَّكَ مِنَ الْأُولَىٰ","وَلَسَوْفَ يُعْطِيكَ رَبُّكَ فَتَرْضَىٰ","أَلَمْ يَجِدْكَ يَتِيمًا فَآوَىٰ","وَوَجَدَكَ ضَالًّا فَهَدَىٰ","وَوَجَدَكَ عَائِلًا فَأَغْنَىٰ","فَأَمَّا الْيَتِيمَ فَلَا تَقْهَرْ","وَأَمَّا السَّائِلَ فَلَا تَنْهَرْ","وَأَمَّا بِنِعْمَةِ رَبِّكَ فَحَدِّثْ"]},{"n":94,"name":"الشرح","a":["أَلَمْ نَشْرَحْ لَكَ صَدْرَكَ","وَوَضَعْنَا عَنكَ وِزْرَكَ","الَّذِي أَنقَضَ ظَهْرَكَ","وَرَفَعْنَا لَكَ ذِكْرَكَ","فَإِنَّ مَعَ الْعُسْرِ يُسْرًا","إِنَّ مَعَ الْعُسْرِ يُسْرًا","فَإِذَا فَرَغْتَ فَانصَبْ","وَإِلَىٰ رَبِّكَ فَارْغَب"]},{"n":95,"name":"التين","a":["وَالتِّينِ وَالزَّيْتُونِ","وَطُورِ سِينِينَ","وَهَٰذَا الْبَلَدِ الْأَمِينِ","لَقَدْ خَلَقْنَا الْإِنسَانَ فِي أَحْسَنِ تَقْوِيمٍ","ثُمَّ رَدَدْنَاهُ أَسْفَلَ سَافِلِينَ","إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ فَلَهُمْ أَجْرٌ غَيْرُ مَمْنُونٍ","فَمَا يُكَذِّبُكَ بَعْدُ بِالدِّينِ","أَلَيْسَ اللَّهُ بِأَحْكَمِ الْحَاكِمِينَ"]},{"n":96,"name":"العلق","a":["اقْرَأْ بِاسْمِ رَبِّكَ الَّذِي خَلَقَ","خَلَقَ الْإِنسَانَ مِنْ عَلَقٍ","اقْرَأْ وَرَبُّكَ الْأَكْرَمُ","الَّذِي عَلَّمَ بِالْقَلَمِ","عَلَّمَ الْإِنسَانَ مَا لَمْ يَعْلَمْ","كَلَّا إِنَّ الْإِنسَانَ لَيَطْغَىٰ","أَن رَّآهُ اسْتَغْنَىٰ","إِنَّ إِلَىٰ رَبِّكَ الرُّجْعَىٰ","أَرَأَيْتَ الَّذِي يَنْهَىٰ","عَبْدًا إِذَا صَلَّىٰ","أَرَأَيْتَ إِن كَانَ عَلَى الْهُدَىٰ","أَوْ أَمَرَ بِالتَّقْوَىٰ","أَرَأَيْتَ إِن كَذَّبَ وَتَوَلَّىٰ","أَلَمْ يَعْلَم بِأَنَّ اللَّهَ يَرَىٰ","كَلَّا لَئِن لَّمْ يَنتَهِ لَنَسْفَعًا بِالنَّاصِيَةِ","نَاصِيَةٍ كَاذِبَةٍ خَاطِئَةٍ","فَلْيَدْعُ نَادِيَهُ","سَنَدْعُ الزَّبَانِيَةَ","كَلَّا لَا تُطِعْهُ وَاسْجُدْ وَاقْتَرِب"]},{"n":97,"name":"القدر","a":["إِنَّا أَنزَلْنَاهُ فِي لَيْلَةِ الْقَدْرِ","وَمَا أَدْرَاكَ مَا لَيْلَةُ الْقَدْرِ","لَيْلَةُ الْقَدْرِ خَيْرٌ مِّنْ أَلْفِ شَهْرٍ","تَنَزَّلُ الْمَلَائِكَةُ وَالرُّوحُ فِيهَا بِإِذْنِ رَبِّهِم مِّن كُلِّ أَمْرٍ","سَلَامٌ هِيَ حَتَّىٰ مَطْلَعِ الْفَجْرِ"]},{"n":98,"name":"البينة","a":["لَمْ يَكُنِ الَّذِينَ كَفَرُوا مِنْ أَهْلِ الْكِتَابِ وَالْمُشْرِكِينَ مُنفَكِّينَ حَتَّىٰ تَأْتِيَهُمُ الْبَيِّنَةُ","رَسُولٌ مِّنَ اللَّهِ يَتْلُو صُحُفًا مُّطَهَّرَةً","فِيهَا كُتُبٌ قَيِّمَةٌ","وَمَا تَفَرَّقَ الَّذِينَ أُوتُوا الْكِتَابَ إِلَّا مِن بَعْدِ مَا جَاءَتْهُمُ الْبَيِّنَةُ","وَمَا أُمِرُوا إِلَّا لِيَعْبُدُوا اللَّهَ مُخْلِصِينَ لَهُ الدِّينَ حُنَفَاءَ وَيُقِيمُوا الصَّلَاةَ وَيُؤْتُوا الزَّكَاةَ وَذَٰلِكَ دِينُ الْقَيِّمَةِ","إِنَّ الَّذِينَ كَفَرُوا مِنْ أَهْلِ الْكِتَابِ وَالْمُشْرِكِينَ فِي نَارِ جَهَنَّمَ خَالِدِينَ فِيهَا أُولَٰئِكَ هُمْ شَرُّ الْبَرِيَّةِ","إِنَّ الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ أُولَٰئِكَ هُمْ خَيْرُ الْبَرِيَّةِ","جَزَاؤُهُمْ عِندَ رَبِّهِمْ جَنَّاتُ عَدْنٍ تَجْرِي مِن تَحْتِهَا الْأَنْهَارُ خَالِدِينَ فِيهَا أَبَدًا رَّضِيَ اللَّهُ عَنْهُمْ وَرَضُوا عَنْهُ ذَٰلِكَ لِمَنْ خَشِيَ رَبَّهُ"]},{"n":99,"name":"الزلزلة","a":["إِذَا زُلْزِلَتِ الْأَرْضُ زِلْزَالَهَا","وَأَخْرَجَتِ الْأَرْضُ أَثْقَالَهَا","وَقَالَ الْإِنسَانُ مَا لَهَا","يَوْمَئِذٍ تُحَدِّثُ أَخْبَارَهَا","بِأَنَّ رَبَّكَ أَوْحَىٰ لَهَا","يَوْمَئِذٍ يَصْدُرُ النَّاسُ أَشْتَاتًا لِّيُرَوْا أَعْمَالَهُمْ","فَمَن يَعْمَلْ مِثْقَالَ ذَرَّةٍ خَيْرًا يَرَهُ","وَمَن يَعْمَلْ مِثْقَالَ ذَرَّةٍ شَرًّا يَرَهُ"]},{"n":100,"name":"العاديات","a":["وَالْعَادِيَاتِ ضَبْحًا","فَالْمُورِيَاتِ قَدْحًا","فَالْمُغِيرَاتِ صُبْحًا","فَأَثَرْنَ بِهِ نَقْعًا","فَوَسَطْنَ بِهِ جَمْعًا","إِنَّ الْإِنسَانَ لِرَبِّهِ لَكَنُودٌ","وَإِنَّهُ عَلَىٰ ذَٰلِكَ لَشَهِيدٌ","وَإِنَّهُ لِحُبِّ الْخَيْرِ لَشَدِيدٌ","أَفَلَا يَعْلَمُ إِذَا بُعْثِرَ مَا فِي الْقُبُورِ","وَحُصِّلَ مَا فِي الصُّدُورِ","إِنَّ رَبَّهُم بِهِمْ يَوْمَئِذٍ لَّخَبِيرٌ"]},{"n":101,"name":"القارعة","a":["الْقَارِعَةُ","مَا الْقَارِعَةُ","وَمَا أَدْرَاكَ مَا الْقَارِعَةُ","يَوْمَ يَكُونُ النَّاسُ كَالْفَرَاشِ الْمَبْثُوثِ","وَتَكُونُ الْجِبَالُ كَالْعِهْنِ الْمَنفُوشِ","فَأَمَّا مَن ثَقُلَتْ مَوَازِينُهُ","فَهُوَ فِي عِيشَةٍ رَّاضِيَةٍ","وَأَمَّا مَنْ خَفَّتْ مَوَازِينُهُ","فَأُمُّهُ هَاوِيَةٌ","وَمَا أَدْرَاكَ مَا هِيَهْ","نَارٌ حَامِيَةٌ"]},{"n":102,"name":"التكاثر","a":["أَلْهَاكُمُ التَّكَاثُرُ","حَتَّىٰ زُرْتُمُ الْمَقَابِرَ","كَلَّا سَوْفَ تَعْلَمُونَ","ثُمَّ كَلَّا سَوْفَ تَعْلَمُونَ","كَلَّا لَوْ تَعْلَمُونَ عِلْمَ الْيَقِينِ","لَتَرَوُنَّ الْجَحِيمَ","ثُمَّ لَتَرَوُنَّهَا عَيْنَ الْيَقِينِ","ثُمَّ لَتُسْأَلُنَّ يَوْمَئِذٍ عَنِ النَّعِيمِ"]},{"n":103,"name":"العصر","a":["وَالْعَصْرِ","إِنَّ الْإِنسَانَ لَفِي خُسْرٍ","إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ"]},{"n":104,"name":"الهمزة","a":["وَيْلٌ لِّكُلِّ هُمَزَةٍ لُّمَزَةٍ","الَّذِي جَمَعَ مَالًا وَعَدَّدَهُ","يَحْسَبُ أَنَّ مَالَهُ أَخْلَدَهُ","كَلَّا لَيُنبَذَنَّ فِي الْحُطَمَةِ","وَمَا أَدْرَاكَ مَا الْحُطَمَةُ","نَارُ اللَّهِ الْمُوقَدَةُ","الَّتِي تَطَّلِعُ عَلَى الْأَفْئِدَةِ","إِنَّهَا عَلَيْهِم مُّؤْصَدَةٌ","فِي عَمَدٍ مُّمَدَّدَةٍ"]},{"n":105,"name":"الفيل","a":["أَلَمْ تَرَ كَيْفَ فَعَلَ رَبُّكَ بِأَصْحَابِ الْفِيلِ","أَلَمْ يَجْعَلْ كَيْدَهُمْ فِي تَضْلِيلٍ","وَأَرْسَلَ عَلَيْهِمْ طَيْرًا أَبَابِيلَ","تَرْمِيهِم بِحِجَارَةٍ مِّن سِجِّيلٍ","فَجَعَلَهُمْ كَعَصْفٍ مَّأْكُولٍ"]},{"n":106,"name":"قريش","a":["لِإِيلَافِ قُرَيْشٍ","إِيلَافِهِمْ رِحْلَةَ الشِّتَاءِ وَالصَّيْفِ","فَلْيَعْبُدُوا رَبَّ هَٰذَا الْبَيْتِ","الَّذِي أَطْعَمَهُم مِّن جُوعٍ وَآمَنَهُم مِّنْ خَوْفٍ"]},{"n":107,"name":"الماعون","a":["أَرَأَيْتَ الَّذِي يُكَذِّبُ بِالدِّينِ","فَذَٰلِكَ الَّذِي يَدُعُّ الْيَتِيمَ","وَلَا يَحُضُّ عَلَىٰ طَعَامِ الْمِسْكِينِ","فَوَيْلٌ لِّلْمُصَلِّينَ","الَّذِينَ هُمْ عَن صَلَاتِهِمْ سَاهُونَ","الَّذِينَ هُمْ يُرَاءُونَ","وَيَمْنَعُونَ الْمَاعُونَ"]},{"n":108,"name":"الكوثر","a":["إِنَّا أَعْطَيْنَاكَ الْكَوْثَرَ","فَصَلِّ لِرَبِّكَ وَانْحَرْ","إِنَّ شَانِئَكَ هُوَ الْأَبْتَرُ"]},{"n":109,"name":"الكافرون","a":["قُلْ يَا أَيُّهَا الْكَافِرُونَ","لَا أَعْبُدُ مَا تَعْبُدُونَ","وَلَا أَنتُمْ عَابِدُونَ مَا أَعْبُدُ","وَلَا أَنَا عَابِدٌ مَّا عَبَدتُّمْ","وَلَا أَنتُمْ عَابِدُونَ مَا أَعْبُدُ","لَكُمْ دِينُكُمْ وَلِيَ دِينِ"]},{"n":110,"name":"النصر","a":["إِذَا جَاءَ نَصْرُ اللَّهِ وَالْفَتْحُ","وَرَأَيْتَ النَّاسَ يَدْخُلُونَ فِي دِينِ اللَّهِ أَفْوَاجًا","فَسَبِّحْ بِحَمْدِ رَبِّكَ وَاسْتَغْفِرْهُ إِنَّهُ كَانَ تَوَّابًا"]},{"n":111,"name":"المسد","a":["تَبَّتْ يَدَا أَبِي لَهَبٍ وَتَبَّ","مَا أَغْنَىٰ عَنْهُ مَالُهُ وَمَا كَسَبَ","سَيَصْلَىٰ نَارًا ذَاتَ لَهَبٍ","وَامْرَأَتُهُ حَمَّالَةَ الْحَطَبِ","فِي جِيدِهَا حَبْلٌ مِّن مَّسَدٍ"]},{"n":112,"name":"الإخلاص","a":["قُلْ هُوَ اللَّهُ أَحَدٌ","اللَّهُ الصَّمَدُ","لَمْ يَلِدْ وَلَمْ يُولَدْ","وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ"]},{"n":113,"name":"الفلق","a":["قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ","مِن شَرِّ مَا خَلَقَ","وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ","وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ","وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ"]},{"n":114,"name":"الناس","a":["قُلْ أَعُوذُ بِرَبِّ النَّاسِ","مَلِكِ النَّاسِ","إِلَٰهِ النَّاسِ","مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ","الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ","مِنَ الْجِنَّةِ وَالنَّاسِ"]}];
+const TIM = {"78":{"t":[[0.05,4.99],[4.99,9.17],[9.17,14.71],[14.71,18.5],[18.5,23.51],[23.51,28.55],[28.55,32.56],[32.56,37.23],[37.23,42.54],[42.54,47.19],[47.19,52.43],[52.43,59.27],[59.27,65.13],[65.13,75.12],[75.12,81.1],[81.1,86.01],[86.01,92.73],[92.73,100.99],[100.99,108.83],[108.83,116.08],[116.08,122.88],[122.88,127.37],[127.37,132.99],[132.99,141.11],[141.11,146.68],[146.68,151.76],[151.76,158.7],[158.7,165.23],[165.23,171.98],[171.98,180.19],[180.19,186.63],[186.63,191.92],[191.92,196.44],[196.44,200.87],[200.87,209.58],[209.58,218.94],[218.94,233.2],[233.2,253.0],[253.0,265.81],[265.81,289.01]],"c":8},"79":{"t":[[0.05,4.09],[4.09,8.35],[8.35,12.51],[12.51,16.58],[16.58,20.62],[20.62,24.64],[24.64,28.26],[28.26,33.98],[33.98,38.12],[38.12,46.74],[46.74,52.85],[52.85,59.97],[59.97,66.29],[66.29,71.28],[71.28,76.26],[76.26,83.95],[83.95,90.68],[90.68,96.47],[96.47,102.84],[102.84,108.19],[108.19,111.43],[111.43,115.46],[115.46,118.77],[118.77,123.96],[123.96,131.92],[131.92,140.03],[140.03,150.62],[150.62,156.04],[156.04,162.5],[162.5,168.5],[168.5,175.91],[175.91,180.26],[180.26,186.36],[186.36,195.6],[195.6,202.36],[202.36,207.82],[207.82,212.39],[212.39,217.45],[217.45,223.02],[223.02,233.81],[233.81,239.97],[239.97,247.72],[247.72,253.11],[253.11,258.16],[258.16,266.2],[266.2,277.7]],"c":8},"80":{"t":[[0.05,2.93],[2.93,7.66],[7.66,14.02],[14.02,20.61],[20.61,24.88],[24.88,29.42],[29.42,34.84],[34.84,41.34],[41.34,43.97],[43.97,48.51],[48.51,53.71],[53.71,58.48],[58.48,62.94],[62.94,67.76],[67.76,70.9],[70.9,74.58],[74.58,80.36],[80.36,84.78],[84.78,91.28],[91.28,96.18],[96.18,101.42],[101.42,107.7],[107.7,114.42],[114.42,122.32],[122.32,129.6],[129.6,135.09],[135.09,140.46],[140.46,144.4],[144.4,148.85],[148.85,153.16],[153.16,157.95],[157.95,163.71],[163.71,172.56],[172.56,178.5],[178.5,182.61],[182.61,187.13],[187.13,196.82],[196.82,203.09],[203.09,208.06],[208.06,215.09],[215.09,219.0],[219.0,224.65]],"c":8},"81":{"t":[[0.05,3.23],[3.23,8.17],[8.17,12.45],[12.45,16.73],[16.73,20.86],[20.86,25.16],[25.16,29.95],[29.95,34.78],[34.78,40.0],[40.0,44.09],[44.09,49.47],[49.47,54.14],[54.14,58.81],[58.81,64.3],[64.3,68.99],[68.99,73.27],[73.27,77.44],[77.44,81.86],[81.86,88.45],[88.45,95.04],[95.04,99.84],[99.84,105.63],[105.63,111.64],[111.64,116.77],[116.77,122.99],[122.99,126.44],[126.44,132.68],[132.68,140.61],[140.61,152.21]],"c":8},"82":{"t":[[0.05,5.1],[5.1,10.11],[10.11,14.34],[14.34,18.28],[18.28,25.03],[25.03,34.64],[34.64,41.12],[41.12,49.11],[49.11,55.3],[55.3,61.0],[61.0,65.24],[65.24,70.4],[70.4,76.86],[76.86,82.97],[82.97,87.92],[87.92,93.91],[93.91,99.49],[99.49,106.03],[106.03,117.23]],"c":8},"83":{"t":[[0.05,3.87],[3.87,11.25],[11.25,18.08],[18.08,27.38],[27.38,30.54],[30.54,37.13],[37.13,44.7],[44.7,49.29],[49.29,52.95],[52.95,58.77],[58.77,64.6],[64.6,72.02],[72.02,81.57],[81.57,90.64],[90.64,99.31],[99.31,105.11],[105.11,114.31],[114.31,122.17],[122.17,127.35],[127.35,131.04],[131.04,135.37],[135.37,140.71],[140.71,146.29],[146.29,153.03],[153.03,161.3],[161.3,169.13],[169.13,174.29],[174.29,179.96],[179.96,189.72],[189.72,195.33],[195.33,203.45],[203.45,214.45],[214.45,220.34],[220.34,228.3],[228.3,233.94],[233.94,240.55]],"c":8},"84":{"t":[[0.05,4.33],[4.33,8.09],[8.09,10.94],[10.94,14.88],[14.88,18.68],[18.68,28.81],[28.81,34.71],[34.71,40.21],[40.21,46.44],[46.44,54.03],[54.03,57.68],[57.68,60.69],[60.69,66.33],[66.33,71.68],[71.68,77.78],[77.78,81.05],[81.05,84.12],[84.12,87.12],[87.12,92.38],[92.38,96.24],[96.24,102.83],[102.83,107.54],[107.54,112.28],[112.28,117.77],[117.77,126.93]],"c":8},"85":{"t":[[0.05,4.47],[4.47,7.78],[7.78,11.91],[11.91,15.89],[15.89,20.11],[20.11,23.91],[23.91,30.51],[30.51,40.11],[40.11,51.89],[51.89,67.76],[67.76,85.9],[85.9,91.16],[91.16,96.46],[96.46,100.62],[100.62,104.05],[104.05,108.06],[108.06,112.55],[112.55,115.67],[115.67,120.63],[120.63,127.26],[127.26,132.01],[132.01,135.62]],"c":8},"86":{"t":[[0.05,4.3],[4.3,8.51],[8.51,12.25],[12.25,19.52],[19.52,25.76],[25.76,31.5],[31.5,37.87],[37.87,43.22],[43.22,47.74],[47.74,54.41],[54.41,58.98],[58.98,62.39],[62.39,66.95],[66.95,70.3],[70.3,75.55],[75.55,78.62],[78.62,84.4]],"c":8},"87":{"t":[[0.05,4.18],[4.18,8.22],[8.22,12.07],[12.07,16.13],[16.13,21.41],[21.41,26.1],[26.1,37.34],[37.34,41.43],[41.43,46.71],[46.71,51.38],[51.38,56.01],[56.01,61.07],[61.07,66.99],[66.99,71.65],[71.65,76.83],[76.83,82.49],[82.49,87.43],[87.43,92.87],[92.87,96.91]],"c":8},"88":{"t":[[0.05,4.27],[4.27,9.39],[9.39,13.4],[13.4,17.39],[17.39,22.24],[22.24,29.47],[29.47,35.75],[35.75,41.3],[41.3,44.77],[44.77,48.92],[48.92,53.87],[53.87,58.6],[58.6,63.41],[63.41,68.12],[68.12,71.99],[71.99,76.31],[76.31,83.61],[83.61,88.83],[88.83,93.31],[93.31,97.62],[97.62,103.98],[103.98,108.68],[108.68,113.57],[113.57,119.33],[119.33,124.18],[124.18,129.59]],"c":8},"89":{"t":[[0.05,1.5],[1.5,4.37],[4.37,7.49],[7.49,10.95],[10.95,16.39],[16.39,22.22],[22.22,25.81],[25.81,31.66],[31.66,37.57],[37.57,41.54],[41.54,45.84],[45.84,50.08],[50.08,55.79],[55.79,60.83],[60.83,74.92],[74.92,86.5],[86.5,92.12],[92.12,101.29],[101.29,107.89],[107.89,114.75],[114.75,122.12],[122.12,129.96],[129.96,146.58],[146.58,153.16],[153.16,159.68],[159.68,164.62],[164.62,171.2],[171.2,178.42],[178.42,182.49],[182.49,186.12]],"c":8},"90":{"t":[[0.05,3.89],[3.89,9.69],[9.69,13.75],[13.75,19.53],[19.53,25.53],[25.53,30.61],[30.61,35.27],[35.27,39.88],[39.88,44.31],[44.31,49.1],[49.1,52.66],[52.66,57.27],[57.27,59.91],[59.91,66.87],[66.87,71.23],[71.23,76.58],[76.58,88.45],[88.45,93.91],[93.91,102.57],[102.57,106.71]],"c":8},"91":{"t":[[0.05,3.32],[3.32,7.69],[7.69,13.04],[13.04,17.87],[17.87,23.18],[23.18,27.59],[27.59,32.49],[32.49,38.71],[38.71,43.93],[43.93,49.39],[49.39,54.46],[54.46,59.02],[59.02,67.76],[67.76,80.76],[80.76,85.07]],"c":8},"92":{"t":[[0.05,3.5],[3.5,8.5],[8.5,13.98],[13.98,18.84],[18.84,24.36],[24.36,28.13],[28.13,32.88],[32.88,38.74],[38.74,42.54],[42.54,47.26],[47.26,54.38],[54.38,58.97],[58.97,65.35],[65.35,72.09],[72.09,77.51],[77.51,82.63],[82.63,87.78],[87.78,93.96],[93.96,102.57],[102.57,109.28],[109.28,112.15]],"c":8},"93":{"t":[[0.05,1.93],[1.93,5.84],[5.84,11.19],[11.19,17.63],[17.63,24.03],[24.03,30.27],[30.27,37.23],[37.23,43.61],[43.61,48.93],[48.93,55.93],[55.93,61.2]],"c":8},"94":{"t":[[0.05,3.42],[3.42,8.24],[8.24,13.12],[13.12,17.17],[17.17,21.96],[21.96,26.42],[26.42,30.46],[30.46,33.66]],"c":8},"95":{"t":[[0.05,3.5],[3.5,6.69],[6.69,10.73],[10.73,18.52],[18.52,24.98],[24.98,35.98],[35.98,40.97],[40.97,46.09]],"c":8},"96":{"t":[[0.05,4.96],[4.96,9.83],[9.83,14.0],[14.0,18.01],[18.01,23.8],[23.8,30.52],[30.52,34.29],[34.29,39.38],[39.38,43.49],[43.49,47.34],[47.34,52.65],[52.65,56.25],[56.25,61.79],[61.79,68.0],[68.0,76.66],[76.66,82.25],[82.25,85.22],[85.22,88.53],[88.53,93.54]],"c":8},"97":{"t":[[0.05,6.7],[6.7,12.16],[12.16,18.08],[18.08,29.42],[29.42,34.46]],"c":5},"98":{"t":[[0.05,14.17],[14.17,21.8],[21.8,26.38],[26.38,39.32],[39.32,59.45],[59.45,79.27],[79.27,91.03],[91.03,116.56]],"c":8},"99":{"t":[[0.05,4.99],[4.99,10.06],[10.06,15.35],[15.35,21.13],[21.13,26.21],[26.21,35.48],[35.48,42.64],[42.64,49.94]],"c":8},"100":{"t":[[0.05,3.43],[3.43,7.45],[7.45,11.47],[11.47,15.49],[15.49,19.55],[19.55,26.48],[26.48,32.08],[32.08,37.9],[37.9,44.71],[44.71,48.8],[48.8,55.42]],"c":8},"101":{"t":[[0.05,2.22],[2.22,5.03],[5.03,9.94],[9.94,17.51],[17.51,24.42],[24.42,30.54],[30.54,35.25],[35.25,40.78],[40.78,44.53],[44.53,48.93],[48.93,51.73]],"c":8},"102":{"t":[[0.05,3.31],[3.31,7.51],[7.51,11.62],[11.62,16.75],[16.75,22.62],[22.62,26.61],[26.61,32.91],[32.91,39.96]],"c":8},"103":{"t":[[0.05,1.4],[1.4,6.8],[6.8,18.28]],"c":3},"104":{"t":[[0.05,4.5],[4.5,9.82],[9.82,15.17],[15.17,21.13],[21.13,25.31],[25.31,29.34],[29.34,34.52],[34.52,39.78],[39.78,43.32]],"c":8},"105":{"t":[[0.05,6.82],[6.82,12.47],[12.47,18.61],[18.61,26.39],[26.39,31.45]],"c":5},"106":{"t":[[0.05,3.1],[3.1,10.26],[10.26,15.49],[15.49,24.99]],"c":4},"107":{"t":[[0.05,5.2],[5.2,10.59],[10.59,16.96],[16.96,21.08],[21.08,27.76],[27.76,33.0],[33.0,36.78]],"c":7},"108":{"t":[[0.05,4.88],[4.88,8.75],[8.75,12.91]],"c":3},"109":{"t":[[0.05,4.22],[4.22,8.85],[8.85,14.82],[14.82,20.06],[20.06,26.21],[26.21,30.26]],"c":6},"110":{"t":[[0.05,5.68],[5.68,14.73],[14.73,24.68]],"c":3},"111":{"t":[[0.05,5.08],[5.08,11.25],[11.25,16.62],[16.62,22.02],[22.02,27.06]],"c":5},"112":{"t":[[0.05,3.26],[3.26,6.56],[6.56,10.45],[10.45,15.19]],"c":4},"113":{"t":[[0.05,4.02],[4.02,8.4],[8.4,14.61],[14.61,21.63],[21.63,27.06]],"c":5},"114":{"t":[[0.05,4.93],[4.93,8.42],[8.42,12.23],[12.23,19.26],[19.26,26.33],[26.33,31.38]],"c":6}};
+/* ---------- helpers ---------- */
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const h=(html)=>{const t=document.createElement('template');t.innerHTML=html.trim();return t.content.firstElementChild};
+const AR=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const S=n=>QURAN.find(s=>s.n===+n);
+const ORDER=[...QURAN].sort((a,b)=>b.n-a.n); // الناس first
+const norm=s=>s.replace(/[ً-ٰٟۖ-ۭـ]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/ؤ/g,'و').replace(/ئ/g,'ي').replace(/[^ء-ي ]/g,'').trim();
+const lev=(a,b)=>{const m=a.length,n=b.length;if(!m||!n)return Math.max(m,n);let p=[...Array(n+1).keys()];for(let i=1;i<=m;i++){let c=[i];for(let j=1;j<=n;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c}return p[n]};
+const near=(a,b)=>{a=a.replace(/^ال/,'');b=b.replace(/^ال/,'');if(!a||!b)return false;if(a===b)return true;return lev(a,b)<=Math.max(1,Math.floor(Math.max(a.length,b.length)*.34))};
+
+/* ---------- state ---------- */
+const LEVELS=[[0,'بذرة'],[60,'برعم'],[180,'شتلة'],[400,'شجرة'],[800,'نخلة'],[1500,'بستان']];
+const blank=()=>({stars:0,streak:0,last:'',s:{},games:0,perfect:0});
+let ST=blank(), DBREF=null;
+const today=()=>new Date().toISOString().slice(0,10);
+function loadLocal(){try{const v=JSON.parse(localStorage.getItem('hadiqa')||'null');if(v)ST=Object.assign(blank(),v)}catch(e){}}
+let saveT;function save(){try{localStorage.setItem('hadiqa',JSON.stringify(ST))}catch(e){}clearTimeout(saveT);saveT=setTimeout(()=>{if(DBREF)DBREF.set(JSON.parse(JSON.stringify(ST))).catch(()=>{})},800)}
+async function initDb(){try{if(!window.claude?.use)return;const [db,user]=await Promise.all([claude.use('db'),claude.use('user')]);if(!db||!user)return;const id=await user.id();if(!id)return;DBREF=db.doc('data/users/'+id+'/progress');const snap=await DBREF.get();if(snap.exists){const d=snap.data();if((d.stars||0)>=ST.stars){ST=Object.assign(blank(),d);try{localStorage.setItem('hadiqa',JSON.stringify(ST))}catch(e){}refreshTop();route(cur,true)}}else save()}catch(e){}}
+const ss=n=>ST.s[n]||(ST.s[n]={w:0,r:0,best:0,g:0,gc:0});
+function stage(n){const x=ST.s[n];if(!x)return 0;return (x.w?1:0)+((x.r||x.m)?1:0)+(x.g?1:0)}
+const STEPS={w:['استمع','listen'],r:['سمّع','recite'],g:['العب','games']};
+function growStage(n,key,cb){const x=ss(n);if(x[key]||(key==='r'&&x.m)){cb&&cb();return}const b=stage(n);x[key]=1;const a=stage(n);addStars(10,'نمت نبتتك');const s=S(n);
+ const msg=['','نبتت بذرة سورة '+s.name+'!','كبرت نبتة سورة '+s.name+'!','صارت سورة '+s.name+' شجرة مثمرة!'][a];
+ const left=Object.keys(STEPS).filter(k=>!x[k]&&!(k==='r'&&x.m));
+ modal(`<h3>${msg}</h3><div class="growbox"><div class="g-old">${plantSVG(b,120)}</div><div class="g-new">${plantSVG(a,150)}</div></div><div class="row" style="justify-content:center">${Object.keys(STEPS).map(k=>`<span class="pill ${(x[k]||(k==='r'&&x.m))?'g':''}">${STEPS[k][0]} ${(x[k]||(k==='r'&&x.m))?'✓':'○'}</span>`).join('')}</div><p class="note">${left.length?'لتكبر أكثر: '+left.map(k=>STEPS[k][0]).join(' ثم ')+'.':'ما شاء الله! أتممتَ كل المراحل.'}</p>`,'رائع!',cb);
+ confetti();speak(msg)}
+function level(){let i=0;LEVELS.forEach((l,k)=>{if(ST.stars>=l[0])i=k});return i}
+function addStars(k,why){const before=level();ST.stars+=k;const d=today();if(ST.last!==d){const y=new Date(Date.now()-864e5).toISOString().slice(0,10);ST.streak=ST.last===y?ST.streak+1:1;ST.last=d}save();refreshTop();toast(`+${AR(k)} نجمة${why?' · '+why:''}`);if(level()>before){setTimeout(()=>modal(`<h3>مستوى جديد!</h3>${plantSVG(Math.min(3,level()),120)}<p style="font-weight:700;font-size:20px;margin:0">صرتَ «${LEVELS[level()][1]}»</p><p class="note">واصل يا بطل، حديقتك تكبر كل يوم.</p>`,'رائع!'),900);confetti()}}
+function refreshTop(){$('#starsN').textContent=AR(ST.stars);$('#streakN').textContent=AR(ST.streak);$('#lvlChip').textContent=LEVELS[level()][1]}
+
+/* ---------- art ---------- */
+function plantSVG(st,size=70){
+  const pot=`<path d="M22 58 h36 l-4 18 h-28z" fill="#D9895B"/><rect x="19" y="54" width="42" height="7" rx="3" fill="#C2703F"/>`;
+  const soil=`<ellipse cx="40" cy="55" rx="18" ry="3" fill="#7A4A26"/>`;
+  const p=[
+    `<circle cx="40" cy="51" r="3" fill="#9C6B3E"/>`,
+    `<path d="M40 54v-12" stroke="#3E8E41" stroke-width="3" stroke-linecap="round"/><path d="M40 44c-7 0-10-4-10-9 7 0 10 3 10 9zM40 42c0-6 3-9 10-9 0 6-3 9-10 9z" fill="#5CC060"/>`,
+    `<path d="M40 54v-26" stroke="#3E8E41" stroke-width="3.4" stroke-linecap="round"/><path d="M40 40c-10 0-14-6-14-12 10 0 14 5 14 12zM40 34c0-8 4-12 14-12 0 8-4 12-14 12zM40 30c-6-2-8-7-7-12 6 2 8 6 7 12z" fill="#4CAF50"/>`,
+    `<rect x="37" y="34" width="6" height="21" rx="2" fill="#8A5A36"/><circle cx="40" cy="26" r="17" fill="#43A047"/><circle cx="28" cy="32" r="10" fill="#4CAF50"/><circle cx="52" cy="32" r="10" fill="#4CAF50"/><circle cx="33" cy="22" r="3.4" fill="#FF6B5E"/><circle cx="47" cy="27" r="3.4" fill="#FFC23D"/><circle cx="41" cy="16" r="3.4" fill="#FF6B5E"/><circle cx="29" cy="33" r="3" fill="#FFC23D"/><circle cx="51" cy="35" r="3" fill="#FF6B5E"/>`];
+  return `<svg viewBox="0 0 80 80" width="${size}" height="${size}" aria-hidden="true">${pot}${soil}${p[st]}</svg>`;
+}
+function nourSVG(){return `<svg class="nour" viewBox="0 0 120 150" aria-hidden="true"><defs><radialGradient id="ng"><stop offset="0" stop-color="#FFF3B0"/><stop offset="1" stop-color="#FFF3B0" stop-opacity="0"/></radialGradient></defs><g class="body">
+<circle cx="60" cy="82" r="56" fill="url(#ng)"/>
+<path d="M60 6 q10 10 0 18 q-10 -8 0 -18z" fill="#FF8A3D"/><path d="M60 12 q5 6 0 10 q-5 -4 0 -10z" fill="#FFD25E"/>
+<path d="M38 26 h44 l-6 10 h-32z" fill="#E59E00"/><rect x="34" y="34" width="52" height="8" rx="4" fill="#C98400"/>
+<path d="M36 42 h48 q12 32 0 70 h-48 q-12 -38 0 -70z" fill="#FFC23D"/><path d="M44 42 q-6 35 0 70 M76 42 q6 35 0 70" stroke="#E59E00" stroke-width="3" fill="none"/>
+<rect x="32" y="110" width="56" height="10" rx="5" fill="#C98400"/><path d="M44 120 h32 l-4 10 h-24z" fill="#E59E00"/>
+<ellipse cx="44" cy="92" rx="6" ry="4" fill="#FF9E80" opacity=".7"/><ellipse cx="76" cy="92" rx="6" ry="4" fill="#FF9E80" opacity=".7"/>
+<g class="eyes"><ellipse cx="49" cy="78" rx="5.5" ry="7" fill="#22304A"/><ellipse cx="71" cy="78" rx="5.5" ry="7" fill="#22304A"/><circle cx="51" cy="75" r="2" fill="#fff"/><circle cx="73" cy="75" r="2" fill="#fff"/></g>
+<path d="M51 94 q9 8 18 0" stroke="#22304A" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+<path d="M28 70 q-12 6 -10 18" stroke="#E59E00" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M92 70 q12 -4 14 -16" stroke="#E59E00" stroke-width="5" fill="none" stroke-linecap="round"/>
+</g></svg>`}
+const ICON={
+ play:`<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="22" fill="#fff" fill-opacity=".25"/><path d="M19 14l15 10-15 10z" fill="#fff"/></svg>`,
+ mic:`<svg viewBox="0 0 48 48"><rect x="17" y="6" width="14" height="24" rx="7" fill="#fff"/><path d="M11 22a13 13 0 0 0 26 0M24 35v7" stroke="#fff" stroke-width="3.6" fill="none" stroke-linecap="round"/></svg>`,
+ game:`<svg viewBox="0 0 48 48"><rect x="4" y="14" width="40" height="22" rx="11" fill="#fff" fill-opacity=".9"/><path d="M15 20v10M10 25h10" stroke="#7A5CFA" stroke-width="3.4" stroke-linecap="round"/><circle cx="31" cy="22" r="2.6" fill="#FF6B5E"/><circle cx="36" cy="28" r="2.6" fill="#FFC23D"/></svg>`,
+ star:`<svg viewBox="0 0 24 24"><path d="M12 2l3 6.5 7 .8-5.2 4.8 1.5 7L12 17.6 5.7 21.1l1.5-7L2 9.3l7-.8z" fill="#FFC23D"/></svg>`,
+};
+const NOUR_LINES=['أهلًا يا بطل! أنا «نور»، رفيقك في حفظ جزء عمّ.','كل سورة تحفظها تصير شجرة في حديقتك!','آيةٌ اليوم خيرٌ من لا شيء، يلّا نبدأ؟','«خيرُكم من تعلّم القرآن وعلّمه» ﷺ','جرّب لعبة «أكمل الآية» واجمع النجوم!'];
+const CHEER=['أحسنت!','ما شاء الله!','رائع جدًّا!','بطل!','ممتاز!','الله يبارك فيك!'];
+const ENC=['قريب جدًّا، حاول مرة ثانية','لا بأس، نتعلّم مع بعض','ركّز وجرب مرة أخرى'];
+function nour(msg,small='',mood=''){return `<div class="hero">${nourSVG().replace('class="nour"',`class="nour ${mood}"`)}<div class="bubble" id="bub">${msg}${small?`<small>${small}</small>`:''}</div></div>`}
+function nourSay(msg,mood){const b=$('#bub');if(b)b.innerHTML=msg;const n=$('.nour');if(n&&mood){n.classList.remove('happy','sad');void n.offsetWidth;n.classList.add(mood)}}
+
+/* ---------- fx ---------- */
+let AC;function beep(ok){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const t=AC.currentTime;(ok?[660,880,1320]:[300,220]).forEach((f,i)=>{const o=AC.createOscillator(),g=AC.createGain();o.type=ok?'triangle':'sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,t+i*.09);g.gain.exponentialRampToValueAtTime(.18,t+i*.09+.02);g.gain.exponentialRampToValueAtTime(.0001,t+i*.09+.22);o.connect(g).connect(AC.destination);o.start(t+i*.09);o.stop(t+i*.09+.25)})}catch(e){}}
+function confetti(){const c=$('#fx'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;const cols=['#FFC23D','#17B897','#FF6B5E','#7A5CFA','#4FB3FF'];let P=Array.from({length:120},()=>({x:innerWidth/2,y:innerHeight/3,vx:(Math.random()-.5)*14,vy:Math.random()*-12-4,s:6+Math.random()*6,c:rnd(cols),r:Math.random()*6}));let f=0;(function tick(){x.clearRect(0,0,c.width,c.height);P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.35;p.r+=.2;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;x.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);x.restore()});if(++f<110)requestAnimationFrame(tick);else x.clearRect(0,0,c.width,c.height)})()}
+let toastT;function toast(t){$('.toast')?.remove();const el=h(`<div class="toast" role="status">${ICON.star}<span></span></div>`);el.querySelector('span').textContent=t;document.body.append(el);clearTimeout(toastT);toastT=setTimeout(()=>el.remove(),2200)}
+function modal(inner,btn='حسنًا',onClose){const m=h(`<div class="modal"><div class="card">${inner}<button class="btn">${btn}</button></div></div>`);m.querySelector('.btn').onclick=()=>{m.remove();onClose&&onClose()};$('#layer').append(m)}
+
+/* ---------- router ---------- */
+let cur='home',curArg=null;
+function route(v,keep){if(!keep)curArg=null;cur=v;$$('.tab').forEach(t=>t.setAttribute('aria-current',t.dataset.go===v));const app=$('#app');app.innerHTML='';stopRec();try{stopAudio()}catch(e){}({home,listen,recite,games}[v])(app);if(!keep)scrollTo({top:0,behavior:'smooth'})}
+$$('.tab').forEach(t=>t.onclick=()=>route(t.dataset.go));
+function go(v,arg){curArg=arg;route(v,true);scrollTo({top:0})}
+
+/* ---------- HOME ---------- */
+function home(app){
+  const lv=level(),next=LEVELS[lv+1],prev=LEVELS[lv][0];const pct=next?Math.round((ST.stars-prev)/(next[0]-prev)*100):100;
+  const counts=[0,0,0,0];QURAN.forEach(s=>counts[stage(s.n)]++);
+  const v=h(`<div class="view">
+   ${nour(rnd(NOUR_LINES),'اضغط على أي نبتة لتبدأ مع سورتها.')}
+   <div class="card lvlbar">${plantSVG(Math.min(3,lv),46)}<div style="flex:1;min-width:0"><div class="row" style="justify-content:space-between"><b>مستواك: ${LEVELS[lv][1]}</b><b style="color:var(--muted)">${next?`${AR(ST.stars)} / ${AR(next[0])}`:'أعلى مستوى!'}</b></div><div class="meter" style="margin-top:8px"><i style="width:${pct}%"></i></div></div></div>
+   <div class="feat">
+     <button class="fcard" style="background:var(--sky)" data-go="listen">${ICON.play}<div><b>استمع وشاهد</b><small>فيديو لكل سورة مع المعاني</small></div></button>
+     <button class="fcard" style="background:var(--coral)" data-go="recite">${ICON.mic}<div><b>سمّع</b><small>الآيات مخفية، تظهر وأنت تقرأ</small></div></button>
+     <button class="fcard" style="background:var(--grape)" data-go="games">${ICON.game}<div><b>العب</b><small>ألعاب تثبّت الحفظ</small></div></button>
+   </div>
+   <div class="stack"><div><h2>حديقتي</h2><div class="sub">${AR(counts[3])} شجرة مثمرة · ${AR(counts[2])} نبتة · ${AR(counts[1])} برعم من ٣٧ سورة</div></div>
+   <div class="legend"><span>${plantSVG(1,22)} مرحلة واحدة</span><span>${plantSVG(2,22)} مرحلتان</span><span>${plantSVG(3,22)} استماع + تسميع + لعب</span></div>
+   <div class="garden">${ORDER.map(s=>`<button class="plot s${stage(s.n)}" data-n="${s.n}">${plantSVG(stage(s.n))}<span class="nm">${s.name}</span><span class="st">${AR(s.a.length)} آيات</span></button>`).join('')}</div></div>
+   <div class="stack"><h2>أوسمتي</h2><div class="badges">${badges()}</div></div>
+  </div>`);
+  v.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>route(b.dataset.go));
+  v.querySelectorAll('.plot').forEach(b=>b.onclick=()=>surahSheet(+b.dataset.n));
+  app.append(v);
+}
+function badges(){const m=QURAN.filter(q=>stage(q.n)===3).length,w=Object.values(ST.s).filter(x=>x.w).length;
+ const B=[['أول خطوة',ST.stars>0,'#FFC23D'],['مستمع نشيط',w>=5,'#4FB3FF'],['حافظ ٣ سور',m>=3,'#17B897'],['حافظ ١٠ سور',m>=10,'#17B897'],['بطل الألعاب',ST.games>=10,'#7A5CFA'],['جولة كاملة',ST.perfect>=1,'#FF6B5E'],['٧ أيام متتالية',ST.streak>=7,'#FF8A3D'],['حافظ جزء عمّ',m>=37,'#E59E00']];
+ return B.map(([t,on,c])=>`<div class="badge ${on?'':'off'}"><svg viewBox="0 0 56 56"><path d="M18 34 l-6 18 l8-4 l4 8 l4-14z M38 34 l6 18 l-8-4 l-4 8 l-4-14z" fill="${c}" opacity=".7"/><circle cx="28" cy="24" r="18" fill="${c}"/><circle cx="28" cy="24" r="12" fill="#fff" fill-opacity=".35"/><path d="M28 15l2.6 5.6 6 .7-4.5 4.1 1.3 6L28 28.4l-5.4 3 1.3-6-4.5-4.1 6-.7z" fill="#fff"/></svg>${t}</div>`).join('')}
+function surahSheet(n){const s=S(n),x=ST.s[n]||{};modal(`<h3 style="font-family:var(--quran);font-weight:400;font-size:34px">سورة ${s.name}</h3>${plantSVG(stage(n),110)}<div class="row" style="justify-content:center"><span class="pill ${x.w?'g':''}">استماع ${x.w?'✓':'○'}</span><span class="pill ${(x.r||x.m)?'g':''}">تسميع ${(x.r||x.m)?'✓':'○'}</span><span class="pill ${x.g?'g':''}">لعب ${x.g?'✓':'○'}</span></div><div class="row" style="justify-content:center"><button class="btn sky sm" id="m1">استمع</button><button class="btn coral sm" id="m2">سمّع</button><button class="btn grape sm" id="m3">العب</button></div>`,'إغلاق');
+ const m=$('#layer .modal:last-child');$('#m1',m).onclick=()=>{m.remove();go('listen',n)};$('#m2',m).onclick=()=>{m.remove();go('recite',n)};$('#m3',m).onclick=()=>{m.remove();GSEL=String(n);GTAB='listen';go('games')}}
+
+/* ---------- surah picker ---------- */
+function picker(sel,onPick){const el=h(`<div class="picker" role="group" aria-label="اختر السورة">${ORDER.map(s=>`<button class="pk" data-n="${s.n}" aria-pressed="${s.n===sel}">${s.name}</button>`).join('')}</div>`);el.querySelectorAll('.pk').forEach(b=>b.onclick=()=>onPick(+b.dataset.n));setTimeout(()=>{const a=el.querySelector('[aria-pressed="true"]');a&&el.scrollTo({left:a.offsetLeft-el.clientWidth/2+a.clientWidth/2})},30);return el}
+
+/* ---------- LISTEN ---------- */
+const VURL={};function vidURL(n){if(typeof VIDS==='undefined'||!VIDS[n])return 'v/'+n+'.mp4';if(!VURL[n]){const b=atob(VIDS[n]),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);VURL[n]=URL.createObjectURL(new Blob([u],{type:'video/mp4'}))}return VURL[n]}
+
+function listen(app){
+  const n=curArg||114,s=S(n),x=ss(n);
+  const v=h(`<div class="view">${nour('اضغط «استمع» وشاهد السورة حتى النهاية، ثم اضغط «أتممتُ الاستماع» لتنمو نبتتك.')}</div>`);
+  v.append(picker(n,k=>go('listen',k)));
+  const p=h(`<div class="player"><div class="vbox"><video class="vid" playsinline preload="metadata" src="${vidURL(n)}"></video><div class="vprog"><i id="vp"></i></div></div>
+   <div class="card info lst"><h3>سورة ${s.name}</h3><div id="lplant">${plantSVG(stage(n),150)}</div>
+   <button class="btn sky big" id="lplay">${ICON.play}<span>استمع</span></button>
+   <button class="btn big" id="ldone" disabled>أتممتُ الاستماع</button>
+   <div class="note" id="lhint">${x.w?'أتممتَ الاستماع لهذه السورة من قبل، وتقدر تسمعها مرة ثانية.':'شاهد السورة حتى النهاية ليُفتح زر الإتمام.'}</div></div></div>`);
+  const vid=p.querySelector('video'),pl=p.querySelector('#lplay'),dn=p.querySelector('#ldone');let maxT=0;
+  const setLbl=()=>{pl.querySelector('span').textContent=vid.paused?(vid.currentTime>0&&!vid.ended?'أكمل الاستماع':'استمع'):'إيقاف مؤقت'};
+  pl.onclick=()=>{if(vid.paused){if(vid.ended)vid.currentTime=0;vid.play().catch(()=>{})}else vid.pause()};vid.onclick=pl.onclick;
+  vid.addEventListener('play',setLbl);vid.addEventListener('pause',setLbl);
+  vid.addEventListener('timeupdate',()=>{if(!vid.duration)return;maxT=Math.max(maxT,vid.currentTime);p.querySelector('#vp').style.width=(vid.currentTime/vid.duration*100)+'%';if(maxT/vid.duration>.9&&dn.disabled){dn.disabled=false;dn.classList.add('ready');$('#lhint').textContent='أحسنت! اضغط «أتممتُ الاستماع».';nourSay('أحسنت! اضغط «أتممتُ الاستماع» لتنمو نبتتك.','happy')}});
+  vid.addEventListener('ended',setLbl);
+  dn.onclick=()=>{dn.disabled=true;dn.classList.remove('ready');if(!x.w){growStage(n,'w',()=>{$('#lplant').innerHTML=plantSVG(stage(n),150)})}else{addStars(2,'استماع مرة أخرى');confetti()}$('#lhint').textContent='تم! جرّب الآن التسميع أو الألعاب.'};
+  vid.addEventListener('error',()=>{vid.replaceWith(h(`<div class="card" style="padding:18px;text-align:center">لم يتحمّل الفيديو. تأكّد من الاتصال وحاول مرة أخرى.</div>`))});
+  v.append(p);app.append(v);
+}
+
+/* ---------- RECITE ---------- */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+const EMBED=(()=>{try{return window.self!==window.top}catch(e){return true}})();
+let REC=null,recOn=false,R=null,MEDIA=null,CHUNKS=[],STREAM=null,RMODE='voice';
+function recite(app){
+  const n=curArg||114,s=S(n);
+  R={n,ay:0,wi:0,res:[],miss:0,hints:0,started:false};
+  const v=h(`<div class="view">${nour(RMODE==='voice'?'اضغط الميكروفون واقرأ من حفظك، وأنا أُظهر الكلمات وأنت تقرأ.':'اقرأ بصوتك، وعند كل كلمة اختر الكلمة التالية من الأزرار.','ابدأ بالبسملة ثم السورة.')}</div>`);
+  v.append(picker(n,k=>go('recite',k)));
+  const m=h(`<div class="card"><div class="mushaf" id="mus">${s.a.map((a,i)=>`<span class="ay" data-i="${i}">${a.split(' ').map((w,j)=>`<span class="w hid" data-i="${i}" data-j="${j}">${w}</span>`).join(' ')} <span class="num">﴿${AR(i+1)}﴾</span></span>`).join(' ')}</div><div class="prog"><i id="pg"></i></div></div>`);
+  v.append(m);
+  const ctl=h(`<div class="recbar">
+    <div id="choiceBox" class="choices" hidden></div>
+    <button class="mic" id="mic" aria-label="ابدأ" hidden>${ICON.mic}</button>
+    <div class="status" id="rs"></div>
+    <div class="judge" id="jd" hidden><button class="btn sun sm" id="hint">تلميح: الكلمة التالية</button><button class="btn sky sm" id="show">أظهر الآية</button></div>
+    <div class="judge" id="rate" hidden><button class="btn sm" id="ok">قرأتُها صح</button><button class="btn coral sm" id="no">أخطأتُ فيها</button></div>
+    <div id="playback"></div>
+    <div class="score" id="sc"></div>
+    <div class="row" style="justify-content:center"><button class="btn ghost sm" id="reset">ابدأ من جديد</button><button class="btn ghost sm" id="peek">أظهر السورة كاملة</button></div></div>`);
+  v.append(ctl);
+  v.append(h(`<p class="note" style="text-align:center" id="rnote"></p>`));
+  app.append(v);
+  $('#mic').onclick=toggleRec;$('#hint').onclick=()=>revealWord(true);$('#show').onclick=showAyah;
+  $('#ok').onclick=()=>rate(true);$('#no').onclick=()=>rate(false);
+  $('#reset').onclick=()=>go('recite',n);$('#peek').onclick=()=>{$$('.w').forEach(w=>w.classList.remove('hid','cur'));stopRec();$('#choiceBox').hidden=true};
+  setupMode();scoreBar();
+}
+function setupMode(){
+  const note=$('#rnote');
+  if(RMODE==='choice'){$('#choiceBox').hidden=false;$('#jd').hidden=false;$('#show').hidden=true;$('#rs').textContent='ما الكلمة التالية؟';note.textContent='اقرأ الكلمة بصوتك أولًا، ثم اضغطها. خطأ واحد في الآية مسموح، وأكثر منه تُسجَّل الآية للمراجعة.';showChoices()}
+  else if(RMODE==='voice'){$('#mic').hidden=false;$('#rs').textContent='اضغط الميكروفون وابدأ القراءة';note.textContent=EMBED?'الميكروفون لا يعمل داخل تطبيق Claude. افتح نسخة المنصة الخاصة في متصفح Chrome لتعمل هذه الطريقة.':'يعمل التعرّف على الصوت في متصفح Chrome. بعد التسميع تستطيع سماع تسجيلك.'}
+  else{$('#jd').hidden=false;$('#hint').hidden=false;$('#rs').textContent=`اقرأ الآية ${AR(1)} من حفظك ثم اضغط «أظهر الآية»`;note.textContent='اقرأ بصوتٍ عالٍ، ثم اكشف الآية وقيّم نفسك بصدق.'}
+  markCur();
+}
+function words(i){return $$(`.w[data-i="${i}"]`)}
+function markCur(){$$('.w.cur').forEach(w=>w.classList.remove('cur'));const w=words(R.ay)[R.wi];if(w&&(recOn||RMODE!=='voice'))w.classList.add('cur')}
+function progress(){const s=S(R.n);const tot=s.a.reduce((t,a)=>t+a.split(' ').length,0);const done=$$('.w:not(.hid)').length;const el=$('#pg');if(el)el.style.width=Math.round(done/tot*100)+'%'}
+function showChoices(){const box=$('#choiceBox');if(!box||RMODE!=='choice')return;const ws=words(R.ay);const w=ws[R.wi];if(!w){box.innerHTML='';return}
+  const ans=w.textContent,s=S(R.n);const pool=[...new Set(s.a.join(' ').split(' ').concat(QURAN.flatMap(x=>x.a[0].split(' '))))].filter(x=>norm(x)!==norm(ans)&&norm(x).length>1);
+  const near=shuffle(pool).sort((a,b)=>Math.abs(norm(a).length-norm(ans).length)-Math.abs(norm(b).length-norm(ans).length)).slice(0,6);
+  const opts=shuffle([ans,...shuffle(near).slice(0,2)]);
+  box.innerHTML=opts.map(o=>`<button class="opt">${o}</button>`).join('');
+  box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(box.dataset.lock)return;if(b.textContent===ans){b.classList.add('right');box.dataset.lock=1;setTimeout(()=>{delete box.dataset.lock;revealWord(false)},220)}else{R.miss++;b.classList.add('wrong');beep(false);setTimeout(()=>b.classList.remove('wrong'),400);if(R.miss===2)nourSay('ركّز… تذكّر بداية الكلمة','sad')}})}
+function revealWord(hint){const ws=words(R.ay);const w=ws[R.wi];if(!w)return;w.classList.remove('hid','cur');w.classList.add('ok');if(hint)R.hints++;R.wi++;progress();if(R.wi>=ws.length)ayahDone();else{markCur();showChoices()}}
+function showAyah(){words(R.ay).forEach(w=>{w.classList.remove('hid','cur');w.classList.add('ok')});R.wi=words(R.ay).length;progress();$('#jd').hidden=true;$('#rate').hidden=false;$('#rs').textContent='هل قرأتَ الآية صحيحة؟'}
+function rate(ok){$('#rate').hidden=true;finishAyah(ok)}
+function ayahDone(){if(RMODE==='self'){$('#jd').hidden=true;$('#rate').hidden=false;$('#rs').textContent='هل قرأتَ الآية صحيحة؟';return}finishAyah(RMODE==='choice'?(R.miss<=1&&R.hints===0):R.hints===0)}
+function finishAyah(ok){const s=S(R.n);R.res[R.ay]=ok;R.hints=0;R.miss=0;$(`.ay[data-i="${R.ay}"]`).classList.add('done');beep(ok);if(ok){addStars(3,rnd(CHEER));nourSay(rnd(CHEER),'happy')}else nourSay(rnd(ENC)+' — سجّلنا الآية للمراجعة.','sad');
+ scoreBar();R.ay++;R.wi=0;
+ if(R.ay>=s.a.length)return surahDone();
+ if(RMODE==='self'){$('#jd').hidden=false;$('#rs').textContent=`اقرأ الآية ${AR(R.ay+1)} ثم اضغط «أظهر الآية»`}
+ markCur();showChoices();
+ $(`.ay[data-i="${R.ay}"]`)?.scrollIntoView({block:'center',behavior:'smooth'})}
+function scoreBar(){const g=R.res.filter(x=>x).length,b=R.res.filter(x=>x===false).length;$('#sc').innerHTML=`<span class="pill g">صحيحة ${AR(g)}</span><span class="pill r">للمراجعة ${AR(b)}</span><span class="pill">من ${AR(S(R.n).a.length)}</span>`}
+function surahDone(){stopRec();$('#choiceBox').innerHTML='';const s=S(R.n),g=R.res.filter(x=>x).length,pct=Math.round(g/s.a.length*100),x=ss(R.n);const first=!(x.r||x.m);x.best=Math.max(x.best||0,pct);let extra='';
+ if(pct>=90){addStars(10,'تسميع ممتاز')}else save();
+ confetti();beep(true);$('#rs').textContent='انتهت السورة!';
+ modal(`<h3>${pct>=90?'ما شاء الله!':pct>=60?'أحسنت!':'بداية جميلة!'}</h3>${plantSVG(stage(R.n),110)}<p style="font-size:20px;font-weight:800;margin:0">${AR(g)} من ${AR(s.a.length)} آيات صحيحة · ${AR(pct)}٪</p>${extra}<p class="note">${first?'أتممتَ التسميع! اضغط «تمام» لترى نبتتك تكبر.':'أحسنت، راجعها كل يوم.'}</p>`,'تمام',()=>{if(first)growStage(R.n,'r')})}
+async function toggleRec(){if(recOn){stopRec();return}
+ if(!SR||!navigator.mediaDevices?.getUserMedia){noMic('هذا المتصفح لا يدعم التسميع بالصوت. جرّب Chrome.');return}
+ try{STREAM=await navigator.mediaDevices.getUserMedia({audio:true})}catch(e){noMic(EMBED?'الميكروفون لا يعمل داخل تطبيق Claude.':'لم يُسمح باستخدام الميكروفون. اسمح به من إعدادات المتصفح.');return}
+ recOn=true;$('#mic').classList.add('on');$('#mic').setAttribute('aria-label','أوقف التسميع');$('#jd').hidden=false;$('#show').hidden=true;markCur();$('#playback').innerHTML='';
+ try{CHUNKS=[];MEDIA=new MediaRecorder(STREAM);MEDIA.ondataavailable=e=>e.data.size&&CHUNKS.push(e.data);MEDIA.onstop=()=>{if(!CHUNKS.length)return;const url=URL.createObjectURL(new Blob(CHUNKS,{type:MEDIA.mimeType||'audio/webm'}));$('#playback').innerHTML=`<div class="card" style="padding:12px;display:flex;flex-direction:column;gap:6px;align-items:center"><b>استمع لتسميعك</b><audio controls src="${url}"></audio></div>`};MEDIA.start()}catch(e){}
+ REC=new SR();REC.lang='ar-SA';REC.continuous=true;REC.interimResults=true;REC.maxAlternatives=3;
+ REC.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++){const alts=[...e.results[i]].map(a=>norm(a.transcript).split(/\s+/).filter(Boolean));const said=alts[0];
+   said.forEach((sw,si)=>{const ws=words(R.ay);if(!ws.length)return;for(let k=0;k<3&&R.wi+k<ws.length;k++){const exp=norm(ws[R.wi+k].textContent);if(near(sw,exp)||alts.slice(1).some(a=>a[si]&&near(a[si],exp))){for(let q=0;q<=k;q++)revealWord(false);break}}})}};
+ REC.onerror=e=>{if(['not-allowed','service-not-allowed','audio-capture'].includes(e.error))noMic('تعذّر الوصول إلى الميكروفون.')};
+ REC.onend=()=>{if(recOn)try{REC.start()}catch(e){}};
+ try{REC.start();$('#rs').textContent='أستمع إليك… ابدأ القراءة'}catch(e){noMic('تعذّر تشغيل التعرّف على الصوت.')}}
+function noMic(why){stopRec();$('#rs').textContent=why;modal(`<h3>الميكروفون غير متاح</h3>${nourSVG()}<p style="margin:0;line-height:1.8">${why}</p><p class="note">التسميع بالصوت يعمل عند فتح ملف المنصة في متصفح Chrome مع السماح بالميكروفون.</p>`,'حسنًا')}
+function stopRec(){recOn=false;try{REC&&REC.abort()}catch(e){}REC=null;try{MEDIA&&MEDIA.state!=='inactive'&&MEDIA.stop()}catch(e){}MEDIA=null;try{STREAM&&STREAM.getTracks().forEach(t=>t.stop())}catch(e){}STREAM=null;$('#mic')?.classList.remove('on')}
+
+/* ---------- GAMES ---------- */
+let GSEL='all',GTAB='listen';
+const SHAPES=[['#FF6B5E','<path d="M24 6l5 11 12 1.4-9 8.2 2.6 12L24 32.8 13.4 38.6 16 26.6 7 18.4 19 17z" fill="#fff"/>'],['#17B897','<path d="M30 8a16 16 0 1 0 0 32a12 12 0 1 1 0-32z" fill="#fff"/>'],['#7A5CFA','<path d="M24 40 q-16-10-14-22 q3-10 14-4 q11-6 14 4 q2 12-14 22z" fill="#fff"/>'],['#FFC23D','<circle cx="24" cy="24" r="13" fill="#fff"/>']];
+const GAMES=[
+ {id:'pic',k:'listen',t:'اسمع واختر الصورة',d:'اسمع الآية واختر مشهدها',c:'#FF6B5E',say:'اسمع الآية، ثم اختر الصورة المناسبة',ic:`<svg viewBox="0 0 40 40"><rect x="5" y="9" width="30" height="22" rx="4" fill="#fff"/><circle cx="14" cy="17" r="3" fill="#FF6B5E"/><path d="M8 28l8-7 6 5 5-4 6 6z" fill="#FF6B5E"/></svg>`},
+ {id:'next',k:'listen',t:'ما الآية التالية؟',d:'اسمع، ثم اختر الآية التي بعدها',c:'#17B897',say:'اسمع الآية، ثم اختر الآية التي تأتي بعدها',ic:`<svg viewBox="0 0 40 40"><path d="M8 14v12h6l8 7V7l-8 7z" fill="#fff"/><path d="M27 13l7 7-7 7" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`},
+ {id:'sura',k:'listen',t:'من أي سورة؟',d:'اسمع الآية واختر صورة سورتها',c:'#4FB3FF',say:'اسمع الآية، ثم اختر سورتها',ic:`<svg viewBox="0 0 40 40"><path d="M6 10 q14 -6 14 4 v20 q0 -8 -14 -4z M34 10 q-14 -6 -14 4 v20 q0 -8 14 -4z" fill="#fff"/></svg>`},
+ {id:'aorder',k:'listen',t:'رتّب الآيات بالسمع',d:'اسمع الآيات ورتّبها',c:'#7A5CFA',say:'اسمع الآيات، واختر الأولى ثم التي بعدها',ic:`<svg viewBox="0 0 40 40"><rect x="6" y="6" width="28" height="7" rx="3" fill="#fff"/><rect x="6" y="17" width="28" height="7" rx="3" fill="#fff" opacity=".8"/><rect x="6" y="28" width="28" height="7" rx="3" fill="#fff" opacity=".6"/></svg>`},
+ {id:'complete',k:'read',t:'أكمل الآية',d:'اختر الكلمة الناقصة',c:'#7A5CFA',ic:`<svg viewBox="0 0 40 40"><rect x="4" y="14" width="10" height="12" rx="3" fill="#fff"/><rect x="16" y="14" width="10" height="12" rx="3" fill="none" stroke="#fff" stroke-width="2.4" stroke-dasharray="3 3"/><rect x="28" y="14" width="8" height="12" rx="3" fill="#fff"/></svg>`},
+ {id:'words',k:'read',t:'رتّب الكلمات',d:'كوّن الآية بالترتيب الصحيح',c:'#17B897',ic:`<svg viewBox="0 0 40 40"><rect x="4" y="8" width="14" height="10" rx="3" fill="#fff"/><rect x="22" y="22" width="14" height="10" rx="3" fill="#fff"/><path d="M18 13h6l-3 4M22 27h-6l3-4" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>`},
+ {id:'order',k:'read',t:'رتّب الآيات',d:'اقرأ الآيات ورتّبها',c:'#FF6B5E',ic:`<svg viewBox="0 0 40 40"><rect x="6" y="6" width="28" height="7" rx="3" fill="#fff"/><rect x="6" y="17" width="28" height="7" rx="3" fill="#fff" opacity=".8"/><rect x="6" y="28" width="28" height="7" rx="3" fill="#fff" opacity=".6"/></svg>`},
+ {id:'which',k:'read',t:'من أي سورة؟ (قراءة)',d:'اقرأ الآية واعرف سورتها',c:'#4FB3FF',ic:`<svg viewBox="0 0 40 40"><path d="M6 10 q14 -6 14 4 v20 q0 -8 -14 -4z M34 10 q-14 -6 -14 4 v20 q0 -8 14 -4z" fill="#fff"/></svg>`},
+];
+/* audio + pictures */
+const AUR={},PUR={};
+function b64url(b64,type){const b=atob(b64),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return URL.createObjectURL(new Blob([u],{type}))}
+function audURL(n){if(typeof AUDS!=='undefined'&&AUDS[n])return AUR[n]||(AUR[n]=b64url(AUDS[n],'audio/mp4'));return 'a/'+n+'.mp4'}
+function picURL(n){if(typeof PICS!=='undefined'&&PICS[n])return PUR[n]||(PUR[n]=b64url(PICS[n],'image/jpeg'));return 'p/'+n+'.jpg'}
+function scene(n,i,cls=''){const c=TIM[n].c,k=TIM[n].t.length,rows=Math.ceil(k/c);const x=c>1?(i%c)/(c-1)*100:0,y=rows>1?Math.floor(i/c)/(rows-1)*100:0;return `<span class="scene ${cls}" style="background-image:url('${picURL(n)}');background-size:${c*100}% ${rows*100}%;background-position:${x}% ${y}%"></span>`}
+const AU=new Audio();AU.preload='auto';let auN=0,auEnd=0,auCb=null,auBtn=null;
+AU.addEventListener('timeupdate',()=>{if(auEnd&&AU.currentTime>=auEnd)endClip()});AU.addEventListener('ended',()=>endClip());
+function endClip(){AU.pause();auEnd=0;auBtn&&auBtn.classList.remove('playing');auBtn=null;const c=auCb;auCb=null;c&&c()}
+function stopAudio(){auCb=null;if(!AU.paused)AU.pause();auEnd=0;auBtn&&auBtn.classList.remove('playing');auBtn=null}
+function playAyah(n,i,btn,cb){stopAudio();try{speechSynthesis.cancel()}catch(e){}const [a,b]=TIM[n].t[i];auBtn=btn||null;btn&&btn.classList.add('playing');
+  const start=()=>{try{AU.currentTime=a}catch(e){}auEnd=b;auCb=cb||null;AU.play().catch(()=>{btn&&btn.classList.remove('playing')})};
+  if(auN!==n){auN=n;AU.src=audURL(n);AU.addEventListener('loadedmetadata',start,{once:true});AU.load()}else start()}
+let VOICE=null;function speak(t){try{const ss=speechSynthesis;if(!ss)return;if(!VOICE)VOICE=ss.getVoices().find(v=>/^ar/i.test(v.lang))||null;if(!VOICE)return;ss.cancel();const u=new SpeechSynthesisUtterance(t);u.voice=VOICE;u.lang=VOICE.lang;u.rate=.95;ss.speak(u)}catch(e){}}
+try{speechSynthesis.onvoiceschanged=()=>{VOICE=null}}catch(e){}
+function games(app){
+  const list=GAMES.filter(g=>g.k===GTAB);
+  const v=h(`<div class="view">${nour(GTAB==='listen'?'ألعاب بالسمع: اضغط زر السماعة واسمع الشيخ، ثم اختر!':'ألعاب لمن يعرف القراءة.','كل إجابة صحيحة = نجمتان. ٣ إجابات صحيحة من سورة = تكبر نبتتها!')}
+   <div class="seg" style="grid-template-columns:repeat(2,1fr)"><button data-t="listen" aria-selected="${GTAB==='listen'}">ألعاب الاستماع</button><button data-t="read" aria-selected="${GTAB==='read'}">ألعاب القراءة</button></div>
+   <div class="row" style="justify-content:space-between"><h2>${GTAB==='listen'?'العب واسمع':'العب واقرأ'}</h2><label class="row" style="gap:6px;font-weight:700;font-size:14px">السور: <select id="gsel"><option value="all">جزء عمّ كله</option><option value="short">قصار السور (الضحى - الناس)</option>${ORDER.map(s=>`<option value="${s.n}">${s.name}</option>`).join('')}</select></label></div>
+   <div class="games">${list.map(g=>`<button class="gcard" data-g="${g.id}"><span class="ic" style="background:${g.c}">${g.ic}</span><span><b>${g.t}</b><small>${g.d}</small></span></button>`).join('')}</div></div>`);
+  const sel=v.querySelector('#gsel');sel.value=GSEL;sel.onchange=()=>GSEL=sel.value;
+  v.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{GTAB=b.dataset.t;route('games')});
+  v.querySelectorAll('.gcard').forEach(b=>b.onclick=()=>startGame(b.dataset.g));
+  app.append(v);
+}
+function pool(){if(GSEL==='all')return QURAN;if(GSEL==='short')return QURAN.filter(s=>s.n>=93);return [S(GSEL)]}
+function pickAyah(minW=3,maxW=99){const P=pool();for(let t=0;t<200;t++){const s=rnd(P),i=Math.floor(Math.random()*s.a.length),w=s.a[i].split(' ');if(w.length>=minW&&w.length<=maxW)return{s,i,w}}const s=P[0];return{s,i:0,w:s.a[0].split(' ')}}
+function pick3(){const P=pool().filter(x=>x.a.length>=3);return rnd(P.length?P:QURAN.filter(x=>x.a.length>=3))}
+function makeQ(type){
+ if(type==='pic'){const {s,i}=pickAyah(1);const others=shuffle(QURAN.filter(x=>x.n!==s.n)).slice(0,2).map(x=>({n:x.n,i:Math.floor(Math.random()*x.a.length)}));const opts=shuffle([{n:s.n,i,ok:1},...others]);return{type,s,i,opts}}
+ if(type==='sura'){const {s,i}=pickAyah(1);const others=shuffle(QURAN.filter(x=>x.n!==s.n)).slice(0,2);const opts=shuffle([{n:s.n,ok:1},...others.map(x=>({n:x.n}))]);return{type,s,i,opts}}
+ if(type==='next'){const s=pick3();const i=Math.floor(Math.random()*(s.a.length-1));const cand=shuffle([...Array(s.a.length).keys()].filter(k=>k!==i&&k!==i+1)).slice(0,2);const opts=shuffle([{n:s.n,i:i+1,ok:1},...cand.map(k=>({n:s.n,i:k}))]);return{type,s,i,opts}}
+ if(type==='aorder'){const s=pick3();const st=Math.floor(Math.random()*(s.a.length-2));return{type,s,i:st,parts:[st,st+1,st+2]}}
+ if(type==='complete'){const {s,i,w}=pickAyah(3);const k=w.length-1;const ans=w[k];const all=QURAN.flatMap(x=>x.a.map(a=>a.split(' ').pop()));const ds=shuffle([...new Set(all.filter(x=>norm(x)!==norm(ans)))]).slice(0,2);return{type,s,i,prompt:`${w.slice(0,k).join(' ')} <span class="blank">؟</span>`,ropts:shuffle([ans,...ds]),ans}}
+ if(type==='which'){const {s,i,w}=pickAyah(3);const others=shuffle(QURAN.filter(x=>x.n!==s.n)).slice(0,2).map(x=>x.name);return{type,s,i,prompt:w.join(' '),ropts:shuffle([s.name,...others]),ans:s.name,ui:true}}
+ if(type==='words'){const {s,i,w}=pickAyah(3,8);return{type,s,i,parts:w}}
+ if(type==='order'){const s=pick3();const len=s.a.length>=4?4:3;const st=Math.floor(Math.random()*(s.a.length-len+1));return{type,s,i:st,parts:s.a.slice(st,st+len)}}
+}
+const speaker=`<svg viewBox="0 0 48 48"><path d="M8 18v12h8l10 9V9l-10 9z" fill="currentColor"/><path d="M32 16a10 10 0 0 1 0 16M36 11a16 16 0 0 1 0 26" stroke="currentColor" stroke-width="3.6" fill="none" stroke-linecap="round"/></svg>`;
+function credit(n,G){const x=ss(n);x.gc=(x.gc||0)+1;if(x.gc>=3&&!x.g&&!G.grow.includes(n))G.grow.push(n)}
+function startGame(type){const g=GAMES.find(x=>x.id===type);const G={type,q:0,res:[],total:5,grow:[]};const app=$('#app');
+ function next(){stopAudio();app.innerHTML='';if(G.q>=G.total)return endGame();const Q=makeQ(type);
+  const v=h(`<div class="view"><div class="qhead"><button class="btn ghost sm" id="back">رجوع</button><b style="font-size:19px">${g.t}</b><div class="dots">${Array.from({length:G.total},(_,i)=>`<i class="${G.res[i]===true?'ok':G.res[i]===false?'no':''}"></i>`).join('')}</div></div><div class="card qbox" id="qb"></div><div class="hero" style="grid-template-columns:auto 1fr">${nourSVG()}<div class="bubble" id="bub">${g.say||(type==='words'?'اضغط الكلمات بالترتيب الصحيح.':type==='order'?'اضغط الآيات من الأولى إلى الأخيرة.':'اختر الإجابة الصحيحة.')}</div></div></div>`);
+  v.querySelector('#back').onclick=()=>{stopAudio();route('games')};const qb=v.querySelector('#qb');
+  const done=ok=>{G.res[G.q]=ok;beep(ok);nourSay(ok?rnd(CHEER):'لا بأس! الإجابة الصحيحة باللون الأخضر.',ok?'happy':'sad');if(ok){addStars(2);credit(Q.s.n,G)}else save();G.q++;setTimeout(next,ok?1100:2200)};
+  const lock=()=>{if(qb.dataset.lock)return true;qb.dataset.lock=1;return false};
+  if(g.k==='listen'){
+   const big=`<button class="bigplay" id="bp" aria-label="اسمع الآية">${speaker}</button>`;
+   if(type==='pic'||type==='sura'){
+    qb.innerHTML=`<div class="center">${big}<div class="sub">${type==='pic'?'اضغط السماعة، ثم اختر الصورة':'اضغط السماعة، ثم اختر سورتها'}</div></div><div class="picopts">${Q.opts.map((o,k)=>`<button class="picopt" data-k="${k}">${scene(o.n,type==='pic'?o.i:0)}${type==='sura'?`<b>${S(o.n).name}</b>`:''}</button>`).join('')}</div>`;
+    qb.querySelectorAll('.picopt').forEach(b=>b.onclick=()=>{if(lock())return;stopAudio();const o=Q.opts[+b.dataset.k];b.classList.add(o.ok?'right':'wrong');if(!o.ok)qb.querySelectorAll('.picopt').forEach((x,k)=>{if(Q.opts[k].ok)x.classList.add('right')});done(!!o.ok)});
+   }else if(type==='next'){
+    qb.innerHTML=`<div class="center">${big}<div class="sub">هذه الآية… فما التي بعدها؟</div></div><div class="aopts">${Q.opts.map((o,k)=>`<div class="acard" data-k="${k}" style="--c:${SHAPES[k][0]}"><button class="aplay" aria-label="اسمع">${`<svg viewBox="0 0 48 48">${SHAPES[k][1]}</svg>`}<span class="wave">${speaker}</span></button><button class="apick" aria-label="اختر">اختر</button></div>`).join('')}</div>`;
+    qb.querySelectorAll('.acard').forEach(c=>{const o=Q.opts[+c.dataset.k];c.querySelector('.aplay').onclick=e=>playAyah(o.n,o.i,c);c.querySelector('.apick').onclick=()=>{if(lock())return;stopAudio();c.classList.add(o.ok?'right':'wrong');if(!o.ok)qb.querySelectorAll('.acard').forEach(x=>{if(Q.opts[+x.dataset.k].ok)x.classList.add('right')});done(!!o.ok)}});
+   }else{ // aorder
+    const sh=(()=>{let s=shuffle([0,1,2]);if(s.join()==='0,1,2')s=[2,0,1];return s})();let pos=0,miss=0;
+    qb.innerHTML=`<div class="sub" style="text-align:center">اسمع كل بطاقة، ثم اختر الآية الأولى، فالثانية، فالثالثة</div><div class="slots">${[0,1,2].map(k=>`<span class="slot" data-s="${k}">${AR(k+1)}</span>`).join('')}</div><div class="aopts">${sh.map((p,k)=>`<div class="acard" data-p="${p}" style="--c:${SHAPES[k][0]}"><button class="aplay" aria-label="اسمع"><svg viewBox="0 0 48 48">${SHAPES[k][1]}</svg><span class="wave">${speaker}</span></button><button class="apick">اختر</button></div>`).join('')}</div>`;
+    qb.querySelectorAll('.acard').forEach((c,k)=>{const p=+c.dataset.p;c.querySelector('.aplay').onclick=()=>playAyah(Q.s.n,Q.parts[p],c);c.querySelector('.apick').onclick=()=>{if(c.classList.contains('used'))return;if(p===pos){stopAudio();const sl=qb.querySelector(`.slot[data-s="${pos}"]`);sl.classList.add('fill');sl.style.background=getComputedStyle(c).getPropertyValue('--c');sl.innerHTML=`<svg viewBox="0 0 48 48">${SHAPES[k][1]}</svg>`;c.classList.add('used');beep(true);pos++;if(pos===3){qb.dataset.lock=1;done(miss<2)}}else{miss++;c.classList.remove('wrong');void c.offsetWidth;c.classList.add('wrong');setTimeout(()=>c.classList.remove('wrong'),450);beep(false);if(miss===2)nourSay('اسمع البطاقات مرة ثانية، أيّها أولًا؟','sad')}}});
+   }
+   const bp=qb.querySelector('#bp');if(bp){bp.onclick=()=>playAyah(Q.s.n,Q.i,bp);setTimeout(()=>{if(!qb.dataset.lock)playAyah(Q.s.n,Q.i,bp)},G.q===0?1800:500)}
+   if(G.q===0)speak(g.say);
+  }else if(Q.ropts){const hint=`<div class="sub" style="text-align:center">${type==='which'?'من أي سورة هذه الآية؟':'سورة '+Q.s.name+' · الآية '+AR(Q.i+1)}</div>`;
+   qb.innerHTML=`${hint}<div class="qtext">${Q.prompt}</div><div class="opts">${Q.ropts.map(o=>`<button class="opt ${Q.ui?'ui':''}">${o}</button>`).join('')}</div>`;
+   qb.querySelectorAll('.opt').forEach(b=>b.onclick=()=>{if(lock())return;const ok=b.textContent===Q.ans;b.classList.add(ok?'right':'wrong');if(!ok)qb.querySelectorAll('.opt').forEach(x=>{if(x.textContent===Q.ans)x.classList.add('right')});if(ok&&type==='complete')qb.querySelector('.blank').textContent=Q.ans;done(ok)})}
+  else{const isA=type==='order';const order=Q.parts.map((p,k)=>({p,k}));let sh=shuffle(order);if(sh.every((x,k)=>x.k===k))sh=sh.reverse();let pos=0,miss=0;
+   qb.innerHTML=`<div class="sub" style="text-align:center">سورة ${Q.s.name}</div><div class="answer ${isA?'col':''}" id="ans"></div><div class="tiles">${sh.map(x=>`<button class="tile ${isA?'ayahT':''}" data-k="${x.k}">${x.p}</button>`).join('')}</div>`;
+   qb.querySelectorAll('.tile').forEach(b=>b.onclick=()=>{if(+b.dataset.k===pos){b.classList.add('used');qb.querySelector('#ans').append(h(`<span class="a">${b.textContent}${isA?` <span class="num">﴿${AR(Q.i+pos+1)}﴾</span>`:''}</span>`));pos++;if(pos===Q.parts.length)done(miss<2)}else{miss++;b.style.animation='shake .35s';setTimeout(()=>b.style.animation='',400);beep(false);if(miss===2)nourSay('ركّز… أي كلمة تأتي الآن؟','sad')}})}
+  app.append(v)}
+ function endGame(){stopAudio();const g2=G.res.filter(x=>x).length;ST.games=(ST.games||0)+1;if(g2===G.total){ST.perfect=(ST.perfect||0)+1;addStars(5,'جولة كاملة');confetti()}else save();
+  const growNext=()=>{const n=G.grow.shift();if(n)growStage(n,'g',growNext)};
+  modal(`<h3>${g2===G.total?'جولة كاملة!':g2>=3?'أحسنت!':'حاول مرة أخرى'}</h3>${nourSVG().replace('class="nour"','class="nour happy"')}<p style="font-size:22px;font-weight:800;margin:0">${AR(g2)} من ${AR(G.total)}</p>`,'العب مرة أخرى',()=>{if(G.grow.length){growNext()}else startGame(type)});
+  speak(g2>=3?'أحسنت':'حاول مرة أخرى');
+  const m=$('#layer .modal:last-child .card');const b=h(`<button class="btn ghost sm">رجوع للألعاب</button>`);b.onclick=()=>{m.parentElement.remove();if(G.grow.length)growNext();route('games')};m.append(b)}
+ next()}
+
+/* ---------- boot ---------- */
+loadLocal();refreshTop();route('home');initDb();
+</script>
+</body></html>
