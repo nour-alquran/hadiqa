@@ -234,7 +234,7 @@ const S=n=>QURAN.find(s=>s.n===+n);
 const ORDER=[...QURAN].sort((a,b)=>b.n-a.n); // الناس first
 const norm=s=>s.replace(/[ً-ٰٟۖ-ۭـ]/g,'').replace(/[أإآٱ]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/ؤ/g,'و').replace(/ئ/g,'ي').replace(/[^ء-ي ]/g,'').trim();
 const lev=(a,b)=>{const m=a.length,n=b.length;if(!m||!n)return Math.max(m,n);let p=[...Array(n+1).keys()];for(let i=1;i<=m;i++){let c=[i];for(let j=1;j<=n;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c}return p[n]};
-const near=(a,b)=>{a=a.replace(/^ال/,'');b=b.replace(/^ال/,'');if(!a||!b)return false;if(a===b)return true;return lev(a,b)<=Math.max(1,Math.floor(Math.max(a.length,b.length)*.34))};
+const near=(a,b)=>{a=a.replace(/^ال/,'');b=b.replace(/^ال/,'');if(!a||!b)return false;if(a===b)return true;const sa=a.replace(/[اوي]/g,''),sb=b.replace(/[اوي]/g,'');if(sa&&sa===sb&&Math.min(a.length,b.length)>=3)return true;const L=Math.max(a.length,b.length);const tol=L<=3?0:L<=6?1:2;return lev(a,b)<=tol};
 
 /* ---------- state ---------- */
 const LEVELS=[[0,'بذرة'],[60,'برعم'],[180,'شتلة'],[400,'شجرة'],[800,'نخلة'],[1500,'بستان']];
@@ -414,14 +414,21 @@ function surahDone(){stopRec();$('#choiceBox').innerHTML='';const s=S(R.n),g=R.r
  if(pct>=90){addStars(10,'تسميع ممتاز')}else save();
  confetti();beep(true);$('#rs').textContent='انتهت السورة!';
  modal(`<h3>${pct>=90?'ما شاء الله!':pct>=60?'أحسنت!':'بداية جميلة!'}</h3>${plantSVG(stage(R.n),110)}<p style="font-size:20px;font-weight:800;margin:0">${AR(g)} من ${AR(s.a.length)} آيات صحيحة · ${AR(pct)}٪</p>${extra}<p class="note">${first?'أتممتَ التسميع! اضغط «تمام» لترى نبتتك تكبر.':'أحسنت، راجعها كل يوم.'}</p>`,'تمام',()=>{if(first)growStage(R.n,'r')})}
+function matchHeard(w,alt){const ws=words(R.ay);if(!ws.length||R.wi>=ws.length)return;const exp=norm(ws[R.wi].textContent);
+ if(near(w,exp)||alt.some(x=>near(x,exp))){revealWord(false);return}
+ const nx=ws[R.wi+1];if(nx){const e2=norm(nx.textContent).replace(/^ال/,''),w2=w.replace(/^ال/,'');if(w2.length>=4&&w2===e2){revealWord(false);revealWord(false)}}}
 async function toggleRec(){if(recOn){stopRec();return}
  if(!SR||!navigator.mediaDevices?.getUserMedia){noMic('هذا المتصفح لا يدعم التسميع بالصوت. جرّب Chrome.');return}
  try{STREAM=await navigator.mediaDevices.getUserMedia({audio:true})}catch(e){noMic(EMBED?'الميكروفون لا يعمل داخل تطبيق Claude.':'لم يُسمح باستخدام الميكروفون. اسمح به من إعدادات المتصفح.');return}
  recOn=true;$('#mic').classList.add('on');$('#mic').setAttribute('aria-label','أوقف التسميع');$('#jd').hidden=false;$('#show').hidden=true;markCur();$('#playback').innerHTML='';
  try{CHUNKS=[];MEDIA=new MediaRecorder(STREAM);MEDIA.ondataavailable=e=>e.data.size&&CHUNKS.push(e.data);MEDIA.onstop=()=>{if(!CHUNKS.length)return;const url=URL.createObjectURL(new Blob(CHUNKS,{type:MEDIA.mimeType||'audio/webm'}));$('#playback').innerHTML=`<div class="card" style="padding:12px;display:flex;flex-direction:column;gap:6px;align-items:center"><b>استمع لتسميعك</b><audio controls src="${url}"></audio></div>`};MEDIA.start()}catch(e){}
  REC=new SR();REC.lang='ar-SA';REC.continuous=true;REC.interimResults=true;REC.maxAlternatives=3;
- REC.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++){const alts=[...e.results[i]].map(a=>norm(a.transcript).split(/\s+/).filter(Boolean));const said=alts[0];
-   said.forEach((sw,si)=>{const ws=words(R.ay);if(!ws.length)return;for(let k=0;k<3&&R.wi+k<ws.length;k++){const exp=norm(ws[R.wi+k].textContent);if(near(sw,exp)||alts.slice(1).some(a=>a[si]&&near(a[si],exp))){for(let q=0;q<=k;q++)revealWord(false);break}}})}};
+ let SEEN={};REC.onstart=()=>{SEEN={}};
+ REC.onresult=e=>{for(let i=e.resultIndex;i<e.results.length;i++){const r=e.results[i];const alts=[...r].map(x=>norm(x.transcript).split(/\s+/).filter(Boolean));const heard=alts[0]||[];
+   let upto=r.isFinal?heard.length:Math.max(0,heard.length-1);let k=SEEN[i]||0;
+   for(;k<upto;k++)matchHeard(heard[k],alts.slice(1).map(x=>x[k]).filter(Boolean));
+   SEEN[i]=Math.max(SEEN[i]||0,upto);
+   if(!r.isFinal&&heard.length&&SEEN[i]===heard.length-1){const cw=words(R.ay)[R.wi];if(cw&&heard[SEEN[i]].replace(/^ال/,'')===norm(cw.textContent).replace(/^ال/,'')){revealWord(false);SEEN[i]=heard.length}}}};
  REC.onerror=e=>{if(['not-allowed','service-not-allowed','audio-capture'].includes(e.error))noMic('تعذّر الوصول إلى الميكروفون.')};
  REC.onend=()=>{if(recOn)try{REC.start()}catch(e){}};
  try{REC.start();$('#rs').textContent='أستمع إليك… ابدأ القراءة'}catch(e){noMic('تعذّر تشغيل التعرّف على الصوت.')}}
