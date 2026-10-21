@@ -1,0 +1,1149 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="منصة ثبات لتثبيت حفظ القرآن للكبار: جدول مراجعة وحفظ، اختبارات، متشابهات، ودروس تجويد.">
+<title>منصة ثبات</title>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} body{margin:0} img{max-width:100%} [hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800&display=swap">
+<style>
+/* تخطيط: عمود واحد بعرض المصحف المفتوح، شريط تبويب علوي ثابت، وبطاقات للمحتوى العامل فقط */
+:root{
+  --bg:#F2F5F3; --surface:#FFFFFF; --ink:#15302A; --muted:#5A6C66; --line:#D6E0DB;
+  --accent:#0E6E5A; --accent-ink:#FFFFFF; --soft:#E1EDE8; --gilt:#A2751C;
+  --ok:#1E8448; --bad:#B3362F; --warn:#B9820F;
+  --font:"Alexandria", "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0D1513; --surface:#15201D; --ink:#E4ECE8; --muted:#95A8A1; --line:#27352F;
+  --accent:#3FB394; --accent-ink:#06221B; --soft:#173029; --gilt:#D4A94A;
+  --ok:#4CC27F; --bad:#E5746A; --warn:#E0B04A; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#0D1513; --surface:#15201D; --ink:#E4ECE8; --muted:#95A8A1; --line:#27352F;
+  --accent:#3FB394; --accent-ink:#06221B; --soft:#173029; --gilt:#D4A94A;
+  --ok:#4CC27F; --bad:#E5746A; --warn:#E0B04A; color-scheme:dark }
+
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{color:var(--ink); font-family:var(--font); font-size:15px; line-height:1.7; direction:rtl;
+  padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); padding-block:0 48px}
+body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top, 0px); z-index:10; background:var(--bg)}
+button,input,select{font-family:var(--font); font-size:inherit; color:inherit}
+.wrap{max-width:720px; margin:0 auto; display:flex; flex-direction:column; gap:20px}
+
+header.top{position:sticky; top:env(safe-area-inset-top, 0px); z-index:5; background:var(--bg); padding-block:14px 10px; display:flex; flex-direction:column; gap:12px; border-bottom:1px solid var(--line)}
+.brand{display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap}
+.brand h1{margin:0; font-size:1.75rem; font-weight:800; letter-spacing:0; line-height:1.2}
+.brand h1 span{color:var(--accent)}
+.brand p{margin:0; color:var(--muted); font-size:.85rem}
+nav.tabs{display:grid; grid-template-columns:repeat(5,1fr); gap:3px; background:var(--soft); padding:5px; border-radius:12px}
+nav.tabs button{border:0; background:transparent; padding:9px 1px; font-size:.8rem; white-space:nowrap; border-radius:9px; font-weight:600; cursor:pointer; color:var(--muted)}
+nav.tabs button[aria-selected="true"]{background:var(--surface); color:var(--ink); box-shadow:0 1px 2px rgba(0,0,0,.08)}
+button:focus-visible,input:focus-visible,select:focus-visible,.opt:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+h2{margin:0; font-size:1.2rem; font-weight:700; text-wrap:balance}
+h3{margin:0; font-size:1rem; font-weight:600}
+.muted{color:var(--muted)}
+.small{font-size:.82rem}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--r); padding:18px; display:flex; flex-direction:column; gap:14px}
+.row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.field{display:flex; flex-direction:column; gap:6px; flex:1 1 180px; min-width:0}
+.field label,.lbl{font-size:.8rem; color:var(--muted); font-weight:500}
+select,input[type=text]{width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:10px; background:var(--bg)}
+.seg{display:flex; gap:6px; flex-wrap:wrap}
+.seg button{border:1px solid var(--line); background:var(--bg); padding:8px 14px; border-radius:999px; cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent); color:var(--accent-ink); border-color:var(--accent)}
+.btn{border:0; background:var(--accent); color:var(--accent-ink); font-weight:600; padding:12px 20px; border-radius:11px; cursor:pointer}
+.btn.ghost{background:transparent; color:var(--accent); border:1px solid var(--accent)}
+.btn:disabled{opacity:.45; cursor:not-allowed}
+
+/* الاختبار */
+.progress{display:flex; flex-direction:column; gap:6px}
+.bar{height:7px; background:var(--soft); border-radius:99px; overflow:hidden}
+.bar i{display:block; height:100%; background:var(--accent); width:0; transition:width .3s}
+.qtype{font-size:.78rem; font-weight:600; color:var(--gilt); letter-spacing:.02em}
+.ayah{font-size:1.32rem; line-height:2.15; font-weight:400; margin:0; text-wrap:pretty}
+.ayah .gap{display:inline-block; min-width:4.5em; border-bottom:2px dashed var(--gilt); margin-inline:4px}
+.ref{font-size:.8rem; color:var(--muted)}
+.opts{display:flex; flex-direction:column; gap:10px}
+.opt{text-align:right; border:1px solid var(--line); background:var(--bg); padding:13px 15px; border-radius:11px; cursor:pointer; font-size:1.08rem; line-height:1.95; display:flex; gap:12px; align-items:flex-start}
+.opt b{flex:0 0 auto; width:1.8em; height:1.8em; border-radius:50%; background:var(--soft); color:var(--accent); display:grid; place-items:center; font-size:.8rem; margin-top:.25em}
+.opt span{min-width:0}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.right{border-color:var(--ok); background:color-mix(in srgb, var(--ok) 12%, var(--surface))}
+.opt.wrong{border-color:var(--bad); background:color-mix(in srgb, var(--bad) 10%, var(--surface))}
+.opt:disabled{cursor:default}
+.explain{border-inline-start:3px solid var(--accent); background:var(--soft); padding:12px 14px; border-radius:8px; display:flex; flex-direction:column; gap:6px}
+.explain.bad{border-color:var(--bad)}
+.explain p{margin:0}
+.score{display:flex; align-items:baseline; gap:10px}
+.score strong{font-size:2.6rem; font-weight:800; color:var(--accent); line-height:1}
+.misses{display:flex; flex-direction:column; gap:10px}
+.miss{border-top:1px solid var(--line); padding-top:10px}
+.miss p{margin:0}
+
+/* المتشابهات */
+.pair{display:flex; flex-direction:column; gap:10px; border-top:1px solid var(--line); padding-top:14px}
+.pair:first-child{border-top:0; padding-top:0}
+.twin{display:flex; flex-direction:column; gap:2px}
+.twin .ayah{font-size:1.12rem}
+mark{background:transparent; color:var(--gilt); font-weight:700; text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:6px}
+.vs{font-size:.72rem; color:var(--gilt); font-weight:700}
+/* التجويد */
+.lessons{display:grid; grid-template-columns:repeat(2,1fr); gap:10px}
+.lesson{text-align:right; border:1px solid var(--line); background:var(--surface); border-radius:var(--r); padding:14px; cursor:pointer; display:flex; flex-direction:column; gap:6px; min-width:0}
+.lesson:hover{border-color:var(--accent)}
+.lesson .n{font-size:.72rem; color:var(--gilt); font-weight:700}
+.lesson h3{font-size:.98rem}
+.lesson p{margin:0; font-size:.8rem; color:var(--muted)}
+.rule{display:flex; flex-direction:column; gap:6px; border-top:1px solid var(--line); padding-top:12px}
+.rule:first-of-type{border-top:0; padding-top:0}
+.rule p{margin:0}
+.ex{display:flex; flex-wrap:wrap; gap:8px}
+.ex span{background:var(--soft); border-radius:8px; padding:4px 10px; font-size:1.08rem; line-height:1.9}
+.letters{font-weight:700; color:var(--accent); letter-spacing:.12em}
+.tip{background:color-mix(in srgb, var(--gilt) 12%, var(--surface)); border-radius:10px; padding:12px 14px; margin:0; font-size:.9rem}
+.vid{display:flex; gap:12px; align-items:center; border:1px solid var(--line); border-radius:11px; padding:12px; text-decoration:none; color:var(--ink); background:var(--bg)}
+.vid:hover{border-color:var(--accent)}
+.vid i{flex:0 0 auto; width:38px; height:38px; border-radius:50%; background:var(--accent); display:grid; place-items:center}
+.vid i::after{content:""; border-style:solid; border-width:7px 0 7px 11px; border-color:transparent transparent transparent var(--accent-ink); margin-left:3px}
+.vid span{min-width:0; font-size:.88rem; line-height:1.6}
+.vid small{display:block; color:var(--muted); font-size:.72rem}
+@media (max-width:420px){ .lessons{grid-template-columns:1fr} }
+/* الخريطة */
+.legend{display:flex; gap:14px; flex-wrap:wrap; font-size:.78rem; color:var(--muted)}
+.legend i{display:inline-block; width:12px; height:12px; border-radius:3px; vertical-align:-1px; margin-inline-end:5px}
+.heat{display:grid; grid-template-columns:repeat(6,1fr); gap:6px}
+.cell{aspect-ratio:1; max-width:100%; border-radius:9px; display:flex; flex-direction:column; align-items:center; justify-content:center; font-variant-numeric:tabular-nums; border:1px solid var(--line); background:var(--bg); cursor:pointer; padding:2px}
+.cell b{font-size:1rem; font-weight:700}
+.cell small{font-size:.62rem; opacity:.85}
+.c-none{color:var(--muted)}
+.c-good{background:color-mix(in srgb, var(--ok) 22%, var(--surface)); border-color:color-mix(in srgb, var(--ok) 45%, var(--line))}
+.c-mid{background:color-mix(in srgb, var(--warn) 25%, var(--surface)); border-color:color-mix(in srgb, var(--warn) 50%, var(--line))}
+.c-weak{background:color-mix(in srgb, var(--bad) 25%, var(--surface)); border-color:color-mix(in srgb, var(--bad) 50%, var(--line))}
+
+/* الجدول */
+.intents-card{border-color:color-mix(in srgb, var(--gilt) 45%, var(--line)); background:color-mix(in srgb, var(--gilt) 6%, var(--surface))}
+.intents{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:8px}
+.intents li{display:flex; gap:10px; align-items:baseline; line-height:1.8}
+.intents li::before{content:""; flex:0 0 auto; width:7px; height:7px; border-radius:50%; background:var(--gilt); transform:translateY(-2px)}
+.chips{display:flex; flex-wrap:wrap; gap:8px}
+.chip{border:1px solid var(--line); background:var(--surface); border-radius:999px; padding:8px 14px; cursor:pointer; text-align:right; line-height:1.6}
+.chip[aria-pressed="true"]{background:var(--gilt); border-color:var(--gilt); color:var(--surface)}
+.hbody{display:flex; flex-direction:column; gap:14px}
+.tag{display:inline-block; font-size:.7rem; font-weight:700; padding:1px 8px; border-radius:99px; background:var(--soft); color:var(--accent); margin-inline-end:4px}
+.tag-h{background:color-mix(in srgb, var(--gilt) 16%, var(--surface)); color:var(--gilt)}
+.why{margin:0; text-align:center; color:var(--gilt); font-weight:500; font-size:.95rem; text-wrap:balance}
+.todayhead{display:flex; gap:14px; align-items:center}
+.ring{width:76px; height:76px; flex:0 0 auto}
+.ring circle:last-of-type{transition:stroke-dashoffset .4s}
+.parts{display:flex; flex-direction:column; gap:8px}
+.part{display:flex; gap:12px; align-items:center; text-align:right; border:1px solid var(--line); background:var(--bg); border-radius:11px; padding:12px 14px; cursor:pointer}
+.part i{flex:0 0 auto; width:22px; height:22px; border-radius:7px; border:2px solid var(--line); display:grid; place-items:center}
+.part.on{border-color:var(--ok); background:color-mix(in srgb, var(--ok) 10%, var(--surface))}
+.part.on i{background:var(--ok); border-color:var(--ok)}
+.part.on i::after{content:""; width:6px; height:11px; border:solid var(--surface); border-width:0 2px 2px 0; transform:rotate(45deg) translate(-1px,-1px)}
+.part.on span{color:var(--muted); text-decoration:line-through; text-decoration-color:color-mix(in srgb, var(--ok) 60%, transparent)}
+.cheer{margin:0; background:var(--soft); border-radius:10px; padding:12px 14px}
+.pledge{margin:0; border-inline-start:3px solid var(--gilt); padding:12px 16px; background:color-mix(in srgb, var(--gilt) 9%, var(--surface)); border-radius:8px; font-size:1rem; line-height:2}
+.pledge b{color:var(--accent); font-weight:700}
+.warnbox{border-color:color-mix(in srgb, var(--warn) 55%, var(--line))}
+.missrow{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap}
+.small-btn{padding:7px 12px; font-size:.82rem}
+.chain{display:grid; grid-auto-flow:column; grid-template-rows:repeat(7,1fr); grid-template-columns:repeat(8,1fr); gap:5px; direction:rtl}
+.k{aspect-ratio:1; max-width:100%; border-radius:5px; background:var(--bg); border:1px solid var(--line)}
+.k-done{background:var(--accent); border-color:var(--accent)}
+.k-min{background:color-mix(in srgb, var(--accent) 40%, var(--surface)); border-color:color-mix(in srgb, var(--accent) 50%, var(--line))}
+.k-miss{background:color-mix(in srgb, var(--bad) 30%, var(--surface)); border-color:color-mix(in srgb, var(--bad) 45%, var(--line))}
+.k-exc{background:color-mix(in srgb, var(--gilt) 35%, var(--surface)); border-color:color-mix(in srgb, var(--gilt) 50%, var(--line))}
+.k-today{border:2px solid var(--accent)}
+.legend i.k-done,.legend i.k-min,.legend i.k-miss,.legend i.k-exc{border:0}
+.goal .bar i{background:var(--gilt)}
+.days{display:grid; grid-template-columns:repeat(7,1fr); gap:5px}
+.days button{border:1px solid var(--line); background:var(--bg); border-radius:9px; padding:8px 2px; font-size:.78rem; cursor:pointer}
+.days button[aria-pressed="true"]{background:var(--accent); color:var(--accent-ink); border-color:var(--accent)}
+.stats{display:grid; grid-template-columns:repeat(3,1fr); gap:10px}
+.stat{background:var(--soft); border-radius:11px; padding:12px; display:flex; flex-direction:column; gap:2px}
+.stat strong{font-size:1.5rem; font-weight:800; font-variant-numeric:tabular-nums; line-height:1.2}
+.stat span{font-size:.75rem; color:var(--muted)}
+.week{display:flex; flex-direction:column}
+.day{display:grid; grid-template-columns:5.5em 1fr auto; gap:10px; align-items:center; padding:11px 0; border-top:1px solid var(--line)}
+.day:first-child{border-top:0}
+.day .d{font-weight:600; font-size:.88rem}
+.day .d small{display:block; font-weight:400; color:var(--muted); font-size:.72rem}
+.day .w{min-width:0; font-size:.92rem}
+.pill{font-size:.72rem; padding:3px 10px; border-radius:99px; white-space:nowrap; font-weight:600}
+.p-done{background:color-mix(in srgb, var(--ok) 18%, var(--surface)); color:var(--ok)}
+.p-miss{background:color-mix(in srgb, var(--bad) 14%, var(--surface)); color:var(--bad)}
+.p-next{background:var(--soft); color:var(--accent)}
+.p-rest{color:var(--muted)}
+.today{background:color-mix(in srgb, var(--accent) 7%, transparent); border-radius:10px; padding-inline:8px; margin-inline:-8px}
+.note{font-size:.8rem; color:var(--muted); margin:0}
+.loading{display:flex; gap:10px; align-items:center; color:var(--muted)}
+.spin{width:16px; height:16px; border:2px solid var(--line); border-top-color:var(--accent); border-radius:50%; animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){ .spin{animation:none} .bar i{transition:none} }
+@media (max-width:420px){ .heat{grid-template-columns:repeat(5,1fr)} .stats{gap:6px} .stat strong{font-size:1.25rem} .ayah{font-size:1.2rem} }
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>ثَبات<span>.</span></h1>
+      <p>منصة تثبيت الحفظ للكبار</p>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" id="tab-plan" aria-selected="true" data-view="plan">جدولي</button>
+      <button role="tab" id="tab-test" aria-selected="false" data-view="test">الاختبار</button>
+      <button role="tab" id="tab-mut" aria-selected="false" data-view="mut">المتشابهات</button>
+      <button role="tab" id="tab-taj" aria-selected="false" data-view="taj">التجويد</button>
+      <button role="tab" id="tab-map" aria-selected="false" data-view="map">الخريطة</button>
+    </nav>
+  </header>
+
+  <main id="view-plan" class="wrap"></main>
+  <main id="view-test" class="wrap" hidden></main>
+  <main id="view-mut" class="wrap" hidden></main>
+  <main id="view-taj" class="wrap" hidden></main>
+  <main id="view-map" class="wrap" hidden></main>
+</div>
+
+<script>
+/* ===================== بيانات ثابتة ===================== */
+const SURAHS = ["الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس","هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه","الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم","لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر","فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق","الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة","الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج","نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس","التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد","الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات","القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر","المسد","الإخلاص","الفلق","الناس"];
+// بداية كل جزء [سورة، آية]
+const JUZ = [[1,1],[2,142],[2,253],[3,93],[4,24],[4,148],[5,82],[6,111],[7,88],[8,41],[9,93],[11,6],[12,53],[15,1],[17,1],[18,75],[21,1],[23,1],[25,21],[27,56],[29,46],[33,31],[36,28],[39,32],[41,47],[46,1],[51,31],[58,1],[67,1],[78,1]];
+const DAYS = ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+const ORD = ["الأول","الثاني","الثالث","الرابع"];
+const LETTERS = ["أ","ب","ج","د"];
+const SOURCES = [
+  "https://cdn.jsdelivr.net/npm/quran-json@3.1.2/dist/quran.json/+esm",
+  "https://cdn.jsdelivr.net/npm/quran-json@3.1.2/+esm",
+  "https://cdn.jsdelivr.net/npm/quran-json@3.1.0/dist/quran.json/+esm"
+];
+
+/* ===================== أدوات ===================== */
+const $ = (s, r=document) => r.querySelector(s);
+const ar = n => String(n).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const rnd = n => Math.floor(Math.random()*n);
+const shuffle = a => { a = a.slice(); for (let i=a.length-1;i>0;i--){ const j=rnd(i+1); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+const norm = s => s.replace(/[ؐ-ًؚ-ٰٟۖ-ۭ࣓-ࣿـ]/g,"")
+  .replace(/[ٱأإآ]/g,"ا").replace(/ى/g,"ي").replace(/ة/g,"ه").replace(/\s+/g," ").trim();
+const isWord = w => /[ء-يٱ]/.test(w);
+const words = t => t.split(/\s+/).filter(Boolean);
+const clip = (t, n) => { const w = words(t); return w.length > n ? w.slice(0, n).join(" ") + " …" : t; };
+const clipEnd = (t, n) => { const w = words(t); return w.length > n ? "… " + w.slice(-n).join(" ") : t; };
+const dayKey = d => d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x; };
+
+/* ===================== التخزين ===================== */
+const LS_KEY = "thabat-v1";
+const store = {
+  data: { answers: [], plan: null, mutMiss: [], lessons: {} },
+  ref: null,
+  timer: null,
+  loadLocal(){ try { const v = JSON.parse(localStorage.getItem(LS_KEY) || "null"); if (v) this.data = Object.assign(this.data, v); } catch(e){} },
+  async connect(){
+    try {
+      if (!window.claude || !window.claude.use) return;
+      const [db, user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+      if (!db || !user) return;
+      const id = await user.id();
+      if (!id) return;
+      this.ref = db.doc("data/users/" + id + "/thabat");
+      const snap = await this.ref.get();
+      if (snap.exists) {
+        const d = snap.data() || {};
+        this.data = { answers: Array.isArray(d.answers) ? d.answers.slice() : [], plan: d.plan ? JSON.parse(JSON.stringify(d.plan)) : null, mutMiss: Array.isArray(d.mutMiss) ? d.mutMiss.slice() : [], lessons: d.lessons ? Object.assign({}, d.lessons) : {} };
+        this.saveLocal();
+        renderAll();
+      } else if (this.data.answers.length || this.data.plan) {
+        this.save();
+      }
+    } catch(e){ this.ref = null; }
+  },
+  saveLocal(){ try { localStorage.setItem(LS_KEY, JSON.stringify(this.data)); } catch(e){} },
+  save(){
+    if (this.data.answers.length > 1500) this.data.answers = this.data.answers.slice(-1500);
+    this.saveLocal();
+    if (!this.ref) return;
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => {
+      this.ref.set(JSON.parse(JSON.stringify(this.data))).catch(() => { this.ref = null; });
+    }, 800);
+  }
+};
+
+/* ===================== نص القرآن ===================== */
+let Q = null;          // Q[s] = [نص الآية 1, ...]
+let FLAT = [];         // {s,a,t,n,j}
+let COUNT = new Map(); // تكرار النص المطبع
+let qStatus = "loading";
+
+// يحوّل رموز الرسم العثماني الخاصة إلى حروف وحركات عادية يدعمها الخط، فيظهر النص بخط واحد
+function cleanText(t){
+  return t.replace(/\u0671/g, "\u0627")
+    .replace(/\u06E1/g, "\u0652")
+    .replace(/\u08F0/g, "\u064B").replace(/\u08F1/g, "\u064C").replace(/\u08F2/g, "\u064D")
+    .replace(/[\u06D6-\u06ED\u08D3-\u08EF\u08F3-\u08FF]/g, "")
+    .replace(/\s+/g, " ").trim();
+}
+function normalizeData(raw){
+  let d = raw && raw.default ? raw.default : raw;
+  const out = [];
+  if (Array.isArray(d)) {
+    d.forEach((ch, i) => {
+      const id = ch.id || ch.number || i+1;
+      const vs = ch.verses || ch.ayahs || ch.ayat || [];
+      out[id] = vs.map(v => typeof v === "string" ? v : (v.text || v.arabic || ""));
+    });
+  } else if (d && typeof d === "object") {
+    Object.keys(d).forEach(k => {
+      const n = +k; if (!n) return;
+      const vs = d[k];
+      out[n] = (Array.isArray(vs) ? vs : Object.values(vs)).map(v => typeof v === "string" ? v : (v.text || ""));
+    });
+  }
+  if (out.filter(Boolean).length !== 114 || !out[2] || out[2].length !== 286) throw new Error("shape");
+  return out;
+}
+function juzOf(s, a){
+  let j = 1;
+  for (let i=0;i<30;i++){ const [js, ja] = JUZ[i]; if (s > js || (s === js && a >= ja)) j = i+1; }
+  return j;
+}
+async function loadQuran(){
+  for (const url of SOURCES) {
+    try {
+      const mod = await import(url);
+      Q = normalizeData(mod).map(a => a && a.map(cleanText));
+      break;
+    } catch(e){ Q = null; }
+  }
+  if (!Q) { qStatus = "error"; renderTest(); renderMut(); return; }
+  FLAT = [];
+  for (let s=1;s<=114;s++) Q[s].forEach((t, i) => {
+    const n = norm(t);
+    FLAT.push({ s, a:i+1, t, n, w: words(t).map(norm), idx: FLAT.length, j: juzOf(s, i+1), len: words(t).length });
+    COUNT.set(n, (COUNT.get(n)||0)+1);
+  });
+  qStatus = "ready";
+  renderTest(); renderMut();
+}
+
+/* ===================== توليد الأسئلة ===================== */
+const TYPE_NAMES = { complete:"أكمل الآية", next:"ما الآية التالية؟", prev:"ما الآية السابقة؟", blank:"الكلمة الناقصة", surah:"من أي سورة؟" };
+function scopeVerses(sc){
+  if (sc.mode === "surah") return FLAT.filter(v => v.s === sc.value);
+  return FLAT.filter(v => v.j === sc.value);
+}
+const get = (s, a) => (Q[s] && Q[s][a-1] != null) ? FLAT.find(v => v.s === s && v.a === a) : null;
+const unique = v => COUNT.get(v.n) === 1;
+function pickDistractors(cands, correctNorms, k, keyFn){
+  const seen = new Set(correctNorms); const out = [];
+  for (const c of shuffle(cands)) { const key = keyFn(c); if (seen.has(key)) continue; seen.add(key); out.push(c); if (out.length === k) break; }
+  return out;
+}
+function makeQuestion(type, pool, usedKeys){
+  const cand = shuffle(pool);
+  for (const v of cand) {
+    const key = type + ":" + v.s + ":" + v.a;
+    if (usedKeys.has(key)) continue;
+    let q = null;
+    if (type === "complete" && v.len >= 6 && v.len <= 45 && unique(v)) {
+      const w = words(v.t); const cut = Math.max(2, Math.floor(w.length * 0.45));
+      const head = w.slice(0, cut).join(" "), tail = w.slice(cut).join(" ");
+      const tailLen = w.length - cut;
+      let others = pool.filter(x => x !== v && x.len >= 4).map(x => { const xw = words(x.t); const k = Math.min(xw.length-1, Math.max(2, tailLen)); return xw.slice(-k).join(" "); });
+      if (others.length < 6) others = others.concat(FLAT.filter(x => x.len >= 6).slice(0, 0));
+      if (others.length < 3) others = others.concat(shuffle(FLAT).slice(0, 40).map(x => words(x.t).slice(-Math.max(2, Math.min(tailLen, x.len-1))).join(" ")));
+      const ds = pickDistractors(others, [norm(tail)], 3, norm);
+      if (ds.length === 3) q = { prompt: head, gapAfter: true, correct: clip(tail, 22), options: ds.map(d => clip(d, 22)), verse: v };
+    }
+    if ((type === "next" || type === "prev") && unique(v)) {
+      const other = get(v.s, type === "next" ? v.a + 1 : v.a - 1);
+      if (other && other.len <= 60) {
+        const exclude = new Set([v, other]);
+        let pc = pool.filter(x => !exclude.has(x));
+        if (pc.length < 3) pc = pc.concat(shuffle(FLAT).slice(0, 30));
+        const ds = pickDistractors(pc, [other.n, v.n], 3, x => x.n);
+        if (ds.length === 3) q = {
+          prompt: type === "next" ? clipEnd(v.t, 26) : clip(v.t, 26),
+          correct: clip(other.t, 18), options: ds.map(d => clip(d.t, 18)), verse: v, answerVerse: other };
+      }
+    }
+    if (type === "blank" && v.len >= 5 && v.len <= 35) {
+      const w = words(v.t);
+      const idxs = shuffle(w.map((x,i) => i).filter(i => i > 0 && isWord(w[i]) && norm(w[i]).length >= 4));
+      if (idxs.length) {
+        const i = idxs[0], target = w[i], tn = norm(target);
+        let bank = [];
+        pool.forEach(x => { if (x !== v) words(x.t).forEach(y => { if (isWord(y) && Math.abs(norm(y).length - tn.length) <= 2) bank.push(y); }); });
+        if (bank.length < 10) shuffle(FLAT).slice(0, 60).forEach(x => words(x.t).forEach(y => { if (isWord(y) && Math.abs(norm(y).length - tn.length) <= 2) bank.push(y); }));
+        const ds = pickDistractors(bank, [tn], 3, norm);
+        if (ds.length === 3) q = { prompt: w.slice(0,i).join(" "), after: w.slice(i+1).join(" "), blank: true, correct: target, options: ds, verse: v };
+      }
+    }
+    if (type === "surah" && v.len >= 5 && unique(v)) {
+      const surahsInPool = [...new Set(pool.map(x => x.s))];
+      let names = surahsInPool.filter(s => s !== v.s);
+      if (names.length < 3) { const near = []; for (let d=1; near.length < 6; d++){ if (v.s-d>=1) near.push(v.s-d); if (v.s+d<=114) near.push(v.s+d); } names = names.concat(near.filter(s => !names.includes(s) && s !== v.s)); }
+      const ds = shuffle(names).slice(0, 3);
+      q = { prompt: clip(v.t, 30), correct: "سورة " + SURAHS[v.s-1], options: ds.map(s => "سورة " + SURAHS[s-1]), verse: v };
+    }
+    if (q) { usedKeys.add(key); q.type = type; return q; }
+  }
+  return null;
+}
+function buildTest(sc, n){
+  const pool = scopeVerses(sc);
+  const multi = new Set(pool.map(v => v.s)).size > 1;
+  const weights = multi ? ["complete","complete","complete","next","next","prev","blank","blank","surah","surah"] : ["complete","complete","complete","next","next","next","prev","prev","blank","blank"];
+  const used = new Set(), out = [];
+  let guard = 0;
+  while (out.length < n && guard++ < n * 8) {
+    const t = weights[rnd(weights.length)];
+    const q = makeQuestion(t, pool, used) || makeQuestion("complete", pool, used) || makeQuestion("blank", pool, used);
+    if (!q) break;
+    const opts = shuffle([q.correct, ...q.options]);
+    q.opts = opts; q.ci = opts.indexOf(q.correct);
+    out.push(q);
+  }
+  return out;
+}
+
+/* ===================== حالة الاختبار ===================== */
+const T = { mode: "surah", surah: 3, juz: 30, count: 10, qs: [], i: 0, picked: null, right: 0, misses: [], shownAt: 0, phase: "setup" };
+
+function scopeLabel(){ return T.mode === "surah" ? "سورة " + SURAHS[T.surah-1] : "الجزء " + ar(T.juz); }
+function renderTest(){
+  const el = $("#view-test");
+  if (T.phase === "setup") {
+    el.innerHTML = `
+      <section class="card">
+        <div><h2>اختبار المحفوظ</h2><p class="muted small" style="margin:0">اختر سورة أو جزءًا من القرآن كاملًا، والأسئلة تُبنى من نص الآيات مباشرة.</p></div>
+        <div class="field"><span class="lbl">نوع الاختبار</span>
+          <div class="seg" id="mode">
+            <button type="button" id="m-surah" data-m="surah" aria-pressed="${T.mode==='surah'}">بالسورة</button>
+            <button type="button" id="m-juz" data-m="juz" aria-pressed="${T.mode==='juz'}">بالجزء</button>
+          </div>
+        </div>
+        <div class="field" ${T.mode==='surah'?'':'hidden'}><label for="sel-surah">السورة</label>
+          <select id="sel-surah">${SURAHS.map((s,i)=>`<option value="${i+1}" ${i+1===T.surah?'selected':''}>${ar(i+1)}. ${s}</option>`).join("")}</select></div>
+        <div class="field" ${T.mode==='juz'?'':'hidden'}><label for="sel-juz">الجزء</label>
+          <select id="sel-juz">${JUZ.map((x,i)=>`<option value="${i+1}" ${i+1===T.juz?'selected':''}>الجزء ${ar(i+1)} — يبدأ من ${SURAHS[x[0]-1]} ${ar(x[1])}</option>`).join("")}</select></div>
+        <div class="field"><span class="lbl">عدد الأسئلة</span>
+          <div class="seg" id="count">${[10,20,30].map(c=>`<button type="button" id="c-${c}" data-c="${c}" aria-pressed="${T.count===c}">${ar(c)} سؤالًا</button>`).join("")}</div>
+        </div>
+        <p class="note">أنواع الأسئلة: أكمل الآية، ما الآية التالية، ما الآية السابقة، الكلمة الناقصة، ومن أي سورة (في اختبار الجزء).</p>
+        <div class="row">
+          ${qStatus === "ready" ? `<button class="btn" id="start">ابدأ الاختبار</button>`
+            : qStatus === "loading" ? `<div class="loading"><span class="spin"></span>جارٍ تحميل نص المصحف…</div>`
+            : `<p class="note" style="color:var(--bad)">تعذّر تحميل نص المصحف. تحقق من اتصالك ثم أعد فتح الصفحة.</p>`}
+        </div>
+      </section>`;
+    el.querySelectorAll("#mode button").forEach(b => b.onclick = () => { T.mode = b.dataset.m; renderTest(); });
+    el.querySelectorAll("#count button").forEach(b => b.onclick = () => { T.count = +b.dataset.c; renderTest(); });
+    $("#sel-surah", el).onchange = e => T.surah = +e.target.value;
+    $("#sel-juz", el).onchange = e => T.juz = +e.target.value;
+    const st = $("#start", el); if (st) st.onclick = startTest;
+    return;
+  }
+  if (T.phase === "q") {
+    const q = T.qs[T.i];
+    const answered = T.picked !== null;
+    const promptHtml = q.blank
+      ? `${esc(q.prompt)} <span class="gap" aria-label="كلمة ناقصة"></span> ${esc(q.after)}`
+      : q.gapAfter ? `${esc(q.prompt)} <span class="gap" aria-label="أكمل"></span>` : esc(q.prompt);
+    const showRef = q.type !== "surah";
+    let explain = "";
+    if (answered) {
+      const ok = T.picked === q.ci;
+      const v = q.verse, av = q.answerVerse;
+      explain = `<div class="explain ${ok?'':'bad'}" role="status">
+        <p><strong style="color:${ok?'var(--ok)':'var(--bad)'}">${ok ? "إجابة صحيحة" : "إجابة غير صحيحة"}</strong></p>
+        ${av ? `<p class="small muted">الآية ${q.type==='next'?'التالية':'السابقة'} كاملة:</p><p class="ayah" style="font-size:1.12rem">${esc(av.t)}</p><p class="ref">سورة ${SURAHS[av.s-1]}، الآية ${ar(av.a)}</p>`
+              : `<p class="small muted">الآية كاملة:</p><p class="ayah" style="font-size:1.12rem">${esc(v.t)}</p><p class="ref">سورة ${SURAHS[v.s-1]}، الآية ${ar(v.a)}</p>`}
+      </div>`;
+    }
+    el.innerHTML = `
+      <section class="card">
+        <div class="progress">
+          <div class="row" style="justify-content:space-between"><span class="small muted">${scopeLabel()}</span><span class="small muted" style="font-variant-numeric:tabular-nums">السؤال ${ar(T.i+1)} من ${ar(T.qs.length)} · صحيح ${ar(T.right)}</span></div>
+          <div class="bar"><i style="width:${(T.i + (answered?1:0)) / T.qs.length * 100}%"></i></div>
+        </div>
+        <span class="qtype">${TYPE_NAMES[q.type]}</span>
+        <p class="ayah">${promptHtml}</p>
+        ${showRef ? `<span class="ref">سورة ${SURAHS[q.verse.s-1]}، الآية ${ar(q.verse.a)}</span>` : ""}
+        <div class="opts">${q.opts.map((o,i)=>{
+          let cls = ""; if (answered) { if (i===q.ci) cls="right"; else if (i===T.picked) cls="wrong"; }
+          return `<button class="opt ${cls}" id="opt-${i}" data-i="${i}" ${answered?'disabled':''}><b>${LETTERS[i]}</b><span>${esc(o)}</span></button>`;
+        }).join("")}</div>
+        ${explain}
+        ${answered ? `<div class="row"><button class="btn" id="nextq">${T.i+1 < T.qs.length ? "السؤال التالي" : "عرض النتيجة"}</button></div>` : ""}
+      </section>`;
+    el.querySelectorAll(".opt").forEach(b => b.onclick = () => answer(+b.dataset.i));
+    const n = $("#nextq", el); if (n) { n.onclick = nextQ; n.focus({preventScroll:true}); }
+    return;
+  }
+  if (T.phase === "done") {
+    const pct = Math.round(T.right / T.qs.length * 100);
+    const verdict = pct >= 90 ? "حفظ متين، بارك الله فيك." : pct >= 70 ? "حفظ جيد، راجع المواضع التي أخطأت فيها." : "هذا الموضع يحتاج مراجعة مركّزة قبل إعادة الاختبار.";
+    el.innerHTML = `
+      <section class="card">
+        <span class="qtype">النتيجة · ${scopeLabel()}</span>
+        <div class="score"><strong>${ar(pct)}٪</strong><span class="muted">${ar(T.right)} من ${ar(T.qs.length)}</span></div>
+        <p style="margin:0">${verdict}</p>
+        <div class="row"><button class="btn" id="again">اختبار جديد في النطاق نفسه</button><button class="btn ghost" id="setup">تغيير النطاق</button></div>
+      </section>
+      ${T.misses.length ? `<section class="card"><h3>مواضع تحتاج مراجعة</h3><div class="misses">${T.misses.map(m=>`<div class="miss"><p class="ayah" style="font-size:1.08rem">${esc(m.t)}</p><span class="ref">سورة ${SURAHS[m.s-1]}، الآية ${ar(m.a)}</span></div>`).join("")}</div></section>` : ""}`;
+    $("#again", el).onclick = startTest;
+    $("#setup", el).onclick = () => { T.phase = "setup"; renderTest(); };
+  }
+}
+function startTest(){
+  const sc = T.mode === "surah" ? { mode:"surah", value:T.surah } : { mode:"juz", value:T.juz };
+  T.qs = buildTest(sc, T.count);
+  if (!T.qs.length) return;
+  Object.assign(T, { i:0, picked:null, right:0, misses:[], phase:"q", shownAt: performance.now() });
+  renderTest(); window.scrollTo({top:0});
+}
+function answer(i){
+  const q = T.qs[T.i]; if (T.picked !== null) return;
+  T.picked = i;
+  const ok = i === q.ci, ms = Math.round(performance.now() - T.shownAt);
+  if (ok) T.right++; else T.misses.push(q.answerVerse || q.verse);
+  const v = q.answerVerse || q.verse;
+  store.data.answers.push({ s:v.s, a:v.a, j:v.j, ok, ms, t:q.type, at:Date.now() });
+  store.save();
+  renderTest();
+}
+function nextQ(){
+  if (T.i + 1 >= T.qs.length) { T.phase = "done"; renderTest(); renderMap(); window.scrollTo({top:0}); return; }
+  T.i++; T.picked = null; T.shownAt = performance.now(); renderTest(); window.scrollTo({top:0});
+}
+
+/* ===================== المتشابهات ===================== */
+const M = { mode:"surah", surah:2, juz:1, pairs:null, phase:"list", qs:[], i:0, picked:null, right:0, shownAt:0 };
+let NG = null; // فهرس العبارات الرباعية
+function ngIndex(){
+  if (NG) return NG;
+  NG = new Map();
+  FLAT.forEach((v, idx) => {
+    for (let i=0; i+4<=v.w.length; i++){ const k = v.w.slice(i,i+4).join(" "); let a = NG.get(k); if (!a) NG.set(k, a = []); if (a[a.length-1] !== idx) a.push(idx); } });
+  return NG;
+}
+function lcsMask(a, b){ // أي كلمات a موجودة في التسلسل المشترك مع b
+  const n=a.length, m=b.length, dp = Array.from({length:n+1}, () => new Uint16Array(m+1));
+  for (let i=n-1;i>=0;i--) for (let j=m-1;j>=0;j--) dp[i][j] = a[i]===b[j] ? dp[i+1][j+1]+1 : Math.max(dp[i+1][j], dp[i][j+1]);
+  const ma = new Array(n).fill(false), mb = new Array(m).fill(false); let i=0,j=0;
+  while (i<n && j<m){ if (a[i]===b[j]) { ma[i]=mb[j]=true; i++; j++; } else if (dp[i+1][j] >= dp[i][j+1]) i++; else j++; }
+  return [ma, mb, dp[0][0]];
+}
+function findPairs(sc){
+  const idx = ngIndex();
+  const pool = scopeVerses(sc).filter(v => v.len >= 4);
+  const seen = new Set(), out = [];
+  pool.forEach(v => {
+    const hits = new Map();
+    for (let i=0; i+4<=v.w.length; i++){ const a = idx.get(v.w.slice(i,i+4).join(" ")); if (!a || a.length > 40) continue; a.forEach(o => { if (o !== v.idx) hits.set(o, (hits.get(o)||0)+1); }); }
+    hits.forEach((h, o) => {
+      const u = FLAT[o]; if (u.n === v.n) return;
+      const key = Math.min(v.idx,o) + "-" + Math.max(v.idx,o); if (seen.has(key)) return;
+      const [, , common] = lcsMask(v.w, u.w);
+      const ratio = common / Math.max(v.w.length, u.w.length);
+      if (common >= 4 && ratio >= .55 && ratio < 1) { seen.add(key); out.push({ a:v, b:u, ratio }); }
+    });
+  });
+  // أقرب التشابه أولًا، ثم نحد العدد
+  return out.sort((x,y) => y.ratio - x.ratio).slice(0, 40);
+}
+function marked(v, mask){ const ow = words(v.t); const wi = v.w; let k = 0;
+  // الكلمات الأصلية والمطبعة متطابقة في العدد عادة؛ إن اختلفت نعرض النص بلا تمييز
+  if (ow.length !== wi.length) return esc(v.t);
+  return ow.map((w,i) => mask[i] ? esc(w) : `<mark>${esc(w)}</mark>`).join(" ");
+}
+function mutLabel(){ return M.mode === "surah" ? "سورة " + SURAHS[M.surah-1] : "الجزء " + ar(M.juz); }
+function buildMutQuiz(pairs){
+  const qs = [];
+  shuffle(pairs).forEach(p => {
+    if (qs.length >= 10) return;
+    const [v, u] = Math.random() < .5 ? [p.a, p.b] : [p.b, p.a];
+    // نوع ١: نقطة الافتراق
+    let pre = 0; while (pre < v.w.length && pre < u.w.length && v.w[pre] === u.w[pre]) pre++;
+    const ow = words(v.t), uw = words(u.t);
+    if (pre >= 2 && pre < ow.length && pre < uw.length && ow.length === v.w.length && uw.length === u.w.length) {
+      const tv = clip(ow.slice(pre).join(" "), 14), tu = clip(uw.slice(pre).join(" "), 14);
+      const others = pickDistractors(shuffle(FLAT).slice(0,80).filter(x => x.len > 4).map(x => clip(words(x.t).slice(-Math.min(x.len-1, ow.length-pre)).join(" "), 14)), [norm(tv), norm(tu)], 2, norm);
+      if (others.length === 2 && norm(tv) !== norm(tu)) {
+        qs.push({ kind:"split", v, u, prompt: ow.slice(0, pre).join(" "), correct: tv, opts: shuffle([tv, tu, ...others]) });
+        return;
+      }
+    }
+    // نوع ٢: أي الموضعين
+    if (v.s !== u.s) {
+      const near = shuffle([...Array(114).keys()].map(i=>i+1).filter(s => s !== v.s && s !== u.s)).slice(0, 2);
+      const correct = "سورة " + SURAHS[v.s-1];
+      qs.push({ kind:"where", v, u, prompt: v.t, correct, opts: shuffle([correct, "سورة " + SURAHS[u.s-1], ...near.map(s => "سورة " + SURAHS[s-1])]) });
+    }
+  });
+  qs.forEach(q => q.ci = q.opts.indexOf(q.correct));
+  return qs;
+}
+function renderMut(){
+  const el = $("#view-mut");
+  const missList = store.data.mutMiss.slice(-6).reverse();
+  if (M.phase === "list") {
+    const ready = qStatus === "ready";
+    if (ready && !M.pairs) M.pairs = findPairs(M.mode === "surah" ? { mode:"surah", value:M.surah } : { mode:"juz", value:M.juz });
+    const shown = (M.pairs || []).slice(0, 12);
+    el.innerHTML = `
+      <section class="card">
+        <div><h2>مختبر المتشابهات</h2><p class="muted small" style="margin:0">اختر سورة أو جزءًا، فتظهر لك الآيات التي تشبه آيات في مواضع أخرى من القرآن، والكلمات المختلفة بينها مميزة باللون.</p></div>
+        <div class="seg" id="mmode">
+          <button type="button" id="mm-surah" data-m="surah" aria-pressed="${M.mode==='surah'}">بالسورة</button>
+          <button type="button" id="mm-juz" data-m="juz" aria-pressed="${M.mode==='juz'}">بالجزء</button>
+        </div>
+        <div class="field" ${M.mode==='surah'?'':'hidden'}><label for="m-surah">السورة</label>
+          <select id="m-surah">${SURAHS.map((s,i)=>`<option value="${i+1}" ${i+1===M.surah?'selected':''}>${ar(i+1)}. ${s}</option>`).join("")}</select></div>
+        <div class="field" ${M.mode==='juz'?'':'hidden'}><label for="m-juz">الجزء</label>
+          <select id="m-juz">${JUZ.map((_,i)=>`<option value="${i+1}" ${i+1===M.juz?'selected':''}>الجزء ${ar(i+1)}</option>`).join("")}</select></div>
+        ${!ready ? (qStatus === "loading" ? `<div class="loading"><span class="spin"></span>جارٍ تحميل نص المصحف…</div>` : `<p class="note" style="color:var(--bad)">تعذّر تحميل نص المصحف. تحقق من اتصالك ثم أعد فتح الصفحة.</p>`)
+          : M.pairs.length ? `<div class="row"><button class="btn" id="m-start">اختبرني في متشابهات ${mutLabel()}</button></div>` : `<p class="note">لم أجد متشابهات قريبة في هذا النطاق. جرّب سورة أو جزءًا آخر.</p>`}
+      </section>
+      ${missList.length && ready ? `<section class="card"><h3>متشابهات تلتبس عليك</h3>${missList.map(k => { const [x,y] = k.split("|").map(s => { const [ss,aa] = s.split(":").map(Number); return get(ss,aa); }); if (!x||!y) return ""; const [mx,my] = lcsMask(x.w, y.w); return pairHtml(x,y,mx,my); }).join("")}</section>` : ""}
+      ${shown.length ? `<section class="card"><h3>متشابهات ${mutLabel()} · ${ar(M.pairs.length)} موضعًا</h3>${shown.map(p => { const [ma, mb] = lcsMask(p.a.w, p.b.w); return pairHtml(p.a, p.b, ma, mb); }).join("")}</section>` : ""}`;
+    el.querySelectorAll("#mmode button").forEach(b => b.onclick = () => { M.mode = b.dataset.m; M.pairs = null; renderMut(); });
+    $("#m-surah", el).onchange = e => { M.surah = +e.target.value; M.pairs = null; renderMut(); };
+    $("#m-juz", el).onchange = e => { M.juz = +e.target.value; M.pairs = null; renderMut(); };
+    const st = $("#m-start", el); if (st) st.onclick = () => { M.qs = buildMutQuiz(M.pairs); if (!M.qs.length) return; Object.assign(M, { phase:"q", i:0, picked:null, right:0, shownAt: performance.now() }); renderMut(); window.scrollTo({top:0}); };
+    return;
+  }
+  if (M.phase === "q") {
+    const q = M.qs[M.i], answered = M.picked !== null;
+    let explain = "";
+    if (answered) {
+      const ok = M.picked === q.ci; const [ma, mb] = lcsMask(q.v.w, q.u.w);
+      explain = `<div class="explain ${ok?'':'bad'}" role="status"><p><strong style="color:${ok?'var(--ok)':'var(--bad)'}">${ok ? "إجابة صحيحة" : "إجابة غير صحيحة"}</strong></p><p class="small muted">قارن بين الموضعين، والفرق مميز باللون:</p>${pairHtml(q.v, q.u, ma, mb)}</div>`;
+    }
+    el.innerHTML = `
+      <section class="card">
+        <div class="progress">
+          <div class="row" style="justify-content:space-between"><span class="small muted">متشابهات ${mutLabel()}</span><span class="small muted">السؤال ${ar(M.i+1)} من ${ar(M.qs.length)} · صحيح ${ar(M.right)}</span></div>
+          <div class="bar"><i style="width:${(M.i + (answered?1:0)) / M.qs.length * 100}%"></i></div>
+        </div>
+        <span class="qtype">${q.kind === "split" ? "أين يفترق الموضعان؟" : "في أي سورة وردت هذه الصيغة؟"}</span>
+        ${q.kind === "split" ? `<p class="small muted" style="margin:0">في سورة ${SURAHS[q.v.s-1]}، الآية ${ar(q.v.a)}، كيف تكمل:</p><p class="ayah">${esc(q.prompt)} <span class="gap"></span></p>` : `<p class="ayah">${esc(clip(q.prompt, 30))}</p>`}
+        <div class="opts">${q.opts.map((o,i) => { let cls=""; if (answered){ if (i===q.ci) cls="right"; else if (i===M.picked) cls="wrong"; } return `<button class="opt ${cls}" id="mopt-${i}" data-i="${i}" ${answered?'disabled':''}><b>${LETTERS[i]}</b><span>${esc(o)}</span></button>`; }).join("")}</div>
+        ${explain}
+        ${answered ? `<div class="row"><button class="btn" id="m-next">${M.i+1 < M.qs.length ? "السؤال التالي" : "عرض النتيجة"}</button></div>` : ""}
+      </section>`;
+    el.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+      if (M.picked !== null) return; M.picked = +b.dataset.i;
+      const ok = M.picked === q.ci; if (ok) M.right++;
+      else { const k = q.v.s+":"+q.v.a+"|"+q.u.s+":"+q.u.a; store.data.mutMiss = store.data.mutMiss.filter(x => x !== k).concat(k).slice(-50); }
+      store.data.answers.push({ s:q.v.s, a:q.v.a, j:q.v.j, ok, ms: Math.round(performance.now() - M.shownAt), t:"mut", at: Date.now() });
+      store.save(); renderMut();
+    });
+    const n = $("#m-next", el); if (n) { n.focus({preventScroll:true}); n.onclick = () => { if (M.i+1 >= M.qs.length) { M.phase = "done"; renderMut(); renderMap(); } else { M.i++; M.picked = null; M.shownAt = performance.now(); renderMut(); } window.scrollTo({top:0}); }; }
+    return;
+  }
+  const pct = Math.round(M.right / M.qs.length * 100);
+  el.innerHTML = `<section class="card"><span class="qtype">النتيجة · متشابهات ${mutLabel()}</span>
+    <div class="score"><strong>${ar(pct)}٪</strong><span class="muted">${ar(M.right)} من ${ar(M.qs.length)}</span></div>
+    <p style="margin:0">${pct >= 80 ? "تميّز واضح بين المواضع المتشابهة." : "المواضع التي أخطأت فيها حُفظت في قائمة «متشابهات تلتبس عليك» لتراجعها."}</p>
+    <div class="row"><button class="btn" id="m-again">اختبار جديد</button><button class="btn ghost" id="m-back">رجوع للمتشابهات</button></div></section>`;
+  $("#m-again", el).onclick = () => { M.qs = buildMutQuiz(M.pairs); Object.assign(M, { phase:"q", i:0, picked:null, right:0, shownAt: performance.now() }); renderMut(); };
+  $("#m-back", el).onclick = () => { M.phase = "list"; renderMut(); };
+}
+function pairHtml(a, b, ma, mb){
+  return `<div class="pair"><div class="twin"><p class="ayah">${marked(a, ma)}</p><span class="ref">سورة ${SURAHS[a.s-1]}، الآية ${ar(a.a)}</span></div>
+    <span class="vs">يشبهها</span>
+    <div class="twin"><p class="ayah">${marked(b, mb)}</p><span class="ref">سورة ${SURAHS[b.s-1]}، الآية ${ar(b.a)}</span></div></div>`;
+}
+
+/* ===================== التجويد ===================== */
+const YT = "https://www.youtube.com/watch?v=";
+const PLAYLIST = { title:"أحكام التجويد للمبتدئين برواية حفص عن عاصم", url:"https://www.youtube.com/playlist?list=PL3PQ9LuwxoHMKKqT18N9ywGxYA5f6dz2p" };
+const LESSONS = [
+ { id:"noon", title:"النون الساكنة والتنوين", desc:"أربعة أحكام بحسب الحرف الذي بعدها.",
+   rules:[
+    { h:"الإظهار الحلقي", letters:"ء هـ ع ح غ خ", p:"تُنطق النون واضحة بلا غنة زائدة إذا جاء بعدها حرف من حروف الحلق.", ex:["مَنْ آمَنَ","مِنْ خَيْرٍ","عَذَابٌ أَلِيمٌ"] },
+    { h:"الإدغام", letters:"ي ر م ل و ن", p:"تدخل النون في الحرف الذي بعدها. بغنة مع حروف «ينمو»، وبلا غنة مع اللام والراء. ولا إدغام إذا اجتمعا في كلمة واحدة مثل «الدُّنْيَا».", ex:["مَن يَقُولُ","مِن نِّعْمَةٍ","مِن رَّبِّهِمْ","هُدًى لِّلْمُتَّقِينَ"] },
+    { h:"الإقلاب", letters:"ب", p:"تُقلب النون ميمًا مخفاة بغنة إذا جاء بعدها حرف الباء.", ex:["مِنۢ بَعْدِ","أَنۢبِئْهُم"] },
+    { h:"الإخفاء الحقيقي", letters:"باقي الحروف الخمسة عشر", p:"تُنطق النون بين الإظهار والإدغام مع غنة، واللسان لا يلتصق بموضع النون.", ex:["مِن قَبْلُ","أَنتُمْ","مِن شَرِّ"] } ],
+   tip:"خطأ شائع: إظهار النون في الإخفاء كأنها نون عادية. اجعل اللسان يستعد للحرف التالي وأنت تُخرج الغنة.",
+   videos:[ {t:"أسهل طريقة لفهم أحكام النون الساكنة والتنوين في أقل من عشر دقائق", id:"DjKe4Xeeu3c"}, {t:"أحكام النون الساكنة والتنوين بشكل مبسط", id:"BWpFofORR_M"} ],
+   quiz:[ {q:"ما حكم النون في «مِنْ عِلْمٍ»؟", o:["إظهار حلقي","إخفاء","إدغام بغنة"], c:0, e:"العين من حروف الحلق، فتُظهر النون."},
+          {q:"ما حكم النون في «مِن رَّبِّهِمْ»؟", o:["إدغام بغنة","إدغام بلا غنة","إقلاب"], c:1, e:"الراء من حرفي الإدغام بلا غنة (اللام والراء)."},
+          {q:"ما حكم النون في «يَنصُرُكُمُ»؟", o:["إظهار","إقلاب","إخفاء حقيقي"], c:2, e:"الصاد من حروف الإخفاء الخمسة عشر."} ] },
+ { id:"meem", title:"الميم الساكنة", desc:"إخفاء وإدغام وإظهار شفوي.",
+   rules:[
+    { h:"الإخفاء الشفوي", letters:"ب", p:"تُخفى الميم مع غنة إذا جاء بعدها الباء، مع انطباق خفيف للشفتين.", ex:["تَرْمِيهِم بِحِجَارَةٍ","وَهُم بِالْآخِرَةِ"] },
+    { h:"إدغام المثلين الصغير", letters:"م", p:"تُدغم الميم في الميم التي بعدها مع غنة كاملة.", ex:["لَهُم مَّا يَشَاءُونَ","كَم مِّن فِئَةٍ"] },
+    { h:"الإظهار الشفوي", letters:"باقي الحروف", p:"تُنطق الميم واضحة. ويكون الإظهار أشد عند الواو والفاء لقرب مخرجهما.", ex:["هُمْ فِيهَا","عَلَيْهِمْ وَلَا","أَمْ لَمْ"] } ],
+   tip:"انتبه عند الواو والفاء بعد الميم الساكنة، فكثير من القراء يُخفون الميم هنا خطأً.",
+   videos:[ {t:"تعلم كل أحكام الميم الساكنة في عشر دقائق", id:"S-vH7vNnhiE"} ],
+   quiz:[ {q:"ما حكم الميم في «تَرْمِيهِم بِحِجَارَةٍ»؟", o:["إظهار شفوي","إخفاء شفوي","إدغام"], c:1, e:"جاءت الباء بعد الميم الساكنة."},
+          {q:"عند أي حرفين يكون الإظهار الشفوي أشد؟", o:["الواو والفاء","الباء والميم","اللام والراء"], c:0, e:"لقرب مخرج الواو والفاء من مخرج الميم."},
+          {q:"ما حكم الميم في «لَهُم مَّا»؟", o:["إخفاء شفوي","إظهار شفوي","إدغام مثلين صغير"], c:2, e:"ميم ساكنة بعدها ميم متحركة."} ] },
+ { id:"shadda", title:"النون والميم المشددتان", desc:"غنة واجبة بمقدار حركتين.",
+   rules:[ { h:"الغنة", letters:"نّ مّ", p:"كل نون أو ميم مشددة تُنطق بغنة كاملة مقدارها حركتان.", ex:["إِنَّ","ثُمَّ","مِنَ النَّاسِ","فَأَمَّا"] } ],
+   tip:"مقدار الحركة تقريبًا زمن قبض الإصبع أو بسطه بسرعة معتدلة. لا تُطل الغنة ولا تقصّرها.",
+   videos:[ {t:"النون والميم المشددتين ومراتب الغنة وأمثلة عليهما", id:"FZTPjtXDWo0"} ],
+   quiz:[ {q:"كم مقدار الغنة في «ثُمَّ»؟", o:["حركة واحدة","حركتان","أربع حركات"], c:1, e:"غنة النون والميم المشددتين حركتان."},
+          {q:"أي الكلمات فيها غنة واجبة؟", o:["قَالَ","إِنَّ","يَقُولُ"], c:1, e:"النون المشددة في «إِنَّ»."} ] },
+ { id:"madd", title:"المدود", desc:"الطبيعي والفرعي ومقدار كل مد.",
+   rules:[
+    { h:"المد الطبيعي · حركتان", letters:"ا و ي", p:"حرف مد ليس بعده همز ولا سكون.", ex:["قَالَ","يَقُولُ","قِيلَ"] },
+    { h:"المتصل · ٤ أو ٥ حركات", letters:"واجب", p:"حرف المد وبعده همزة في الكلمة نفسها.", ex:["جَاءَ","السَّمَاءِ","سُوءَ"] },
+    { h:"المنفصل · ٤ أو ٥ حركات", letters:"جائز", p:"حرف المد في آخر كلمة والهمزة في أول الكلمة التالية، وهذا من طريق الشاطبية.", ex:["إِنَّا أَعْطَيْنَاكَ","يَا أَيُّهَا"] },
+    { h:"العارض للسكون · ٢ أو ٤ أو ٦", letters:"عند الوقف", p:"حرف مد بعده حرف سكونه بسبب الوقف فقط.", ex:["الْعَالَمِينْ","نَسْتَعِينْ"] },
+    { h:"اللازم · ٦ حركات", letters:"لازم", p:"حرف مد بعده سكون أصلي ثابت وصلًا ووقفًا، ومنه فواتح بعض السور.", ex:["الضَّالِّينَ","الْحَاقَّةُ","الم"] },
+    { h:"البدل والعوض والصلة", letters:"فروع", p:"البدل: همزة بعدها حرف مد (حركتان). العوض: الوقف على تنوين الفتح ألفًا. الصلة: مد هاء الضمير بين متحركين، وتصير ٤ أو ٥ إذا جاء بعدها همز.", ex:["آمَنُوا","حَكِيمَا","إِنَّهُۥ كَانَ"] } ],
+   tip:"ثبّت مقدارًا واحدًا للمد المتصل والمنفصل طوال تلاوتك، فالتنقل بين ٤ و٥ في الجلسة نفسها يُعد خللًا في الأداء.",
+   videos:[ {t:"تعلم كل أحكام المدود في عشرين دقيقة", id:"NMEopSYK9Ik"}, {t:"شرح المدود: المد الطبيعي وملحقاته", id:"s-G1e9LGjUo"} ],
+   quiz:[ {q:"ما نوع المد في «جَاءَ»؟", o:["منفصل","متصل","طبيعي"], c:1, e:"الهمزة بعد حرف المد في الكلمة نفسها."},
+          {q:"ما نوع المد في «يَا أَيُّهَا»؟", o:["منفصل","لازم","بدل"], c:0, e:"حرف المد آخر كلمة والهمزة أول الكلمة التالية."},
+          {q:"كم مقدار المد في «الضَّالِّينَ»؟", o:["حركتان","أربع حركات","ست حركات"], c:2, e:"مد لازم، وبعد حرف المد سكون أصلي (اللام المشددة)."} ] },
+ { id:"qalqala", title:"القلقلة", desc:"حروف «قطب جد» ومراتبها.",
+   rules:[
+    { h:"الحروف", letters:"ق ط ب ج د", p:"اضطراب في المخرج عند نطق الحرف ساكنًا حتى يُسمع له نبرة قوية.", ex:["يَقْطَعُونَ","يَجْعَلُونَ"] },
+    { h:"المراتب", letters:"صغرى · كبرى · أكبر", p:"صغرى إذا كان الحرف ساكنًا وسط الكلمة، وكبرى عند الوقف عليه، وأكبر عند الوقف على حرف مشدد.", ex:["الْفَلَقْ","مُحِيطْ","الْحَقّ","وَتَبّ"] } ],
+   tip:"لا تجعل القلقلة حركة. القلقلة نبرة للحرف الساكن، وإضافة صوت فتحة أو كسرة بعدها خطأ.",
+   videos:[ {t:"شرح القلقلة · د. أيمن رشدي سويد", id:"jL956EGLygs"} ],
+   quiz:[ {q:"أي هذه الحروف من حروف القلقلة؟", o:["ق","ك","ت"], c:0, e:"حروف القلقلة مجموعة في «قطب جد»."},
+          {q:"الوقف على «الْفَلَقِ» قلقلة:", o:["صغرى","كبرى","لا قلقلة"], c:1, e:"الحرف سكن بسبب الوقف في آخر الكلمة."} ] },
+ { id:"tafkheem", title:"التفخيم والترقيق", desc:"الراء ولام لفظ الجلالة والألف.",
+   rules:[
+    { h:"حروف التفخيم الدائم", letters:"خص ضغط قظ", p:"هذه الحروف تُفخم دائمًا، وأعلاها تفخيمًا المفتوح بعده ألف.", ex:["قَالَ","طَابَ","صِرَاطَ"] },
+    { h:"الراء المفخمة", letters:"تفخيم", p:"إذا كانت مفتوحة أو مضمومة، أو ساكنة بعد فتح أو ضم، أو بعد كسر عارض، أو بعد كسر أصلي وبعدها حرف استعلاء في الكلمة نفسها.", ex:["رَبِّ","مَرْيَمَ","ارْجِعُوا","قِرْطَاسٍ"] },
+    { h:"الراء المرققة", letters:"ترقيق", p:"إذا كانت مكسورة، أو ساكنة بعد كسر أصلي وليس بعدها حرف استعلاء، أو ساكنة عند الوقف بعد ياء ساكنة.", ex:["رِجَالٌ","فِرْعَوْنَ","خَبِيرْ"] },
+    { h:"لام لفظ الجلالة والألف", letters:"تتبع ما قبلها", p:"لام لفظ الجلالة تُفخم بعد فتح أو ضم وتُرقق بعد كسر. والألف تتبع الحرف الذي قبلها تفخيمًا وترقيقًا.", ex:["قَالَ اللَّهُ","رَسُولُ اللَّهِ","بِسْمِ اللَّهِ"] } ],
+   tip:"لا تفخم الحروف المرققة إذا جاورت حرفًا مفخمًا، مثل اللام في «وَلْيَتَلَطَّفْ».",
+   videos:[ {t:"حالات الراء بين التفخيم والترقيق عند حفص عن عاصم", id:"C7wFGpXgOFw"}, {t:"أحكام التفخيم والترقيق: الألف، لام لفظ الجلالة، والراء", id:"ZOg5UOxgTcs"} ],
+   quiz:[ {q:"ما حكم الراء في «فِرْعَوْنَ»؟", o:["تفخيم","ترقيق"], c:1, e:"راء ساكنة بعد كسر أصلي وليس بعدها حرف استعلاء."},
+          {q:"ما حكم الراء في «قِرْطَاسٍ»؟", o:["تفخيم","ترقيق"], c:0, e:"بعدها حرف استعلاء (الطاء) في الكلمة نفسها."},
+          {q:"ما حكم اللام في «بِسْمِ اللَّهِ»؟", o:["تفخيم","ترقيق"], c:1, e:"لام لفظ الجلالة بعد كسر تُرقق."} ] },
+ { id:"lam", title:"اللام الشمسية والقمرية", desc:"متى تظهر لام «ال» ومتى تُدغم.",
+   rules:[
+    { h:"اللام القمرية", letters:"ابغ حجك وخف عقيمه", p:"تُنطق اللام ساكنة واضحة إذا جاء بعدها حرف من هذه الحروف.", ex:["الْقَمَرِ","الْحَمْدُ","الْكِتَابُ"] },
+    { h:"اللام الشمسية", letters:"باقي الحروف", p:"تُكتب اللام ولا تُنطق، ويُشدد الحرف الذي بعدها.", ex:["الشَّمْسِ","النَّاسِ","الرَّحْمَٰنِ"] } ],
+   tip:"علامة الشمسية في المصحف: لا سكون على اللام، وشدة على الحرف الذي بعدها.",
+   videos:[ {t:"اللام الشمسية واللام القمرية، وسبب تسميتهما بهذا الاسم", id:"J70bo8aSE_Y"} ],
+   quiz:[ {q:"اللام في «النَّاسِ»:", o:["قمرية","شمسية"], c:1, e:"النون من الحروف الشمسية، والحرف مشدد."},
+          {q:"اللام في «الْكِتَابُ»:", o:["قمرية","شمسية"], c:0, e:"الكاف من حروف «ابغ حجك وخف عقيمه»."} ] }
+];
+const L = { open:null, ans:{} };
+function renderTaj(){
+  const el = $("#view-taj");
+  const done = store.data.lessons || {};
+  if (!L.open) {
+    const count = LESSONS.filter(l => done[l.id]).length;
+    el.innerHTML = `
+      <section class="card">
+        <div><h2>دروس التجويد</h2><p class="muted small" style="margin:0">دروس مختصرة برواية حفص عن عاصم، لكل درس أمثلة وتمرين قصير وفيديو شرح.</p></div>
+        <div class="progress"><span class="small muted">أنهيت ${ar(count)} من ${ar(LESSONS.length)} دروس</span><div class="bar"><i style="width:${count/LESSONS.length*100}%"></i></div></div>
+      </section>
+      <div class="lessons">${LESSONS.map((l,i)=>`<button class="lesson" id="les-${l.id}" data-id="${l.id}"><span class="n">الدرس ${ar(i+1)}${done[l.id] ? " · أنهيته" : ""}</span><h3>${l.title}</h3><p>${l.desc}</p></button>`).join("")}</div>
+      <a class="vid" href="${PLAYLIST.url}" target="_blank" rel="noopener"><i></i><span>${PLAYLIST.title}<small>سلسلة كاملة على يوتيوب</small></span></a>`;
+    el.querySelectorAll(".lesson").forEach(b => b.onclick = () => { L.open = b.dataset.id; L.ans = {}; renderTaj(); window.scrollTo({top:0}); });
+    return;
+  }
+  const l = LESSONS.find(x => x.id === L.open), i = LESSONS.indexOf(l);
+  const allAnswered = l.quiz.every((_,k) => L.ans[k] !== undefined);
+  const right = l.quiz.filter((q,k) => L.ans[k] === q.c).length;
+  el.innerHTML = `
+    <div class="row"><button class="btn ghost" id="les-back">كل الدروس</button></div>
+    <section class="card">
+      <div><span class="qtype">الدرس ${ar(i+1)}</span><h2>${l.title}</h2></div>
+      ${l.rules.map(r => `<div class="rule"><h3>${r.h}</h3><span class="letters">${r.letters}</span><p>${r.p}</p><div class="ex">${r.ex.map(e=>`<span>${e}</span>`).join("")}</div></div>`).join("")}
+      <p class="tip">${l.tip}</p>
+    </section>
+    <section class="card"><h3>شاهد الشرح</h3>
+      ${l.videos.map(v => `<a class="vid" href="${YT + v.id}" target="_blank" rel="noopener"><i></i><span>${v.t}<small>يفتح في يوتيوب</small></span></a>`).join("")}
+    </section>
+    <section class="card"><h3>تمرين قصير</h3>
+      ${l.quiz.map((q,k) => { const a = L.ans[k]; return `<div class="rule"><p>${q.q}</p><div class="opts">${q.o.map((o,j)=>{ let cls=""; if (a!==undefined){ if (j===q.c) cls="right"; else if (j===a) cls="wrong"; } return `<button class="opt ${cls}" id="lq-${k}-${j}" data-k="${k}" data-j="${j}" ${a!==undefined?'disabled':''}><b>${LETTERS[j]}</b><span>${o}</span></button>`; }).join("")}</div>${a!==undefined ? `<div class="explain ${a===q.c?'':'bad'}"><p>${q.e}</p></div>` : ""}</div>`; }).join("")}
+      ${allAnswered ? `<p style="margin:0"><strong>${ar(right)} من ${ar(l.quiz.length)}</strong> ${right === l.quiz.length ? "· أحسنت، سُجّل الدرس منتهيًا." : "· أعد قراءة الدرس ثم جرّب مرة أخرى."}</p><div class="row">${right < l.quiz.length ? `<button class="btn" id="les-retry">أعد التمرين</button>` : ""}${i+1 < LESSONS.length ? `<button class="btn ${right < l.quiz.length ? 'ghost' : ''}" id="les-next">الدرس التالي</button>` : ""}</div>` : ""}
+    </section>`;
+  $("#les-back", el).onclick = () => { L.open = null; renderTaj(); window.scrollTo({top:0}); };
+  el.querySelectorAll(".opt").forEach(b => b.onclick = () => {
+    const k = +b.dataset.k; if (L.ans[k] !== undefined) return; L.ans[k] = +b.dataset.j;
+    if (l.quiz.every((q,x) => L.ans[x] === q.c)) { store.data.lessons = Object.assign({}, store.data.lessons, { [l.id]: Date.now() }); store.save(); }
+    renderTaj();
+  });
+  const rt = $("#les-retry", el); if (rt) rt.onclick = () => { L.ans = {}; renderTaj(); };
+  const nx = $("#les-next", el); if (nx) nx.onclick = () => { L.open = LESSONS[i+1].id; L.ans = {}; renderTaj(); window.scrollTo({top:0}); };
+}
+
+/* ===================== خريطة الحفظ ===================== */
+const SLOW_MS = 15000;
+function juzStats(){
+  const st = Array.from({length:31}, () => ({ n:0, bad:0, slow:0 }));
+  store.data.answers.forEach(x => { const s = st[x.j]; if (!s) return; s.n++; if (!x.ok) s.bad++; else if (x.ms > SLOW_MS) s.slow++; });
+  return st;
+}
+function renderMap(){
+  const el = $("#view-map");
+  const st = juzStats();
+  const any = store.data.answers.length > 0;
+  const cells = Array.from({length:30}, (_,k) => {
+    const j = k+1, s = st[j];
+    let cls = "c-none", label = "لم يُختبر";
+    if (s.n) {
+      const score = 1 - (s.bad + s.slow*0.5) / s.n;
+      cls = score >= .9 ? "c-good" : score >= .7 ? "c-mid" : "c-weak";
+      label = ar(Math.round(score*100)) + "٪";
+    }
+    return `<button class="cell ${cls}" id="cell-${j}" data-j="${j}" aria-label="الجزء ${j}: ${label}"><b>${ar(j)}</b><small>${label}</small></button>`;
+  }).join("");
+  // أضعف المواضع: آيات أُخطئ فيها أكثر من غيرها
+  const tally = new Map();
+  store.data.answers.forEach(x => { if (x.ok && x.ms <= SLOW_MS) return; const k = x.s+":"+x.a; tally.set(k, (tally.get(k)||0) + (x.ok ? .5 : 1)); });
+  const weak = [...tally.entries()].sort((a,b)=>b[1]-a[1]).slice(0,6).map(([k]) => k.split(":").map(Number));
+  el.innerHTML = `
+    <section class="card">
+      <div><h2>خريطة الحفظ</h2><p class="muted small" style="margin:0">كل خانة جزء من القرآن. يتغير لونها حسب أخطائك وترددك في الاختبارات، والتردد هو الإجابة الصحيحة التي استغرقت أكثر من ${ar(15)} ثانية.</p></div>
+      <div class="legend"><span><i class="c-good" style="border:0"></i>ثابت</span><span><i class="c-mid" style="border:0"></i>يحتاج تثبيتًا</span><span><i class="c-weak" style="border:0"></i>ضعيف</span><span><i style="background:var(--bg);border:1px solid var(--line)"></i>لم يُختبر</span></div>
+      <div class="heat">${cells}</div>
+      ${any ? "" : `<p class="note">ابدأ باختبار أي جزء لتظهر ألوانه هنا. اضغط على أي خانة لتختبر نفسك فيها مباشرة.</p>`}
+    </section>
+    ${weak.length && Q ? `<section class="card"><h3>أضعف المواضع عندك</h3><div class="misses">${weak.map(([s,a])=>{ const t = Q[s] && Q[s][a-1]; return t ? `<div class="miss"><p class="ayah" style="font-size:1.08rem">${esc(t)}</p><span class="ref">سورة ${SURAHS[s-1]}، الآية ${ar(a)} · الجزء ${ar(juzOf(s,a))}</span></div>` : ""; }).join("")}</div></section>` : ""}`;
+  el.querySelectorAll(".cell").forEach(c => c.onclick = () => { T.mode = "juz"; T.juz = +c.dataset.j; T.phase = "setup"; show("test"); renderTest(); });
+}
+
+/* ===================== جدولي ===================== */
+// المراجعة بوحدة ربع الجزء (القرآن = ١٢٠ وحدة)، والحفظ الجديد بالآيات
+const AMOUNTS = [[1,"ربع جزء"],[2,"نصف جزء"],[4,"جزء"],[8,"جزءان"],[12,"ثلاثة أجزاء"],[16,"أربعة أجزاء"],[20,"خمسة أجزاء"]];
+const HIFZ_AMOUNTS = [[1,"نصف وجه"],[2,"وجه كامل"],[3,"وجه ونصف"],[4,"وجهان"]];
+// صفحة بداية كل سورة في مصحف المدينة (٦٠٤ صفحات)
+const SURAH_PAGE = [1,2,50,77,106,128,151,177,187,208,221,235,249,255,262,267,282,293,305,312,322,332,342,350,359,367,377,385,396,404,411,415,418,428,434,440,446,453,458,467,477,483,489,496,499,502,507,511,515,518,520,523,526,528,531,534,537,542,545,549,551,553,554,556,558,560,562,564,566,568,570,572,574,575,577,578,580,582,583,585,586,587,587,589,590,591,591,592,593,594,595,595,596,596,597,597,598,598,599,599,600,600,601,601,601,602,602,602,603,603,603,604,604,604];
+const PAGES = 604;
+const AYAH_COUNTS = [7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6];
+const INTENTS = ["ابتغاء وجه الله ونيل رضاه","أن أكون من أهل القرآن وخاصته","أن أعمل بما أحفظ","أن أقوم به في صلاتي وفي الليل","أن يكون حجة لي وشفيعًا يوم القيامة","أن يُلبس والداي تاج الوقار","أن أعلّمه غيري"];
+const HIFZ_STEPS = ["استمع للمقطع من قارئ متقن ثلاث مرات","كرّر كل آية حتى تحفظها","سمّع المقطع كاملًا غيبًا دون نظر","اربطه بحفظ أمس وسمّعهما معًا"];
+const MILESTONES = [[3,"ثلاثة أيام"],[7,"أسبوع كامل"],[14,"أسبوعان"],[21,"٢١ يومًا"],[30,"شهر كامل"],[40,"أربعون يومًا"],[60,"شهران"],[100,"مئة يوم"]];
+const amountName = n => (AMOUNTS.find(a => a[0] === n) || [0, ar(n/4) + " جزء"])[1];
+const ayatName = n => n <= 10 ? `${ar(n)} آيات` : `${ar(n)} آية`;
+const rangeUnits = r => (r.end - r.start + 1) * 4;
+const midnight = d => { const x = new Date(d); x.setHours(0,0,0,0); return x; };
+const shortDate = d => `${ar(d.getDate())}/${ar(d.getMonth()+1)}`;
+function portionLabel(pos, n, r){
+  const R = rangeUnits(r);
+  const p = (r.start - 1) * 4 + ((pos % R) + R) % R;
+  const j = Math.floor(p/4) + 1, q = p % 4;
+  if (n === 1) return `الربع ${ORD[q]} من الجزء ${ar(j)}`;
+  if (n === 2) return `النصف ${q < 2 ? "الأول" : "الثاني"} من الجزء ${ar(j)}`;
+  if (n === 4) return `الجزء ${ar(j)}`;
+  const span = Math.min(n / 4, r.end - r.start + 1), js = [];
+  for (let i = 0; i < span; i++) js.push(((j - r.start + i) % (r.end - r.start + 1)) + r.start);
+  if (js.length === 1) return `الجزء ${ar(js[0])}`;
+  if (js.length === 2) return `الجزءان ${ar(js[0])} و${ar(js[1])}`;
+  const seq = js.every((x, i) => i === 0 || x === js[i-1] + 1);
+  return seq ? `الأجزاء ${ar(js[0])}–${ar(js[js.length-1])}` : `الأجزاء ${js.map(ar).join(" و")}`;
+}
+const partUnit = n => n >= 4 ? 4 : 1;
+const halfAt = (k, dir) => ({ page: dir === "bwd" ? PAGES - Math.floor(k/2) : 1 + Math.floor(k/2), half: k % 2 });
+const kOfPage = (page, dir) => dir === "bwd" ? (PAGES - page) * 2 : (page - 1) * 2;
+function surahsOnPage(page){
+  const starts = []; SURAH_PAGE.forEach((p, i) => { if (p === page) starts.push(i + 1); });
+  if (starts.length) return starts;
+  let s = 1; SURAH_PAGE.forEach((p, i) => { if (p <= page) s = i + 1; }); return [s];
+}
+function hifzPortion(k, n, dir){
+  if (k == null || k >= PAGES * 2) return null;
+  const end = Math.min(k + n, PAGES * 2), pages = [];
+  for (let x = k; x < end; x++){ const hp = halfAt(x, dir); let g = pages.find(p => p.page === hp.page); if (!g) pages.push(g = { page: hp.page, halves: [] }); g.halves.push(hp.half); }
+  const label = pages.map(g => g.halves.length === 2 ? `الوجه ${ar(g.page)}` : `النصف ${g.halves[0] === 0 ? "الأول" : "الثاني"} من الوجه ${ar(g.page)}`).join(" و");
+  const ss = surahsOnPage(pages[0].page);
+  return { k, n: end - k, s: ss[0], label, surahs: "سورة " + ss.map(s => SURAHS[s-1]).join(" و"), next: end < PAGES * 2 ? end : null };
+}
+
+/* --- النموذج المحرر --- */
+const P = { editing:false, intents:[INTENTS[0], INTENTS[2], INTENTS[3]], custom:"",
+  r:{ amount:4, days:[0,1,2,3,4,6], start:1, end:5 },
+  h:{ on:true, amount:2, days:[0,1,2,3,4], dir:"bwd", page:604 } };
+function migrate(plan){
+  if (plan.review) {
+    if (plan.hifz && plan.hifz.k === undefined) { // من الحفظ بالآيات إلى الحفظ بالأوجه
+      const dir = plan.hifz.dir || "bwd", s = plan.hifz.ptr ? plan.hifz.ptr.s : 114;
+      plan.hifz.k = kOfPage(SURAH_PAGE[s-1], dir); plan.hifz.amount = 2; delete plan.hifz.ptr;
+    }
+    return plan;
+  }
+  // جدول من الإصدار السابق
+  const off = plan.end ? 0 : (plan.start - 1) * 4;
+  return { intents: plan.why ? [plan.why] : [], created: plan.created,
+    review: { amount: plan.amount, days: plan.days, start: plan.start, end: plan.end || 30, pos: plan.pos - off, log: plan.log || {} },
+    hifz: { on:false, amount:2, days:[0,1,2,3,4], dir:"bwd", k:0, log:{} },
+    excuse: {}, today: null };
+}
+function planDefaults(){
+  const p = store.data.plan; if (!p) return;
+  P.intents = p.intents.slice(); P.custom = "";
+  P.r = { amount:p.review.amount, days:p.review.days.slice(), start:p.review.start, end:p.review.end };
+  P.h = { on:p.hifz.on, amount:p.hifz.amount, days:p.hifz.days.slice(), dir:p.hifz.dir, page: p.hifz.k != null && p.hifz.k < PAGES*2 ? halfAt(p.hifz.k, p.hifz.dir).page : (p.hifz.dir === "bwd" ? PAGES : 1) };
+}
+
+/* --- حالة الأيام --- */
+function tracksDue(plan, date){ const wd = date.getDay(), t = []; if (plan.review.days.includes(wd)) t.push("review"); if (plan.hifz.on && plan.hifz.k != null && plan.hifz.days.includes(wd) && (!plan.hifz.since || date >= midnight(plan.hifz.since))) t.push("hifz"); return t; }
+function dayState(plan, date){
+  const k = dayKey(date), today = midnight(new Date());
+  if (plan.excuse && plan.excuse[k]) return "excused";
+  const r = plan.review.log[k], h = plan.hifz.log[k];
+  const due = tracksDue(plan, date);
+  const doneN = (r && r.n > 0 ? 1 : 0) + (h ? 1 : 0);
+  if (doneN && doneN >= due.length) return "done";
+  if (date > today) return due.length ? "future" : "rest";
+  if (date < midnight(plan.created)) return doneN ? "partial" : "before";
+  if (!due.length) return "rest";
+  if (date.getTime() === today.getTime()) return doneN ? "partialtoday" : "today";
+  return doneN ? "partial" : "miss";
+}
+function streak(plan){
+  let n = 0, date = midnight(new Date());
+  if (["today","partialtoday"].includes(dayState(plan, date))) date = addDays(date, -1);
+  for (let i = 0; i < 800; i++){
+    const s = dayState(plan, date);
+    if (s === "done") n++;
+    else if (s === "miss" || s === "partial" || s === "before") break;
+    date = addDays(date, -1);
+  }
+  return n;
+}
+function commitment(plan){
+  let due = 0, kept = 0, date = addDays(midnight(new Date()), -1);
+  for (let i = 0; i < 28; i++){
+    const s = dayState(plan, date);
+    if (s === "done") { due++; kept++; } else if (s === "partial") { due++; kept += .5; } else if (s === "miss") due++; else if (s === "before") break;
+    date = addDays(date, -1);
+  }
+  return due ? Math.round(kept / due * 100) : null;
+}
+function excuseUsedThisWeek(plan){ const from = dayKey(addDays(midnight(new Date()), -6)); return Object.keys(plan.excuse || {}).some(k => k >= from); }
+function todayState(plan){
+  const k = dayKey(new Date());
+  if (!plan.today || plan.today.k !== k) plan.today = { k, r:[], h:[], extraR:false, extraH:false };
+  return plan.today;
+}
+function chainHtml(plan){
+  const today = midnight(new Date()), startDay = addDays(today, -today.getDay() - 7*7);
+  const cls = { done:"k-done", partial:"k-min", partialtoday:"k-min k-today", miss:"k-miss", excused:"k-exc", today:"k-today" };
+  const lbl = { done:"أنجزت", partial:"جزئي", partialtoday:"جزئي", miss:"فات", excused:"يوم عذر", today:"اليوم", rest:"راحة" };
+  let out = "";
+  for (let i = 0; i < 56; i++){ const d = addDays(startDay, i), s = d > today ? "future" : dayState(plan, d);
+    out += `<span class="k ${cls[s] || "k-none"}" title="${DAYS[d.getDay()]} ${shortDate(d)}${lbl[s] ? " · " + lbl[s] : ""}"></span>`; }
+  return `<div class="chain" aria-label="سجل آخر ثمانية أسابيع">${out}</div>`;
+}
+function ring(done, total, text){
+  const r = 34, c = 2 * Math.PI * r, f = total ? done / total : 0;
+  return `<svg class="ring" viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="${r}" fill="none" stroke="var(--soft)" stroke-width="8"/>
+    <circle cx="42" cy="42" r="${r}" fill="none" stroke="var(--accent)" stroke-width="8" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c * (1 - f)}" transform="rotate(-90 42 42)"/>
+    <text x="42" y="48" text-anchor="middle" font-size="${text ? 22 : 17}" font-weight="800" fill="var(--ink)" font-family="Alexandria, sans-serif">${text || ar(done) + "/" + ar(total)}</text></svg>`;
+}
+
+/* --- نموذج الإعداد --- */
+const dayButtons = (id, days) => `<div class="days" id="${id}">${[6,0,1,2,3,4,5].map(i=>`<button type="button" id="${id}-${i}" data-d="${i}" aria-pressed="${days.includes(i)}">${DAYS[i]}</button>`).join("")}</div>`;
+function renderPlanForm(el){
+  const plan = store.data.plan;
+  const allIntents = INTENTS.concat(P.intents.filter(x => !INTENTS.includes(x)));
+  el.innerHTML = `
+    <section class="card intents-card">
+      <div><h2>نيّات الحفظ</h2><p class="muted small" style="margin:0">اختر نيّاتك، وتظهر لك في أعلى جدولك كل يوم. وتقدر تضيف نيّة بكلماتك.</p></div>
+      <div class="chips" id="intents">${allIntents.map((x,i)=>`<button type="button" class="chip" id="in-${i}" aria-pressed="${P.intents.includes(x)}" data-x="${esc(x)}">${esc(x)}</button>`).join("")}</div>
+      <div class="row"><div class="field"><label for="in-custom">نيّة أخرى</label><input type="text" id="in-custom" value="${esc(P.custom)}" placeholder="مثل: أن أصلي بأولادي بما أحفظ"></div><button class="btn ghost" id="in-add" style="align-self:flex-end">أضف</button></div>
+    </section>
+    <section class="card">
+      <div><span class="qtype">المسار الأول</span><h2>المراجعة</h2></div>
+      <div class="field"><span class="lbl">مقدار المراجعة في اليوم</span><div class="seg" id="r-amt">${AMOUNTS.map(([n,l])=>`<button type="button" id="ra-${n}" data-n="${n}" aria-pressed="${P.r.amount===n}">${l}</button>`).join("")}</div></div>
+      <div class="row">
+        <div class="field"><label for="r-start">من الجزء</label><select id="r-start">${JUZ.map((_,i)=>`<option value="${i+1}" ${P.r.start===i+1?'selected':''}>الجزء ${ar(i+1)}</option>`).join("")}</select></div>
+        <div class="field"><label for="r-end">إلى الجزء</label><select id="r-end"></select></div>
+      </div>
+      <div class="field"><span class="lbl">أيام المراجعة</span>${dayButtons("r-days", P.r.days)}</div>
+      <p class="note" id="r-sum"></p>
+    </section>
+    <section class="card">
+      <div class="row" style="justify-content:space-between"><div><span class="qtype">المسار الثاني</span><h2>الحفظ الجديد</h2></div>
+        <div class="seg" id="h-on"><button type="button" id="h-on-1" data-v="1" aria-pressed="${P.h.on}">أحفظ الآن</button><button type="button" id="h-on-0" data-v="0" aria-pressed="${!P.h.on}">متوقف</button></div></div>
+      <div id="h-body" ${P.h.on ? "" : "hidden"} class="hbody">
+        <div class="field"><span class="lbl">مقدار الحفظ في اليوم</span><div class="seg" id="h-amt">${HIFZ_AMOUNTS.map(([n,l])=>`<button type="button" id="ha-${n}" data-n="${n}" aria-pressed="${P.h.amount===n}">${l}</button>`).join("")}</div></div>
+        <div class="field"><span class="lbl">اتجاه الحفظ</span><div class="seg" id="h-dir"><button type="button" id="hd-bwd" data-v="bwd" aria-pressed="${P.h.dir==='bwd'}">من الناس صعودًا إلى البقرة</button><button type="button" id="hd-fwd" data-v="fwd" aria-pressed="${P.h.dir==='fwd'}">من الفاتحة نزولًا إلى الناس</button></div></div>
+        <div class="row">
+          <div class="field"><label for="h-s">السورة</label><select id="h-s">${SURAHS.map((s,i)=>`<option value="${i+1}" ${surahsOnPage(P.h.page).includes(i+1)&&surahsOnPage(P.h.page)[0]===i+1?'selected':''}>${ar(i+1)}. ${s}</option>`).join("")}</select></div>
+          <div class="field"><label for="h-a">أبدأ من الوجه</label><select id="h-a">${Array.from({length:PAGES},(_,i)=>`<option value="${i+1}" ${P.h.page===i+1?'selected':''}>${ar(i+1)}</option>`).join("")}</select></div>
+        </div>
+        <div class="field"><span class="lbl">أيام الحفظ</span>${dayButtons("h-days", P.h.days)}</div>
+        <p class="note" id="h-sum"></p>
+      </div>
+    </section>
+    <div class="row"><button class="btn" id="p-save">${plan ? "احفظ الجدول" : "ابدأ جدولي"}</button>${plan ? `<button class="btn ghost" id="p-cancel">إلغاء</button>` : ""}</div>`;
+  const fillEnd = () => { $("#r-end", el).innerHTML = JUZ.map((_,i)=>i+1).filter(j=>j>=P.r.start).map(j=>`<option value="${j}" ${P.r.end===j?'selected':''}>الجزء ${ar(j)}</option>`).join(""); };
+  const sum = () => {
+    const R = (P.r.end - P.r.start + 1) * 4, perWeek = P.r.days.length * P.r.amount;
+    const range = P.r.start === P.r.end ? `الجزء ${ar(P.r.start)}` : `من الجزء ${ar(P.r.start)} إلى الجزء ${ar(P.r.end)}`;
+    $("#r-sum", el).textContent = P.r.days.length ? `تدور على ${range} مرة كل ${ar(Math.max(1, Math.ceil(R / perWeek)))} أسبوع تقريبًا.` : "اختر يومًا واحدًا على الأقل للمراجعة.";
+    if (P.h.on) { const wk = P.h.days.length * P.h.amount / 2; $("#h-sum", el).textContent = P.h.days.length ? `تحفظ ${ar(String(wk).replace(".", "٫"))} وجه في الأسبوع، وتبدأ من ${hifzPortion(kOfPage(P.h.page, P.h.dir), 1, P.h.dir).surahs}.` : "اختر يومًا واحدًا على الأقل للحفظ."; }
+    $("#p-save", el).disabled = !P.r.days.length || (P.h.on && !P.h.days.length);
+  };
+  const bindDays = (id, arr) => el.querySelectorAll("#"+id+" button").forEach(b => b.onclick = () => { const d = +b.dataset.d, i = arr.indexOf(d); if (i >= 0) arr.splice(i,1); else arr.push(d); b.setAttribute("aria-pressed", arr.includes(d)); sum(); });
+  const bindSeg = (id, fn) => el.querySelectorAll("#"+id+" button").forEach(b => b.onclick = () => { el.querySelectorAll("#"+id+" button").forEach(x => x.setAttribute("aria-pressed", x === b)); fn(b); sum(); });
+  fillEnd();
+  el.querySelectorAll("#intents .chip").forEach(b => b.onclick = () => { const x = b.dataset.x; P.intents = P.intents.includes(x) ? P.intents.filter(y => y !== x) : P.intents.concat(x); b.setAttribute("aria-pressed", P.intents.includes(x)); });
+  $("#in-custom", el).oninput = e => P.custom = e.target.value;
+  $("#in-add", el).onclick = () => { const v = P.custom.trim(); if (v && !P.intents.includes(v)) P.intents.push(v); P.custom = ""; renderPlanForm(el); };
+  bindSeg("r-amt", b => P.r.amount = +b.dataset.n);
+  bindDays("r-days", P.r.days); bindDays("h-days", P.h.days);
+  $("#r-start", el).onchange = e => { P.r.start = +e.target.value; if (P.r.end < P.r.start) P.r.end = P.r.start; fillEnd(); sum(); };
+  $("#r-end", el).onchange = e => { P.r.end = +e.target.value; sum(); };
+  bindSeg("h-on", b => { P.h.on = b.dataset.v === "1"; $("#h-body", el).hidden = !P.h.on; });
+  bindSeg("h-amt", b => P.h.amount = +b.dataset.n);
+  bindSeg("h-dir", b => P.h.dir = b.dataset.v);
+  $("#h-s", el).onchange = e => { P.h.page = SURAH_PAGE[+e.target.value - 1]; $("#h-a", el).value = P.h.page; sum(); };
+  $("#h-a", el).onchange = e => { P.h.page = +e.target.value; const s = surahsOnPage(P.h.page)[0]; $("#h-s", el).value = s; sum(); };
+  $("#p-save", el).onclick = () => {
+    const old = store.data.plan;
+    const rangeChanged = !old || old.review.start !== P.r.start || old.review.end !== P.r.end;
+    const newK = kOfPage(P.h.page, P.h.dir);
+    const oldPage = old && old.hifz.k != null && old.hifz.k < PAGES*2 ? halfAt(old.hifz.k, old.hifz.dir).page : null;
+    const ptrChanged = !old || old.hifz.dir !== P.h.dir || oldPage !== P.h.page;
+    const custom = P.custom.trim(); if (custom && !P.intents.includes(custom)) P.intents.push(custom);
+    store.data.plan = {
+      intents: P.intents.slice(), created: old ? old.created : Date.now(), excuse: old ? old.excuse || {} : {}, today: old ? old.today : null,
+      review: { amount:P.r.amount, days:P.r.days.slice().sort(), start:P.r.start, end:P.r.end, pos: rangeChanged ? 0 : old.review.pos, log: old ? old.review.log : {} },
+      hifz: { on:P.h.on, since: P.h.on ? (old && old.hifz.on && old.hifz.since ? old.hifz.since : Date.now()) : null, amount:P.h.amount, days:P.h.days.slice().sort(), dir:P.h.dir, k: ptrChanged ? newK : old.hifz.k, log: old ? old.hifz.log : {} }
+    };
+    P.editing = false; store.save(); renderPlan(); window.scrollTo({top:0});
+  };
+  const c = $("#p-cancel", el); if (c) c.onclick = () => { P.editing = false; renderPlan(); };
+  sum();
+}
+
+/* --- عرض الجدول --- */
+function renderPlan(){
+  const el = $("#view-plan");
+  if (store.data.plan && (!store.data.plan.review || (store.data.plan.hifz && store.data.plan.hifz.k === undefined))) { store.data.plan = migrate(store.data.plan); store.save(); }
+  const plan = store.data.plan;
+  if (!P.editing) planDefaults();
+  if (!plan || P.editing) { renderPlanForm(el); return; }
+  const rv = plan.review, hf = plan.hifz;
+  const today = midnight(new Date()), tk = dayKey(today), wd = today.getDay();
+  const t = todayState(plan);
+  const due = tracksDue(plan, today);
+  const st = streak(plan), rate = commitment(plan);
+  const next = MILESTONES.find(m => m[0] > st), reached = MILESTONES.filter(m => m[0] <= st).pop();
+  const R = rangeUnits(rv), cyc = Math.round((rv.pos % R) / R * 100), cycles = Math.floor(rv.pos / R);
+  const halvesDone = Object.values(hf.log).reduce((s, l) => s + (l.n || 0), 0);
+  const pagesDone = ar(String(halvesDone / 2).replace(".", "٫"));
+  const pu = partUnit(rv.amount), pn = rv.amount / pu;
+
+  // المراجعة اليوم
+  const rLog = rv.log[tk];
+  let rCard;
+  if (rLog && rLog.n > 0) rCard = `<div class="todayhead">${ring(1,1,"✓")}<div><span class="qtype">المراجعة</span><h3>أتممت مراجعة اليوم</h3><p class="muted small" style="margin:0">${portionLabel(rLog.pos, rLog.n, rv)}</p></div></div>
+      <div class="row"><button class="btn ghost small-btn" id="r-test">اختبرني فيما راجعت</button></div>`;
+  else if (due.includes("review") || t.extraR) rCard = `<div class="todayhead">${ring(t.r.length, pn)}<div><span class="qtype">المراجعة</span><h3>${portionLabel(rv.pos, rv.amount, rv)}</h3></div></div>
+      ${pn > 1 ? `<div class="parts">${Array.from({length: pn}, (_, i) => { const on = t.r.includes(i); return `<button class="part ${on?'on':''}" id="rp-${i}" data-i="${i}" aria-pressed="${on}"><i></i><span>${portionLabel(rv.pos + i * pu, pu, rv)}</span></button>`; }).join("")}</div>` : `<div class="row"><button class="btn" id="rp-0" data-i="0">أنهيت المراجعة</button></div>`}`;
+  else rCard = `<div><span class="qtype">المراجعة</span><h3>لا مراجعة اليوم</h3><p class="muted small" style="margin:0">القادم: ${portionLabel(rv.pos, rv.amount, rv)}</p></div><div class="row"><button class="btn ghost small-btn" id="r-extra">أراجع اليوم زيادة</button></div>`;
+
+  // الحفظ اليوم
+  let hCard = "";
+  if (hf.on) {
+    const hLog = hf.log[tk];
+    const portion = hifzPortion(hf.k, hf.amount, hf.dir);
+    if (hLog) hCard = `<div class="todayhead">${ring(1,1,"✓")}<div><span class="qtype">الحفظ الجديد</span><h3>حفظت مقطع اليوم</h3><p class="muted small" style="margin:0">${hLog.label}${hLog.surahs ? " · " + hLog.surahs : ""}</p></div></div>
+        <div class="row"><button class="btn ghost small-btn" id="h-test">اختبرني في السورة</button></div>`;
+    else if (!portion) hCard = `<div><span class="qtype">الحفظ الجديد</span><h3>أتممت خطة الحفظ</h3><p class="muted small" style="margin:0">بارك الله في حفظك. عدّل الجدول لتبدأ سورة جديدة.</p></div>`;
+    else if (due.includes("hifz") || t.extraH) hCard = `<div class="todayhead">${ring(t.h.length, HIFZ_STEPS.length)}<div><span class="qtype">الحفظ الجديد</span><h3>${portion.label}</h3><p class="muted small" style="margin:0">${portion.surahs}</p></div></div>
+        <div class="parts">${HIFZ_STEPS.map((s, i) => { const on = t.h.includes(i); return `<button class="part ${on?'on':''}" id="hp-${i}" data-i="${i}" aria-pressed="${on}"><i></i><span>${s}</span></button>`; }).join("")}</div>`;
+    else hCard = `<div><span class="qtype">الحفظ الجديد</span><h3>لا حفظ اليوم</h3><p class="muted small" style="margin:0">القادم: ${portion.label}</p></div><div class="row"><button class="btn ghost small-btn" id="h-extra">أحفظ اليوم زيادة</button></div>`;
+  }
+  const allDone = dayState(plan, today) === "done";
+  const cheer = allDone ? `<p class="cheer">${reached && reached[0] === st ? `بلغت <b>${reached[1]}</b> من الالتزام المتواصل. ثبّتك الله.` : `أتممت جدول اليوم، وسلسلتك الآن <b>${ar(st)}</b> ${st === 1 ? "يوم" : "أيام"}.`}</p>` : "";
+
+  // أيام فائتة
+  const recentMiss = [1,2].map(d => addDays(today, -d)).filter(d => ["miss","partial"].includes(dayState(plan, d)));
+  const missCard = recentMiss.length ? `<section class="card warnbox"><h3>${recentMiss.length > 1 ? "فاتك يومان" : "فاتك يوم"}</h3>
+      ${recentMiss.map(d => `<div class="missrow"><span>${DAYS[d.getDay()]} ${shortDate(d)}</span><div class="row">
+        <button class="btn small-btn" id="late-${dayKey(d)}" data-k="${dayKey(d)}">أنجزته ونسيت التسجيل</button>
+        ${excuseUsedThisWeek(plan) ? "" : `<button class="btn ghost small-btn" id="exc-${dayKey(d)}" data-k="${dayKey(d)}">يوم عذر</button>`}</div></div>`).join("")}
+      <p class="note">يوم العذر واحد في الأسبوع، يحفظ سلسلتك من الانقطاع لمرض أو سفر. وما فاتك لا يضيع، فهو ينتقل إلى يومك القادم.</p></section>` : "";
+
+  // الأيام القادمة
+  let rp = rv.pos + (due.includes("review") && !(rLog && rLog.n) ? rv.amount : 0);
+  let hp = hf.on ? (due.includes("hifz") && !hf.log[tk] ? (hifzPortion(hf.k, hf.amount, hf.dir) || {}).next : hf.k) : null;
+  const upcoming = [];
+  for (let d = 1; upcoming.length < 5 && d < 21; d++){
+    const date = addDays(today, d), tr = tracksDue(plan, date);
+    if (!tr.length) continue;
+    const lines = [];
+    if (tr.includes("review")) { lines.push(`<span class="tag">مراجعة</span> ${portionLabel(rp, rv.amount, rv)}`); rp += rv.amount; }
+    if (tr.includes("hifz") && hp != null) { const hp2 = hifzPortion(hp, hf.amount, hf.dir); lines.push(`<span class="tag tag-h">حفظ</span> ${hp2.label}`); hp = hp2.next; }
+    upcoming.push(`<div class="day"><div class="d">${DAYS[date.getDay()]}<small>${shortDate(date)}</small></div><div class="w">${lines.join("<br>")}</div></div>`);
+  }
+
+  el.innerHTML = `
+    ${plan.intents.length ? `<section class="card intents-card"><h3>نيّات الحفظ</h3><ul class="intents">${plan.intents.map(x => `<li>${esc(x)}</li>`).join("")}</ul></section>` : ""}
+    <section class="card">${rCard}</section>
+    ${hCard ? `<section class="card">${hCard}</section>` : ""}
+    ${cheer}
+    ${missCard}
+    <section class="stats">
+      <div class="stat"><strong>${ar(st)}</strong><span>أيام متتالية</span></div>
+      <div class="stat"><strong>${rate == null ? "—" : ar(rate) + "٪"}</strong><span>التزامك آخر ٤ أسابيع</span></div>
+      <div class="stat"><strong>${hf.on || halvesDone ? pagesDone : ar(cyc) + "٪"}</strong><span>${hf.on || halvesDone ? "وجه حفظته" : "من دورة المراجعة"}</span></div>
+    </section>
+    ${next ? `<section class="card goal"><div class="row" style="justify-content:space-between"><h3>الهدف القادم: ${next[1]}</h3><span class="small muted">باقي ${ar(next[0] - st)} ${next[0] - st === 1 ? "يوم" : "أيام"}</span></div><div class="bar"><i style="width:${st / next[0] * 100}%"></i></div></section>` : ""}
+    <section class="card">
+      <div class="row" style="justify-content:space-between"><h3>سلسلة الالتزام</h3><span class="small muted">آخر ٨ أسابيع</span></div>
+      ${chainHtml(plan)}
+      <div class="legend"><span><i class="k-done"></i>أنجزت</span><span><i class="k-min"></i>جزئي</span><span><i class="k-miss"></i>فات</span><span><i class="k-exc"></i>عذر</span></div>
+      <p class="note">دورة المراجعة: ${ar(cyc)}٪${cycles ? ` · أتممت ${ar(cycles)} ${cycles === 1 ? "دورة" : "دورات"}` : ""} · ${rv.start === rv.end ? `الجزء ${ar(rv.start)}` : `من الجزء ${ar(rv.start)} إلى الجزء ${ar(rv.end)}`}</p>
+    </section>
+    <section class="card"><h3>الأيام القادمة</h3><div class="week">${upcoming.join("") || `<p class="note">لا أيام مجدولة.</p>`}</div></section>
+    <div class="row"><button class="btn ghost" id="p-edit">تعديل الجدول والنيّات</button></div>`;
+
+  const finishR = () => { rv.log[tk] = { pos: rv.pos, n: rv.amount }; rv.pos += rv.amount; t.r = []; t.extraR = false; };
+  const finishH = () => { const p = hifzPortion(hf.k, hf.amount, hf.dir); if (!p) return; hf.log[tk] = { s:p.s, n:p.n, label:p.label, surahs:p.surahs }; hf.k = p.next; t.h = []; t.extraH = false; };
+  el.querySelectorAll("[id^=rp-]").forEach(b => b.onclick = () => { const i = +b.dataset.i; t.r = t.r.includes(i) ? t.r.filter(x => x !== i) : t.r.concat(i); if (t.r.length >= pn) finishR(); store.save(); renderPlan(); });
+  el.querySelectorAll("[id^=hp-]").forEach(b => b.onclick = () => { const i = +b.dataset.i; t.h = t.h.includes(i) ? t.h.filter(x => x !== i) : t.h.concat(i); if (t.h.length >= HIFZ_STEPS.length) finishH(); store.save(); renderPlan(); });
+  const rx = $("#r-extra", el); if (rx) rx.onclick = () => { t.extraR = true; store.save(); renderPlan(); };
+  const hx = $("#h-extra", el); if (hx) hx.onclick = () => { t.extraH = true; store.save(); renderPlan(); };
+  el.querySelectorAll("[id^=late-]").forEach(b => b.onclick = () => {
+    const k = b.dataset.k, d = new Date(k + "T12:00:00"), tr = tracksDue(plan, d);
+    if (tr.includes("review") && !(rv.log[k] && rv.log[k].n)) { rv.log[k] = { pos: rv.pos, n: rv.amount, late: true }; rv.pos += rv.amount; t.r = []; }
+    if (tr.includes("hifz") && !hf.log[k]) { const p = hifzPortion(hf.k, hf.amount, hf.dir); if (p) { hf.log[k] = { s:p.s, n:p.n, label:p.label, surahs:p.surahs, late:true }; hf.k = p.next; t.h = []; } }
+    store.save(); renderPlan();
+  });
+  el.querySelectorAll("[id^=exc-]").forEach(b => b.onclick = () => { plan.excuse = Object.assign({}, plan.excuse, { [b.dataset.k]: true }); store.save(); renderPlan(); });
+  $("#p-edit", el).onclick = () => { P.editing = true; renderPlan(); window.scrollTo({top:0}); };
+  const rt = $("#r-test", el);
+  if (rt) rt.onclick = () => { const p = (rv.start - 1) * 4 + ((rLog.pos % R) + R) % R; T.mode = "juz"; T.juz = Math.floor(p/4) + 1; T.phase = "setup"; show("test"); renderTest(); };
+  const ht = $("#h-test", el);
+  if (ht) ht.onclick = () => { T.mode = "surah"; T.surah = hf.log[tk].s; T.phase = "setup"; show("test"); renderTest(); };
+}
+
+/* ===================== التنقل ===================== */
+function show(v){
+  ["plan","test","mut","taj","map"].forEach(x => { $("#view-"+x).hidden = x !== v; $("#tab-"+x).setAttribute("aria-selected", x === v); });
+  window.scrollTo({top:0});
+}
+document.querySelectorAll("nav.tabs button").forEach(b => b.onclick = () => { show(b.dataset.view); if (b.dataset.view === "map") renderMap(); if (b.dataset.view === "plan") renderPlan(); if (b.dataset.view === "mut") renderMut(); if (b.dataset.view === "taj") renderTaj(); });
+function renderAll(){ renderPlan(); renderTest(); renderMut(); renderTaj(); renderMap(); }
+
+store.loadLocal();
+renderAll();
+loadQuran().then(renderMap);
+store.connect();
+</script>
+
+</body>
+</html>
